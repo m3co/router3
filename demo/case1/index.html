@@ -1,33 +1,17 @@
 <html>
   <body>
-    <h2>Case 1 of routing</h2>
-    <strong>The definition</strong><br>
-    Let's <i>l</i> to be the <i>window.location.hash</i><br>
-    Let's <i>o</i> to be the <i>object-content</i><br>
-    Let's <i>r</i> to be the <i>o</i>'s attribute <i>hash</i><br>
-    By default <i>o</i> is <strong>hidden</strong><br>
-    If <i>match proccess</i> matches <i>r</i> with <i>l</i> then the content of <i>o</i> will <i>be displayed</i><br>
-    <br>
-    The definition of <i>be displayed</i> means that
-    <ol>
-      <li>if <i>src</i> attribute has a value then let's the content to be <i>c</i> - the result of fetching and processing from the given url</li>
-      <li>if <i>src</i> attribute is not present then let's the content to be <i>c</i> - the <i>o</i>'s children</li>
-      <li>unhide <i>o</i></li>
-    </ol>
 
-    <br>
-    <br>
-    <!-- later this textarea will be transformed into HTML code -->
-    <textarea rows=10 cols=100>
 <router2-content id="unique-id" hash="a-hash-template">
   The content to render
 </router2-content>
 
+<!--
 <router2-content id="unique-id" hash="a-hash-template" src="an-url-to-fetch">
 </router2-content>
 
-<router2-view for="unique-id"> <!-- optional tag -->
+<router2-view for="unique-id">  ## optional tag
 </router2-view>
-    </textarea>
+-->
+
   </body>
 </html>
