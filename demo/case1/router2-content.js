@@ -27,6 +27,20 @@
     }
   }
 
+
+  class Router2View extends HTMLElement {
+    createdCallback() {
+      var targetId = this.getAttribute('for'),
+          target;
+      if (targetId) {
+        target = document.querySelector(`router2-content#${targetId}`);
+      }
+      if (target) {
+        this.appendChild(target);
+      }
+    }
+  }
+
   window.addEventListener('hashchange', (e) => {
     matchHash();
   });
@@ -35,4 +49,5 @@
   });
 
   document.registerElement('router2-content', Router2Content);
+  document.registerElement('router2-view', Router2View);
 })();

@@ -5,21 +5,16 @@
     <a href="#a-hash-template">first case</a>
     <a href="#another-hash-template">second case</a>
     <button>Test</button>
-    <router2-content hash="a-hash-template" hidden>
+    <router2-content id="first-id" hash="a-hash-template" hidden>
       The content to render
     </router2-content>
 
-    <router2-content hash="another-hash-template" hidden>
+    <router2-content id="second-id" hash="another-hash-template" hidden>
       This is another hash
     </router2-content>
 
-    <!--
-    <router2-content id="unique-id" hash="a-hash-template" src="an-url-to-fetch">
-    </router2-content>
-
-    <router2-view for="unique-id">  ## optional tag
+    <router2-view for="second-id">
     </router2-view>
-    -->
 
   </body>
   <script>
