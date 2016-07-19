@@ -1,10 +1,9 @@
 ;(_ => {
   'use strict';
   var tagContent = 'router2-content';
+  var tagView = 'router2-view';
 
   test(_ => {
-    var router2content = document.createElement(tagContent);
-    assert_equals(router2content.TAG_NAME, tagContent);
-  }, `check definition of ${tagContent}`);
 
+  }, 'test 1');
 })();
