@@ -3,33 +3,7 @@
   var tagContent = 'router2-content';
   var tagView = 'router2-view';
 
-  // reset in order to begin the test... you should delete this line
-  window.location.hash = '';
-
-  var div = document.createElement('div');
-  div.innerHTML = `
-    <a href="#">Reset</a>
-    <a href="#a-hash-template">first case</a>
-    <a href="#another-hash-template">second case</a>
-    <button>Test</button>
-    <router2-content id="first-id" hash="a-hash-template" hidden>
-      The content to render
-    </router2-content>
-
-    <router2-content id="second-id" hash="another-hash-template" hidden>
-      This is another hash
-    </router2-content>
-
-    <router2-view for="second-id">
-    </router2-view>
-
-    <script>
-      document.querySelector('button').addEventListener('click', (e) => {
-        location.hash = "myHash";
-      });
-    </script>
-  `;
-  document.body.appendChild(div);
+  var div = document.querySelector('div#case1');
   test(_ => {
     assert_true(window.location.hash === '' || window.location.hash === '');
   }, 'The location starts with no hash');
@@ -38,6 +12,7 @@
   var async2 = async_test('hash changed for content[hash="another-hash-template"]');
   var async3 = async_test('click over href="#a-hash-template"');
   var async4 = async_test('click over href="#another-hash-tempate"');
+  var async5 = async_test('click over button leads to unmatching route');
 
   async1.next = async1.step_func(_ => {
     var hash = "a-hash-template";
@@ -47,10 +22,10 @@
 
     var check_hash = hashAsync.step_func((e) => {
       assert_false(content.hidden);
+      assert_true(e.newURL.includes(hash));
 
       // clean the test
       window.removeEventListener('hashchange', check_hash);
-      window.location.hash = '';
 
       hashAsync.done();
       async1.done();
@@ -70,10 +45,10 @@
 
     var check_hash = hashAsync.step_func((e) => {
       assert_false(content.hidden);
+      assert_true(e.newURL.includes(hash));
 
       // clean the test
       window.removeEventListener('hashchange', check_hash);
-      window.location.hash = '';
 
       hashAsync.done();
       async2.done();
@@ -93,10 +68,10 @@
 
     var check_hash = hashAsync.step_func((e) => {
       assert_false(content.hidden);
+      assert_true(e.newURL.includes(hash));
 
       // clean the test
       window.removeEventListener('hashchange', check_hash);
-      window.location.hash = '';
 
       hashAsync.done();
       async3.done();
@@ -116,18 +91,39 @@
 
     var check_hash = hashAsync.step_func((e) => {
       assert_false(content.hidden);
+      assert_true(e.newURL.includes(hash));
 
       // clean the test
       window.removeEventListener('hashchange', check_hash);
-      window.location.hash = '';
 
       hashAsync.done();
       async4.done();
-      document.body.removeChild(div);
+      async5.next();
     });
 
     window.addEventListener('hashchange', check_hash);
     document.querySelector(`a[href="#${hash}"]`).dispatchEvent(new Event('click'));
+  });
+
+  async5.next = async5.step_func(_ => {
+    var hash = "myHash";
+    var content = document.querySelector(`${tagContent}[hash="${hash}"]`);
+    assert_equals(content, null);
+
+    var hashAsync = async_test(`If hash changes to an unmatching route throw an error`);
+
+    var check_error = hashAsync.step_func((message) => {
+      // clean the test
+      assert_equals(message, `Uncaught Error: hash "${hash}" does not match any content`);
+      window.location.hash = '';
+
+      hashAsync.done();
+      async5.done();
+      document.body.removeChild(div);
+    });
+
+    onerror = check_error;
+    document.querySelector('button').dispatchEvent(new Event('click'));
   });
 
   async1.step(_ => {
