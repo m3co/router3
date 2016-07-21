@@ -1,8 +1,9 @@
 ;(_ => {
   'use strict';
+  var tagContent = 'router2-content';
 
   function matchHash() {
-    var containers = document.querySelectorAll('router2-content');
+    var containers = document.querySelectorAll(tagContent);
     for (var i = 0; i < containers.length; i++) {
       containers[i].hidden = true;
     }
@@ -13,7 +14,7 @@
       return;
     }
 
-    var matched = document.querySelector(`router2-content[hash="${hash}"]`);
+    var matched = document.querySelector(`${tagContent}[hash="${hash}"]`);
     if (matched) {
       matched.hidden = false;
     } else {
