@@ -13,6 +13,7 @@
   var async3 = async_test('click over href="#a-hash-template"');
   var async4 = async_test('click over href="#another-hash-tempate"');
   var async5 = async_test('click over button leads to unmatching route');
+  var async6 = async_test('reset to the window.location.hash="" state');
 
   async1.next = async1.step_func(_ => {
     var hash = "a-hash-template";
@@ -119,11 +120,22 @@
 
       hashAsync.done();
       async5.done();
-      document.body.removeChild(div);
+      async6.next();
     });
 
     onerror = check_error;
     document.querySelector('button').dispatchEvent(new Event('click'));
+  });
+
+  async6.next = async6.step_func(_ => {
+    var check_hash = async6.step_func((e) => {
+      window.removeEventListener('hashchange', check_hash);
+      async6.done();
+      document.body.removeChild(div);
+    });
+
+    window.addEventListener('hashchange', check_hash);
+    window.location.hash = '';
   });
 
   async1.step(_ => {
