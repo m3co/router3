@@ -4,7 +4,7 @@
   var tagView = 'router2-view';
 
   class Router2View extends HTMLElement {
-    createdCallback() {
+    attachedCallback() {
       var targetId = this.getAttribute('for'),
           target;
       if (targetId) {
@@ -13,6 +13,8 @@
       if (target) {
         this.appendChild(target);
       }
+    }
+    createdCallback() {
       this.TAG_NAME = tagView;
     }
   }

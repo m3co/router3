@@ -7,9 +7,20 @@
   </head>
   <script>
     setup({ allow_uncaught_exception: true });
+    window.routeCases = [];
+    window.routeCases.next = function() {
+      var current = window.routeCases.pop();
+      if (current instanceof Function) {
+        current();
+      }
+    };
   </script>
   <body>
   </body>
   <script src="definition.js"></script>
+  <script src="case2/case2.js"></script>
   <script src="case1/case1.js"></script>
+  <script>
+    window.routeCases.next();
+  </script>
 </html>

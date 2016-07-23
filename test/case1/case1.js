@@ -1,46 +1,35 @@
-;(_ => {
+;((rc) => {
   'use strict';
   var tagContent = 'router2-content';
   var tagView = 'router2-view';
 
   var div = document.createElement('div');
   div.innerHTML = `
-    <div id="case1">
-      <a href="#">Reset</a>
-      <a href="#a-hash-template">first case</a>
-      <a href="#another-hash-template">second case</a>
-      <button>Test</button>
-      <router2-content id="first-id" hash="a-hash-template" hidden>
-        The content to render
-      </router2-content>
+    <button>Test</button>
+    <${tagContent} hash="a-hash-template" hidden>
+      The content to render
+    </${tagContent}>
 
-      <router2-content id="second-id" hash="another-hash-template" hidden>
-        This is another hash
-      </router2-content>
-
-      <router2-view for="second-id">
-      </router2-view>
-    </div>
+    <${tagContent} hash="another-hash-template" hidden>
+      This is another hash
+    </${tagContent}>
   `;
   var script1 = document.createElement('script');
   script1.text = `
-        document.querySelector('button').addEventListener('click', (e) => {
-          location.hash = "myHash";
-        });
+    document.querySelector('button').addEventListener('click', (e) => {
+      location.hash = "myHash";
+    });
   `;
   div.appendChild(script1);
   document.body.appendChild(div);
 
-  test(_ => {
-    assert_true(window.location.hash === '' || window.location.hash === '');
-  }, 'The location starts with no hash');
-
   var async1 = async_test('hash changed for content[hash="a-hash-template"]');
   var async2 = async_test('hash changed for content[hash="another-hash-template"]');
   var async5 = async_test('click over button leads to unmatching route');
-  var async6 = async_test('reset to the window.location.hash="" state');
+  var async6 = async_test('reset to the window.location.hash="" state at case 1');
 
   async1.next = async1.step_func(_ => {
+
     var hash = "a-hash-template";
     var content = document.querySelector(`${tagContent}[hash="${hash}"]`);
     assert_true(content.hidden);
@@ -111,6 +100,7 @@
     var check_hash = async6.step_func((e) => {
       window.removeEventListener('hashchange', check_hash);
       async6.done();
+      rc.next();
       document.body.removeChild(div);
     });
 
@@ -118,8 +108,10 @@
     window.location.hash = '';
   });
 
-  async1.step(_ => {
-    async1.next();
-  });
+  rc.push(_ => {
+    async1.step(_ => {
+      async1.next();
+    });
+  })
 
-})();
+})(window.routeCases);
