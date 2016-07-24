@@ -35,7 +35,10 @@
 
       if (match) {
         container.hidden = false;
-        matchHash(container, _hash.split(matcher)[1]);
+        _hash = _hash.split(matcher)[1];
+        if (_hash.length > 0) {
+          matchHash(container, _hash);
+        }
         return;
       }
     }
