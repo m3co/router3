@@ -29,7 +29,6 @@
   var async6 = async_test('reset to the window.location.hash="" state at case 1');
 
   async1.next = async1.step_func(_ => {
-
     var hash = "a-hash-template";
     var content = document.querySelector(`${tagContent}[hash="${hash}"]`);
     assert_true(content.hidden);

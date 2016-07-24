@@ -32,7 +32,7 @@
       // clean the test
       window.removeEventListener('hashchange', check_hash);
 
-      window.location.hash = '';
+      //window.location.hash = '';
       document.body.removeChild(div);
       hashAsync.done();
       async1.done();
