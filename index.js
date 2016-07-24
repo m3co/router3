@@ -2,33 +2,46 @@
   'use strict';
   var tagContent = 'router2-content';
 
-  function matchHash() {
-    var containers = document.querySelectorAll(`${tagContent}:not([hidden])`);
+  function matchHash(parent, hash) {
+    var containers;
     var container;
-    for (var i = 0; i < containers.length; i++) {
-      containers[i].hidden = true;
-    }
+    var _hash = hash || window.location.hash;
 
-    var hash = window.location.hash.slice(1);
-    // nothing to unhide...
-    if (!hash) {
-      return;
-    }
-
-    // this selector selects the children items too... that's incorrect
-    var containers = document.querySelectorAll(`${tagContent}`);
-    for (var i = 0; i < containers.length; i++) {
-      container = containers[i];
-      var matcher = new RegExp(`^${container.getAttribute('hash')}`);
-      var match = matcher.test(hash);
-
-      if (match) {
-        container.hidden = false;
+    if (!parent) {
+      containers = document.querySelectorAll(`${tagContent}:not([hidden])`);
+      for (var i = 0; i < containers.length; i++) {
+        containers[i].hidden = true;
+      }
+      _hash = _hash.slice(1);
+      // nothing to unhide...
+      if (!_hash) {
+        return;
+      }
+      containers = document.querySelectorAll(`${tagContent}`);
+    } else {
+      containers = parent.querySelectorAll(`${tagContent}`);
+      if (_hash[0] === '/') {
+        _hash = _hash.slice(1);
+      }
+      if (containers.length === 0) {
         return;
       }
     }
 
-    throw new Error(`hash "${hash}" does not match any content`);
+    // this selector selects the children items too... that's incorrect
+    for (var i = 0; i < containers.length; i++) {
+      container = containers[i];
+      var matcher = new RegExp(`^${container.getAttribute('hash')}`);
+      var match = matcher.test(_hash);
+
+      if (match) {
+        container.hidden = false;
+        matchHash(container, _hash.split(matcher)[1]);
+        return;
+      }
+    }
+
+    throw new Error(`hash "${_hash}" does not match any content`);
   }
 
   window.addEventListener('hashchange', (e) => {
