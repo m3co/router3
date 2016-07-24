@@ -18,10 +18,8 @@
       window.removeEventListener('hashchange', check_hash);
 
       //window.location.hash = '';// still having problems with this tear-down
-      setTimeout(_ => {
-        async1.done();
-        rc.next();
-      }, 2000);
+      async1.done();
+      rc.next();
     });
     window.addEventListener('hashchange', check_hash);
     window.location.hash = "case3-location1/case3-location2";
