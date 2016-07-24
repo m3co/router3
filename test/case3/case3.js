@@ -5,12 +5,16 @@
 
   var div = document.createElement('div');
   div.innerHTML = `
-  <router2-content hash="case3-location1">
-    <router2-content hash="case3-location2">
+  <${tagContent} hash="case3-location1">
+    <${tagContent} id="case3-test1" hash="case3-location2">
       Location 2
-    </router2-content>
+    </${tagContent}>
     Case 3 - Location 1
-  </router2-content>
+  </${tagContent}>
+
+  <${tagContent} id="case3-test2" hash="case3-location2">
+    External location 2
+  </${tagContent}>
   `;
 
   var async1 = async_test('Case 3: hash changed to content[hash="case3-location1/case3-location2"]');
@@ -44,6 +48,7 @@
       assert_true(content2.hidden);
 
       async2.done();
+      document.body.removeChild(div);
       rc.next();
     });
     window.addEventListener('hashchange', check_hash);

@@ -5,19 +5,19 @@
 
   var div = document.createElement('div');
   div.innerHTML = `
-    <router2-content id="case2-test1" hash="location1" hidden>
+    <${tagContent} id="case2-test1" hash="location1" hidden>
       Location 1
-    </router2-content>
+    </${tagContent}>
 
-    <router2-content id="case2-test2" hash="location2" hidden>
+    <${tagContent} id="case2-test2" hash="location2" hidden>
       Location 2
-    </router2-content>
+    </${tagContent}>
 
-    <router2-view for="case2-test1">
-    </router2-view>
+    <${tagView} for="case2-test1">
+    </${tagView}>
 
-    <router2-view for="case2-test2">
-    </router2-view>
+    <${tagView} for="case2-test2">
+    </${tagView}>
   `;
 
   var async1 = async_test('Case 2: hash changed to content[hash="location1"]');
