@@ -20,8 +20,6 @@
     </router2-view>
   `;
 
-  document.body.appendChild(div);
-
   var async1 = async_test('Case 2: hash changed to content[hash="location1"]');
   var async2 = async_test('Case 2: hash changed to content[hash="location2"]');
 
@@ -80,6 +78,7 @@
 
   rc.push(_ => {
     async1.step(_ => {
+      document.body.appendChild(div);
       async1.next();
     });
 

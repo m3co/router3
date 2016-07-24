@@ -21,7 +21,6 @@
     });
   `;
   div.appendChild(script1);
-  document.body.appendChild(div);
 
   var async1 = async_test('Case 1: hash changed to content[hash="a-hash-template"]');
   var async2 = async_test('Case 1: hash changed to content[hash="another-hash-template"]');
@@ -109,6 +108,7 @@
 
   rc.push(_ => {
     async1.step(_ => {
+      document.body.appendChild(div);
       async1.next();
     });
   })
