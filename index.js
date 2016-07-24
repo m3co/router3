@@ -30,6 +30,11 @@
     // this selector selects the children items too... that's incorrect
     for (var i = 0; i < containers.length; i++) {
       container = containers[i];
+      if (!parent) {
+        if (container.parentNode.TAG_NAME === tagContent) {
+          continue;
+        }
+      }
       var matcher = new RegExp(`^${container.getAttribute('hash')}`);
       var match = matcher.test(_hash);
 
