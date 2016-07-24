@@ -22,8 +22,8 @@
 
   document.body.appendChild(div);
 
-  var async1 = async_test('Case 2: hash changed for content[hash="location1"]');
-  var async2 = async_test('Case 2: hash changed for content[hash="location2"]');
+  var async1 = async_test('Case 2: hash changed to content[hash="location1"]');
+  var async2 = async_test('Case 2: hash changed to content[hash="location2"]');
 
   async1.next = async1.step_func(_ => {
     var hash = 'location1';
