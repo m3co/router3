@@ -41,6 +41,7 @@
       } else {
         // In fact in this line we intent to check if the current container
         // belongs to the current parent. If not then continue.
+        //if (!parent.contains(container)) { // e.g. this doesn't work :(
         if (container.parentNode !== parent) {
           continue;
         }
