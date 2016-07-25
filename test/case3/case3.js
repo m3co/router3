@@ -56,6 +56,8 @@
   var async3 = async_test('Case 3: hash changed to content[hash="case3-location2"]');
   var async4 = async_test('Case 3: hash changed to content[hash="case3-nested1/case3-nested11/case3-nested111/case3-nested1111"]');
 
+  var async5 = async_test('Case 3: hash changed to content[hash="case3-nested1111"]');
+
   async1.next = async1.step_func(_ => {
     var check_hash = async1.step_func((e) => {
       window.removeEventListener('hashchange', check_hash);
@@ -128,13 +130,38 @@
       assert_false(content6.hidden);
 
       async4.done();
-      document.body.removeChild(div);
-      rc.next();
+      async5.next();
     });
     window.addEventListener('hashchange', check_hash);
     window.location.hash = "case3-nested1/case3-nested11/case3-nested111/case3-nested1111";
   });
 
+  async5.next = async5.step_func(_ => {
+    var check_hash = async5.step_func((e) => {
+      window.removeEventListener('hashchange', check_hash);
+
+      //window.location.hash = '';// still having problems with this tear-down
+      var content1 = document.querySelector(`${tagContent}#case3-test1-p`);
+      var content2 = document.querySelector(`${tagContent}#case3-test2`);
+      var content3 = document.querySelector(`${tagContent}#case3-test3-1`);
+      var content4 = document.querySelector(`${tagContent}#case3-test4-11`);
+      var content5 = document.querySelector(`${tagContent}#case3-test5-111`);
+      var content6 = document.querySelector(`${tagContent}#case3-test6-1111`);
+      assert_true(content1.hidden);
+      assert_true(content2.hidden);
+      assert_true(content3.hidden);
+      assert_true(content4.hidden);
+      assert_true(content5.hidden);
+      assert_false(content6.hidden);
+
+      async5.done();
+      document.body.removeChild(div);
+      rc.next();
+
+    });
+    window.addEventListener('hashchange', check_hash);
+    window.location.hash = "case3-nested1111";
+  });
 
   rc.push(_ => {
     async1.step(_ => {

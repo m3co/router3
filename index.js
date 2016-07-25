@@ -36,7 +36,8 @@
           continue;
         }
       }
-      var matcher = new RegExp(`^${container.getAttribute('hash')}`);
+      var search = container.getAttribute('hash');
+      var matcher = new RegExp(`^${search}$|^${search}\/`);
       var match = matcher.test(_hash);
 
       if (match) {
