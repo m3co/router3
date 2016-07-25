@@ -27,7 +27,6 @@
       return;
     }
 
-
     // this selector selects the children items too... that's incorrect
     for (var i = 0; i < containers.length; i++) {
       container = containers[i];

@@ -44,7 +44,7 @@
   `;
   var async1 = async_test('Case 4: hash changed to content[hash="case4-1/case4-11/case4-111"]');
   var async2 = async_test('Case 4: hash changed to content[hash="case4-1/case4-111"]');
-  //var async3 = async_test('Case 4: hash changed to content[hash="case4-1/case4-112"]');
+  var async3 = async_test('Case 4: hash changed to content[hash="case4-1/case4-112"]');
   //var async4 = async_test('Case 4: hash changed to content[hash="case4-1/case4-122"]');
   //var async5 = async_test('Case 4: hash changed to content[hash="case4-1/case4-121"]');
   //var async6 = async_test('Case 4: hash changed to content[hash="case4-1/case4-12/case4-121"]');
@@ -81,14 +81,34 @@
       assert_false(content4.hidden);
 
       async2.done();
+      async3.next();
+    });
+
+    window.addEventListener('hashchange', check_hash);
+    window.location.hash = "case4-1/case4-111";
+  });
+
+  async3.next = async3.step_func(_ => {
+    var check_hash = async3.step_func((e) => {
+      var content1 = document.querySelector('#case4-1');
+      var content2 = document.querySelector('#case4-11');
+      var content3 = document.querySelector('#case4-112');
+      var content4 = document.querySelector('#case4-112-e');
+      assert_false(content1.hidden);
+      assert_true(content2.hidden);
+      assert_true(content3.hidden);
+      assert_false(content4.hidden);
+
+      async3.done();
       document.body.removeChild(div);
       rc.next();
 
     });
 
     window.addEventListener('hashchange', check_hash);
-    window.location.hash = "case4-1/case4-111";
+    window.location.hash = "case4-1/case4-112";
   });
+
 
   rc.push(_ => {
     async1.step(_ => {
