@@ -22,6 +22,9 @@
       nested 11
       <${tagContent} id="case3-test3-111" hash="case3-nested111">
         nested 111
+        <${tagContent} id="case3-test3-1111" hash="case3-nested1111">
+          nested 1111
+        </${tagContent}>
       </${tagContent}>
     </${tagContent}>
   </${tagContent}>
@@ -30,7 +33,7 @@
   var async1 = async_test('Case 3: hash changed to content[hash="case3-location1/case3-location2"]');
   var async2 = async_test('Case 3: hash changed to content[hash="case3-location1"]');
   var async3 = async_test('Case 3: hash changed to content[hash="case3-location2"]');
-  var async4 = async_test('Case 3: hash changed to content[hash="case3-nested1/case3-nested11/case3-nested111"]');
+  var async4 = async_test('Case 3: hash changed to content[hash="case3-nested1/case3-nested11/case3-nested111/case3-nested1111"]');
 
   async1.next = async1.step_func(_ => {
     var check_hash = async1.step_func((e) => {
@@ -95,18 +98,20 @@
       var content3 = document.querySelector(`${tagContent}#case3-test3-1`);
       var content4 = document.querySelector(`${tagContent}#case3-test3-11`);
       var content5 = document.querySelector(`${tagContent}#case3-test3-111`);
+      var content6 = document.querySelector(`${tagContent}#case3-test3-1111`);
       assert_true(content1.hidden);
       assert_true(content2.hidden);
       assert_false(content3.hidden);
       assert_false(content4.hidden);
       assert_false(content5.hidden);
+      assert_false(content6.hidden);
 
       async4.done();
       document.body.removeChild(div);
       rc.next();
     });
     window.addEventListener('hashchange', check_hash);
-    window.location.hash = "case3-nested1/case3-nested11/case3-nested111";
+    window.location.hash = "case3-nested1/case3-nested11/case3-nested111/case3-nested1111";
   });
 
 
