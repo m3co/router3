@@ -28,6 +28,27 @@
       </${tagContent}>
     </${tagContent}>
   </${tagContent}>
+
+  <${tagContent} id="case3-test4-11" hash="case3-nested11">
+    nested 11
+    <${tagContent} id="case3-test4-111" hash="case3-nested111">
+      nested 111
+      <${tagContent} id="case3-test4-1111" hash="case3-nested1111">
+        nested 1111
+      </${tagContent}>
+    </${tagContent}>
+  </${tagContent}>
+
+  <${tagContent} id="case3-test5-111" hash="case3-nested111">
+    nested 111
+    <${tagContent} id="case3-test5-1111" hash="case3-nested1111">
+      nested 1111
+    </${tagContent}>
+  </${tagContent}>
+
+  <${tagContent} id="case3-test6-1111" hash="case3-nested1111">
+    nested 1111
+  </${tagContent}>
   `;
 
   var async1 = async_test('Case 3: hash changed to content[hash="case3-location1/case3-location2"]');

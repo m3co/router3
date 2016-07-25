@@ -7,13 +7,6 @@
     var container;
     var _hash = hash || window.location.hash;
 
-    if (_hash[0] === '/' || _hash[0] === '#') {
-      _hash = _hash.slice(1);
-    }
-    if (!_hash) {
-      return;
-    }
-
     if (!parent) {
       containers = document.querySelectorAll(`${tagContent}:not([hidden])`);
       for (var i = 0; i < containers.length; i++) {
@@ -26,6 +19,14 @@
         return;
       }
     }
+
+    if (_hash[0] === '/' || _hash[0] === '#') {
+      _hash = _hash.slice(1);
+    }
+    if (!_hash) {
+      return;
+    }
+
 
     // this selector selects the children items too... that's incorrect
     for (var i = 0; i < containers.length; i++) {
