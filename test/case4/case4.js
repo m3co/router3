@@ -45,10 +45,10 @@
   var async1 = async_test('Case 4: hash changed to content[hash="case4-1/case4-11/case4-111"]');
   var async2 = async_test('Case 4: hash changed to content[hash="case4-1/case4-111"]');
   var async3 = async_test('Case 4: hash changed to content[hash="case4-1/case4-112"]');
-  //var async4 = async_test('Case 4: hash changed to content[hash="case4-1/case4-122"]');
-  //var async5 = async_test('Case 4: hash changed to content[hash="case4-1/case4-121"]');
-  //var async6 = async_test('Case 4: hash changed to content[hash="case4-1/case4-12/case4-121"]');
-  //var async7 = async_test('Case 4: hash changed to content[hash="case4-1/case4-12/case4-122"]');
+  var async4 = async_test('Case 4: hash changed to content[hash="case4-1/case4-122"]');
+  var async5 = async_test('Case 4: hash changed to content[hash="case4-1/case4-121"]');
+  var async6 = async_test('Case 4: hash changed to content[hash="case4-1/case4-12/case4-121"]');
+  var async7 = async_test('Case 4: hash changed to content[hash="case4-1/case4-12/case4-122"]');
 
   async1.next = async1.step_func(_ => {
     var check_hash = async1.step_func((e) => {
@@ -100,15 +100,90 @@
       assert_false(content4.hidden);
 
       async3.done();
-      document.body.removeChild(div);
-      rc.next();
-
+      async4.next();
     });
 
     window.addEventListener('hashchange', check_hash);
     window.location.hash = "case4-1/case4-112";
   });
 
+  async4.next = async4.step_func(_ => {
+    var check_hash = async4.step_func((e) => {
+      var content1 = document.querySelector('#case4-1');
+      var content2 = document.querySelector('#case4-12');
+      var content3 = document.querySelector('#case4-122');
+      var content4 = document.querySelector('#case4-122-e');
+      assert_false(content1.hidden);
+      assert_true(content2.hidden);
+      assert_true(content3.hidden);
+      assert_false(content4.hidden);
+
+      async4.done();
+      async5.next();
+    });
+
+    window.addEventListener('hashchange', check_hash);
+    window.location.hash = "case4-1/case4-122";
+  });
+
+  async5.next = async5.step_func(_ => {
+    var check_hash = async5.step_func((e) => {
+      var content1 = document.querySelector('#case4-1');
+      var content2 = document.querySelector('#case4-12');
+      var content3 = document.querySelector('#case4-121');
+      var content4 = document.querySelector('#case4-121-e');
+      assert_false(content1.hidden);
+      assert_true(content2.hidden);
+      assert_true(content3.hidden);
+      assert_false(content4.hidden);
+
+      async5.done();
+      async6.next();
+    });
+
+    window.addEventListener('hashchange', check_hash);
+    window.location.hash = "case4-1/case4-121";
+  });
+
+  async6.next = async6.step_func(_ => {
+    var check_hash = async6.step_func((e) => {
+      var content1 = document.querySelector('#case4-1');
+      var content2 = document.querySelector('#case4-12');
+      var content3 = document.querySelector('#case4-121');
+      var content4 = document.querySelector('#case4-121-e');
+      assert_false(content1.hidden);
+      assert_false(content2.hidden);
+      assert_false(content3.hidden);
+      assert_true(content4.hidden);
+
+      async6.done();
+      async7.next();
+    });
+
+    window.addEventListener('hashchange', check_hash);
+    window.location.hash = "case4-1/case4-12/case4-121";
+  });
+
+  async7.next = async7.step_func(_ => {
+    var check_hash = async7.step_func((e) => {
+      var content1 = document.querySelector('#case4-1');
+      var content2 = document.querySelector('#case4-12');
+      var content3 = document.querySelector('#case4-122');
+      var content4 = document.querySelector('#case4-122-e');
+      assert_false(content1.hidden);
+      assert_false(content2.hidden);
+      assert_false(content3.hidden);
+      assert_true(content4.hidden);
+
+      async7.done();
+      document.body.removeChild(div);
+      rc.next();
+
+    });
+
+    window.addEventListener('hashchange', check_hash);
+    window.location.hash = "case4-1/case4-12/case4-122";
+  });
 
   rc.push(_ => {
     async1.step(_ => {
