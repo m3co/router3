@@ -32,7 +32,16 @@
     for (var i = 0; i < containers.length; i++) {
       container = containers[i];
       if (!parent) {
+        // In fact in this line we intend to check if the current container is
+        // inside any other container or nor. So, if the current belongs to
+        // another container then don't process it, continue
         if (container.parentNode.TAG_NAME === tagContent) {
+          continue;
+        }
+      } else {
+        // In fact in this line we intent to check if the current container
+        // belongs to the current parent. If not then continue.
+        if (container.parentNode !== parent) {
           continue;
         }
       }
