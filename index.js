@@ -2,6 +2,32 @@
   'use strict';
   var tagContent = 'router2-content';
 
+  function flat_selection(containers, parent) {
+    var flatten = [];
+    var container;
+    var not_inside_container;
+    for (var i = 0; i < containers.length; i++) {
+      container = containers[i];
+      not_inside_container = true;
+      while (container) {
+        container = container.parentNode;
+        if (container === parent) {
+          break;
+        }
+        if (container) {
+          if (container.tagName === tagContent.toUpperCase()) {
+            not_inside_container = false;
+            break;
+          }
+        }
+      }
+      if (not_inside_container) {
+        flatten.push(containers[i]);
+      }
+    }
+    return flatten;
+  }
+
   function matchHash(parent, hash) {
     var containers;
     var container;
@@ -12,9 +38,9 @@
       for (var i = 0; i < containers.length; i++) {
         containers[i].hidden = true;
       }
-      containers = document.querySelectorAll(`${tagContent}`);
+      containers = flat_selection(document.querySelectorAll(`${tagContent}`), document);
     } else {
-      containers = parent.querySelectorAll(`${tagContent}`);
+      containers = flat_selection(parent.querySelectorAll(`${tagContent}`), parent);
       if (containers.length === 0) {
         return;
       }
@@ -30,21 +56,6 @@
     // this selector selects the children items too... that's incorrect
     for (var i = 0; i < containers.length; i++) {
       container = containers[i];
-      if (!parent) {
-        // In fact in this line we intend to check if the current container is
-        // inside any other container or nor. So, if the current belongs to
-        // another container then don't process it, continue
-        if (container.parentNode.TAG_NAME === tagContent) {
-          continue;
-        }
-      } else {
-        // In fact in this line we intent to check if the current container
-        // belongs to the current parent. If not then continue.
-        //if (!parent.contains(container)) { // e.g. this doesn't work :(
-        if (container.parentNode !== parent) {
-          continue;
-        }
-      }
       var search = container.getAttribute('hash');
       var matcher = new RegExp(`^${search}$|^${search}\/`);
       var match = matcher.test(_hash);
