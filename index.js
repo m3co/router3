@@ -36,7 +36,15 @@
     if (!parent) {
       containers = document.querySelectorAll(`${tagContent}:not([hidden])`);
       for (var i = 0; i < containers.length; i++) {
-        containers[i].hidden = true;
+        var container = containers[i];
+        var attrs = container.attributes;
+        container.hidden = true;
+        for (var j = 0; j < attrs.length; j++) {
+          if (/route-param\d+/.test(attrs[j].name)) {
+            attrs.removeNamedItem(attrs[j].name);
+            j--;
+          }
+        }
       }
       containers = flat_selection(document.querySelectorAll(`${tagContent}`), document);
     } else {

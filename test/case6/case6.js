@@ -54,13 +54,17 @@
       assert_false(content1.hidden);
       assert_false(content2.hidden);
 
+      //assert_equals(content1.getAttribute('route-param1'), '11');
+      //assert_equals(content2.getAttribute('route-param1'), '11');
+      //assert_equals(content2.getAttribute('route-param2'), '22');
+
       document.body.removeChild(div);
       async3.done();
       rc.next();
 
     });
     window.addEventListener('hashchange', check_hash);
-    window.location.hash = "case66/case67";
+    window.location.hash = "case11/case22";
   });
 
   rc.push(_ => {
