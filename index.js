@@ -62,6 +62,19 @@
 
       if (match) {
         container.hidden = false;
+        var params = _hash.match(matcher).filter((item, i) => {
+          if (i === 0) {
+            return false;
+          }
+          if (item) {
+            return true;
+          }
+          return false;
+        });
+        params.forEach((item, i) => {
+          container.setAttribute(`route-param${i + 1}`, item);
+        });
+
         _hash = _hash.split(matcher)[1];
         if (_hash.length > 0) {
           matchHash(container, _hash);

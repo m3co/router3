@@ -4,7 +4,7 @@
 
   var div = document.createElement('div');
   div.innerHTML = `
-  <${tagContent} id="case6-1" hash="case\\d+">
+  <${tagContent} id="case6-1" hash="case(\\d+)">
     Case 6 via RegExp
   </${tagContent}>
   `;
@@ -16,6 +16,7 @@
       window.removeEventListener('hashchange', check_hash);
       var content1 = document.querySelector('#case6-1');
       assert_false(content1.hidden);
+      assert_equals(content1.getAttribute('route-param1'), '6');
 
       document.body.removeChild(div);
       async1.done();
