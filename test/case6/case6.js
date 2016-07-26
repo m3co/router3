@@ -15,8 +15,9 @@
   </${tagContent}>
   `;
 
-  var async1 = async_test('Case 6: hash changed to content[hash="case(\d+)"]');
+  var async1 = async_test('Case 6: hash changed to content[hash="case(\\d+)"]');
   var async2 = async_test('Case 6; hash changed to content[hash="case62"]');
+  var async3 = async_test('Case 6: hash changed to content[hash="case(\\d+)/case(\\d+)"]');
 
   async1.next = async1.step_func(_ => {
     var check_hash = async1.step_func((e) => {
@@ -38,13 +39,28 @@
       var content1 = document.querySelector('#case6-2');
       assert_false(content1.hidden);
 
-      document.body.removeChild(div);
       async2.done();
+      async3.next();
+    });
+    window.addEventListener('hashchange', check_hash);
+    window.location.hash = "case62";
+  });
+
+  async3.next = async3.step_func(_ => {
+    var check_hash = async3.step_func((e) => {
+      window.removeEventListener('hashchange', check_hash);
+      var content1 = document.querySelector('#case6-1');
+      var content2 = document.querySelector('#case6-11');
+      assert_false(content1.hidden);
+      assert_false(content2.hidden);
+
+      document.body.removeChild(div);
+      async3.done();
       rc.next();
 
     });
     window.addEventListener('hashchange', check_hash);
-    window.location.hash = "case62";
+    window.location.hash = "case66/case67";
   });
 
   rc.push(_ => {
