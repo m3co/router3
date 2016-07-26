@@ -62,20 +62,20 @@
 
       if (match) {
         container.hidden = false;
-        var params = _hash.match(matcher).filter((item, i) => {
+        var next_hash = _hash.split(matcher);
+        _hash.match(matcher).forEach((item, i) => {
           if (i === 0) {
-            return false;
+          } else if (item) {
+            container.setAttribute(`route-param${i}`, item);
           }
-          if (item) {
-            return true;
+          if (i > 0) {
+            if (next_hash[1] === item) {
+              next_hash = [...next_hash.slice(0, 1), ...next_hash.slice(2)];
+            }
           }
-          return false;
-        });
-        params.forEach((item, i) => {
-          container.setAttribute(`route-param${i + 1}`, item);
         });
 
-        _hash = _hash.split(matcher)[1];
+        _hash = next_hash[1];
         if (_hash.length > 0) {
           matchHash(container, _hash);
         }

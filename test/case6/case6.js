@@ -9,6 +9,9 @@
   </${tagContent}>
   <${tagContent} id="case6-1" hash="case(\\d+)">
     Case 6 via RegExp
+    <${tagContent} id="case6-11" hash="case(\\d+)">
+      Nested param
+    </${tagContent}>
   </${tagContent}>
   `;
 
