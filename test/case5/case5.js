@@ -27,10 +27,10 @@
 
       var content1 = document.querySelector('#case5-1');
       var content2 = document.querySelector('#case5-11');
-      //assert_false(content1.hidden);
-      //assert_false(content2.hidden);
+      assert_false(content1.hidden);
+      assert_false(content2.hidden);
 
-      //document.body.removeChild(div);
+      document.body.removeChild(div);
       async1.done();
       rc.next();
 
