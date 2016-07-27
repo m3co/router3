@@ -36,16 +36,24 @@
 
     if (!parent) {
       containers = document.querySelectorAll(`${tagContent}:not([hidden])`);
+      var __params = {};
       for (var i = 0; i < containers.length; i++) {
         var container = containers[i];
         var attrs = container.attributes;
         container.hidden = true;
+
         for (var j = 0; j < attrs.length; j++) {
           if (/route-param\d+/.test(attrs[j].name)) {
+            __params[attrs[j].name.slice(6)] = attrs[j].value;
             attrs.removeNamedItem(attrs[j].name);
             j--;
           }
         }
+
+        container.dispatchEvent(new CustomEvent('hide', {
+          detail: __params,
+          bubbles: true
+        }));
       }
       containers = flat_selection(document.querySelectorAll(`${tagContent}`), document);
     } else {
@@ -70,16 +78,24 @@
 
       if (match) {
         container.hidden = false;
+        var __params = {};
         var next_hash = _hash.split(matcher);
         _params.forEach((item, i) => {
           container.setAttribute(`route-param${i + 1}`, item);
+          __params[`param${i + 1}`] = item;
         });
         _hash.match(matcher).forEach((item, i) => {
           if (i > 0 && item) {
             _params.push(item);
+            __params[`param${_params.length}`] = item;
             container.setAttribute(`route-param${_params.length}`, item);
           }
         });
+
+        container.dispatchEvent(new CustomEvent('show', {
+          detail: __params,
+          bubbles: true
+        }));
 
         _hash = next_hash[next_hash.length - 1];
         if (_hash.length > 0) {
@@ -96,6 +112,20 @@
     matchHash();
   });
   window.addEventListener('load', (e) => {
+    var containers = document.querySelectorAll(`${tagContent}:not([hidden])`);
+    for (var i = 0; i < containers.length; i++) {
+      var container = containers[i];
+      var attrs = container.attributes;
+      container.hidden = true;
+
+      for (var j = 0; j < attrs.length; j++) {
+        if (/route-param\d+/.test(attrs[j].name)) {
+          attrs.removeNamedItem(attrs[j].name);
+          j--;
+        }
+      }
+    }
+
     matchHash();
   });
 

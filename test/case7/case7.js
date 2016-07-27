@@ -20,6 +20,7 @@
   //var async3 = async_test('Case 7; hash changed to content[hash="case(\\d+)/case(\\d+)/case(\\w+)-(\\d+)"] in order to reset last state');
 
   async1.next = async1.step_func(_ => {
+    window.location.hash = '';
     var content1 = document.querySelector('#case7-1');
     var order = [];
 
