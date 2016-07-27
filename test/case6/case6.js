@@ -5,7 +5,7 @@
   var div = document.createElement('div');
   div.innerHTML = `
   <${tagContent} id="case6-2" hash="case62">
-    Case 6. It's suposed that this will come before (\\d+)
+    Case 6. It is suposed that this will come before (\\d+)
   </${tagContent}>
   <${tagContent} id="case6-1" hash="case(\\d+)">
     Case 6 via RegExp
