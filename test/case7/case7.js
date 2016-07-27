@@ -31,6 +31,7 @@
       content1.removeEventListener(e.type, check_show);
       assert_false(content1.hidden);
       assert_equals(e.detail.param1, expected);
+      assert_equals(e.detail.router, content1);
 
       //window.location.hash = '';
     });
@@ -41,6 +42,7 @@
       content1.removeEventListener(e.type, check_hide);
       assert_true(content1.hidden);
       assert_equals(e.detail.param1, expected);
+      assert_equals(e.detail.router, content1);
       assert_array_equals(order, ['show', 'hide']);
 
       document.body.removeChild(div);
