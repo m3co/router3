@@ -23,15 +23,16 @@
     window.location.hash = '';
     var content1 = document.querySelector('#case7-1');
     var order = [];
+    var expected = '123';
 
     var check_show = async1.step_func((e) => {
       order.push(e.type);
 
       content1.removeEventListener(e.type, check_show);
       assert_false(content1.hidden);
-      assert_equals(e.detail.param1, '1');
+      assert_equals(e.detail.param1, expected);
 
-      window.location.hash = '';
+      //window.location.hash = '';
     });
 
     var check_hide = async1.step_func((e) => {
@@ -39,7 +40,7 @@
 
       content1.removeEventListener(e.type, check_hide);
       assert_true(content1.hidden);
-      assert_equals(e.detail.param1, '1');
+      assert_equals(e.detail.param1, expected);
       assert_array_equals(order, ['show', 'hide']);
 
       document.body.removeChild(div);
@@ -49,7 +50,7 @@
 
     content1.addEventListener('show', check_show);
     content1.addEventListener('hide', check_hide);
-    window.location.hash = "case1";
+    window.location.hash = "case" + expected;
   });
 
   rc.push(_ => {

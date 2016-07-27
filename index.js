@@ -50,6 +50,7 @@
           }
         }
 
+        __params.router = container;
         container.dispatchEvent(new CustomEvent('hide', {
           detail: __params,
           bubbles: true
@@ -92,6 +93,7 @@
           }
         });
 
+        __params.router = container;
         container.dispatchEvent(new CustomEvent('show', {
           detail: __params,
           bubbles: true
