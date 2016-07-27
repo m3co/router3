@@ -11,6 +11,9 @@
     Case 6 via RegExp
     <${tagContent} id="case6-11" hash="case(\\d+)">
       Nested param
+      <${tagContent} id="case6-111" hash="case(\\w+)-(\\d+)">
+        Very interesting test
+      </${tagContent}>
     </${tagContent}>
   </${tagContent}>
   `;
@@ -18,6 +21,8 @@
   var async1 = async_test('Case 6: hash changed to content[hash="case(\\d+)"]');
   var async2 = async_test('Case 6; hash changed to content[hash="case62"]');
   var async3 = async_test('Case 6: hash changed to content[hash="case(\\d+)/case(\\d+)"]');
+  //var async4 = async_test('Case 6; hash changed to content[hash="case62"] in order to reset last state');
+  //var async5 = async_test('Case 6: hash changed to content[hash="case(\\d+)/case(\\d+)/case(\\w+)-(\\d+)"]');
 
   async1.next = async1.step_func(_ => {
     var check_hash = async1.step_func((e) => {
