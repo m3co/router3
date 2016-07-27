@@ -21,7 +21,7 @@
   var async1 = async_test('Case 6: hash changed to content[hash="case(\\d+)"]');
   var async2 = async_test('Case 6; hash changed to content[hash="case62"]');
   var async3 = async_test('Case 6: hash changed to content[hash="case(\\d+)/case(\\d+)"]');
-  //var async4 = async_test('Case 6; hash changed to content[hash="case62"] in order to reset last state');
+  var async4 = async_test('Case 6; hash changed to content[hash="case62"] in order to reset last state');
   //var async5 = async_test('Case 6: hash changed to content[hash="case(\\d+)/case(\\d+)/case(\\w+)-(\\d+)"]');
 
   async1.next = async1.step_func(_ => {
@@ -63,14 +63,36 @@
       assert_equals(content2.getAttribute('route-param1'), '11');
       assert_equals(content2.getAttribute('route-param2'), '22');
 
-      document.body.removeChild(div);
       async3.done();
-      rc.next();
-
+      async4.next();
     });
     window.addEventListener('hashchange', check_hash);
     window.location.hash = "case11/case22";
   });
+
+  async4.next = async4.step_func(_ => {
+    var check_hash = async4.step_func((e) => {
+      window.removeEventListener('hashchange', check_hash);
+      var content1 = document.querySelector('#case6-1');
+      var content2 = document.querySelector('#case6-11');
+      var content3 = document.querySelector('#case6-2');
+      assert_true(content1.hidden);
+      assert_true(content2.hidden);
+      assert_false(content3.hidden);
+
+      assert_equals(content1.getAttribute('route-param1'), null);
+      assert_equals(content2.getAttribute('route-param1'), null);
+      assert_equals(content2.getAttribute('route-param2'), null);
+
+      document.body.removeChild(div);
+      async4.done();
+      rc.next();
+
+    });
+    window.addEventListener('hashchange', check_hash);
+    window.location.hash = "case62";
+  });
+
 
   rc.push(_ => {
     async1.step(_ => {
