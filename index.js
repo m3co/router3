@@ -28,7 +28,8 @@
     return flatten;
   }
 
-  function matchHash(parent, hash) {
+  function matchHash(parent, hash, params) {
+    var _params = params || [];
     var containers;
     var container;
     var _hash = hash || window.location.hash;
@@ -70,21 +71,19 @@
       if (match) {
         container.hidden = false;
         var next_hash = _hash.split(matcher);
+        _params.forEach((item, i) => {
+          container.setAttribute(`route-param${i + 1}`, item);
+        });
         _hash.match(matcher).forEach((item, i) => {
-          if (i === 0) {
-          } else if (item) {
-            container.setAttribute(`route-param${i}`, item);
-          }
-          if (i > 0) {
-            if (next_hash[1] === item) {
-              next_hash = [...next_hash.slice(0, 1), ...next_hash.slice(2)];
-            }
+          if (i > 0 && item) {
+            _params.push(item);
+            container.setAttribute(`route-param${_params.length}`, item);
           }
         });
 
-        _hash = next_hash[1];
+        _hash = next_hash[next_hash.length - 1];
         if (_hash.length > 0) {
-          matchHash(container, _hash);
+          matchHash(container, _hash, _params);
         }
         return;
       }

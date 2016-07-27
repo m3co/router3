@@ -54,9 +54,9 @@
       assert_false(content1.hidden);
       assert_false(content2.hidden);
 
-      //assert_equals(content1.getAttribute('route-param1'), '11');
-      //assert_equals(content2.getAttribute('route-param1'), '11');
-      //assert_equals(content2.getAttribute('route-param2'), '22');
+      assert_equals(content1.getAttribute('route-param1'), '11');
+      assert_equals(content2.getAttribute('route-param1'), '11');
+      assert_equals(content2.getAttribute('route-param2'), '22');
 
       document.body.removeChild(div);
       async3.done();
