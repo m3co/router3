@@ -70,7 +70,7 @@
       assert_false(content1.hidden);
       assert_false(content2.hidden);
 
-      //window.location.hash = '';// still having problems with this tear-down
+      window.location.hash = '';
       async1.done();
       async2.next();
     });
@@ -82,13 +82,13 @@
     var check_hash = async2.step_func((e) => {
       window.removeEventListener('hashchange', check_hash);
 
-      //window.location.hash = '';// still having problems with this tear-down
       var content1 = document.querySelector(`${tagContent}#case3-test1-p`);
       var content2 = document.querySelector(`${tagContent}#case3-test1`);
       assert_false(content1.hidden);
       assert_true(content2.hidden);
 
       async2.done();
+      window.location.hash = '';
       async3.next();
     });
     window.addEventListener('hashchange', check_hash);
@@ -99,7 +99,6 @@
     var check_hash = async3.step_func((e) => {
       window.removeEventListener('hashchange', check_hash);
 
-      //window.location.hash = '';// still having problems with this tear-down
       var content1 = document.querySelector(`${tagContent}#case3-test1-p`);
       var content2 = document.querySelector(`${tagContent}#case3-test1`);
       var content3 = document.querySelector(`${tagContent}#case3-test2`);
@@ -108,6 +107,7 @@
       assert_false(content3.hidden);
 
       async3.done();
+      window.location.hash = '';
       async4.next();
     });
     window.addEventListener('hashchange', check_hash);
@@ -118,7 +118,6 @@
     var check_hash = async4.step_func((e) => {
       window.removeEventListener('hashchange', check_hash);
 
-      //window.location.hash = '';// still having problems with this tear-down
       var content1 = document.querySelector(`${tagContent}#case3-test1-p`);
       var content2 = document.querySelector(`${tagContent}#case3-test2`);
       var content3 = document.querySelector(`${tagContent}#case3-test3-1`);
@@ -133,6 +132,7 @@
       assert_false(content6.hidden);
 
       async4.done();
+      window.location.hash = '';
       async5.next();
     });
     window.addEventListener('hashchange', check_hash);
@@ -143,7 +143,6 @@
     var check_hash = async5.step_func((e) => {
       window.removeEventListener('hashchange', check_hash);
 
-      //window.location.hash = '';// still having problems with this tear-down
       var content1 = document.querySelector(`${tagContent}#case3-test1-p`);
       var content2 = document.querySelector(`${tagContent}#case3-test2`);
       var content3 = document.querySelector(`${tagContent}#case3-test3-1`);
@@ -158,6 +157,7 @@
       assert_false(content6.hidden);
 
       async5.done();
+      window.location.hash = '';
       async6.next();
     });
     window.addEventListener('hashchange', check_hash);
@@ -168,7 +168,6 @@
     var check_hash = async6.step_func((e) => {
       window.removeEventListener('hashchange', check_hash);
 
-      //window.location.hash = '';// still having problems with this tear-down
       var content1 = document.querySelector(`${tagContent}#case3-test1-p`);
       var content2 = document.querySelector(`${tagContent}#case3-test2`);
       var content3 = document.querySelector(`${tagContent}#case3-test3-1`);
@@ -185,6 +184,7 @@
       assert_false(content7.hidden);
 
       async6.done();
+      window.location.hash = '';
       async7.next();
     });
     window.addEventListener('hashchange', check_hash);
@@ -195,7 +195,6 @@
     var check_hash = async7.step_func((e) => {
       window.removeEventListener('hashchange', check_hash);
 
-      //window.location.hash = '';// still having problems with this tear-down
       var content1 = document.querySelector(`${tagContent}#case3-test1-p`);
       var content2 = document.querySelector(`${tagContent}#case3-test2`);
       var content3 = document.querySelector(`${tagContent}#case3-test3-1`);
@@ -214,6 +213,7 @@
       assert_false(content8.hidden);
 
       async7.done();
+      window.location.hash = '';
       async8.next();
     });
     window.addEventListener('hashchange', check_hash);
@@ -224,7 +224,6 @@
     var check_hash = async8.step_func((e) => {
       window.removeEventListener('hashchange', check_hash);
 
-      //window.location.hash = '';// still having problems with this tear-down
       var content1 = document.querySelector(`${tagContent}#case3-test1-p`);
       var content2 = document.querySelector(`${tagContent}#case3-test2`);
       var content3 = document.querySelector(`${tagContent}#case3-test3-1`);
@@ -246,6 +245,7 @@
 
       async8.done();
       document.body.removeChild(div);
+      window.location.hash = '';
       rc.next();
 
     });

@@ -35,6 +35,7 @@
       assert_equals(content1.getAttribute('route-param1'), '6');
 
       async1.done();
+      window.location.hash = '';
       async2.next();
     });
     window.addEventListener('hashchange', check_hash);
@@ -48,6 +49,7 @@
       assert_false(content1.hidden);
 
       async2.done();
+      window.location.hash = '';
       async3.next();
     });
     window.addEventListener('hashchange', check_hash);
@@ -67,6 +69,7 @@
       assert_equals(content2.getAttribute('route-param2'), '22');
 
       async3.done();
+      window.location.hash = '';
       async4.next();
     });
     window.addEventListener('hashchange', check_hash);
@@ -88,6 +91,7 @@
       assert_equals(content2.getAttribute('route-param2'), null);
 
       async4.done();
+      window.location.hash = '';
       async5.next();
     });
     window.addEventListener('hashchange', check_hash);
@@ -123,6 +127,7 @@
       assert_equals(content4.getAttribute('route-param5'), 'BBB');
 
       document.body.removeChild(div);
+      window.location.hash = '';
       async5.done();
       rc.next();
 

@@ -62,6 +62,7 @@
       assert_true(content4.hidden);
 
       async1.done();
+      window.location.hash = '';
       async2.next();
     });
 
@@ -81,6 +82,7 @@
       assert_false(content4.hidden);
 
       async2.done();
+      window.location.hash = '';
       async3.next();
     });
 
@@ -100,6 +102,7 @@
       assert_false(content4.hidden);
 
       async3.done();
+      window.location.hash = '';
       async4.next();
     });
 
@@ -119,6 +122,7 @@
       assert_false(content4.hidden);
 
       async4.done();
+      window.location.hash = '';
       async5.next();
     });
 
@@ -138,6 +142,7 @@
       assert_false(content4.hidden);
 
       async5.done();
+      window.location.hash = '';
       async6.next();
     });
 
@@ -157,6 +162,7 @@
       assert_true(content4.hidden);
 
       async6.done();
+      window.location.hash = '';
       async7.next();
     });
 
@@ -177,6 +183,7 @@
 
       async7.done();
       document.body.removeChild(div);
+      window.location.hash = '';
       rc.next();
 
     });

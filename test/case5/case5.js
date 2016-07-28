@@ -52,6 +52,7 @@
       assert_false(content2.hidden);
 
       async1.done();
+      window.location.hash = '';
       async2.next();
     });
     window.addEventListener('hashchange', check_hash);
@@ -70,6 +71,7 @@
       assert_false(content3.hidden);
 
       async2.done();
+      window.location.hash = '';
       async3.next();
     });
     window.addEventListener('hashchange', check_hash);
@@ -88,6 +90,7 @@
       assert_true(content3.hidden);
 
       async3.done();
+      window.location.hash = '';
       async4.next();
     });
     window.addEventListener('hashchange', check_hash);
@@ -106,6 +109,7 @@
       assert_true(content3.hidden);
 
       document.body.removeChild(div);
+      window.location.hash = '';
       async4.done();
       rc.next();
 
