@@ -16,7 +16,7 @@
   `;
 
   var async1 = async_test('Case 7: hash changed to content[hash="case(\\d+)"]');
-  var async2 = async_test('Case 7: hash changed to content[hash="case(\\d+)/case(\\d+)"]');
+  //var async2 = async_test('Case 7: hash changed to content[hash="case(\\d+)/case(\\d+)"]');
   //var async3 = async_test('Case 7; hash changed to content[hash="case(\\d+)/case(\\d+)/case(\\w+)-(\\d+)"] in order to reset last state');
 
   async1.next = async1.step_func(_ => {
@@ -45,7 +45,8 @@
       assert_array_equals(order, ['show', 'hide']);
 
       async1.done();
-      async2.next();
+      document.body.removeChild(div);
+      rc.next();
     });
 
     content1.addEventListener('show', check_show);
@@ -53,6 +54,7 @@
     window.location.hash = `case${param1}`;
   });
 
+  /*
   async2.next = async2.step_func(_ => {
     var content1 = document.querySelector('#case7-1');
     var content2 = document.querySelector('#case7-11');
@@ -97,6 +99,7 @@
     content2.addEventListener('hide', check_hide);
     window.location.hash = `case${param1}/case${param2}`;
   });
+  */
 
   rc.push(_ => {
     async1.step(_ => {
