@@ -16,7 +16,7 @@
   `;
 
   var async1 = async_test('Case 7: hash changed to content[hash="case(\\d+)"]');
-  //var async2 = async_test('Case 7: hash changed to content[hash="case(\\d+)/case(\\d+)"]');
+  var async2 = async_test('Case 7: hash changed to content[hash="case(\\d+)/case(\\d+)"]');
   //var async3 = async_test('Case 7; hash changed to content[hash="case(\\d+)/case(\\d+)/case(\\w+)-(\\d+)"] in order to reset last state');
 
   async1.next = async1.step_func(_ => {
@@ -45,8 +45,7 @@
       assert_array_equals(order, ['show', 'hide']);
 
       async1.done();
-      document.body.removeChild(div);
-      rc.next();
+      async2.next();
     });
 
     content1.addEventListener('show', check_show);
@@ -54,7 +53,6 @@
     window.location.hash = `case${param1}`;
   });
 
-  /*
   async2.next = async2.step_func(_ => {
     var content1 = document.querySelector('#case7-1');
     var content2 = document.querySelector('#case7-11');
@@ -63,6 +61,7 @@
     var param2 = '432';
 
     var check_show = async2.step_func((e) => {
+      e.preventDefault();
       order.push(e.type);
 
       content2.removeEventListener(e.type, check_show);
@@ -78,6 +77,7 @@
     });
 
     var check_hide = async2.step_func((e) => {
+      e.preventDefault();
       order.push(e.type);
 
       content2.removeEventListener(e.type, check_hide);
@@ -90,16 +90,31 @@
       //assert_equals(e.detail.router, content2);
       assert_array_equals(order, ['show', 'hide']);
 
-      document.body.removeChild(div);
       async2.done();
+      document.body.removeChild(div);
       rc.next();
+
     });
+
+    var check_show_not_reach = async2.step_func((e) => {
+      document.body.removeChild(div);
+      rc.next();
+      assert_unreached('Unreachable show listener as it is after a preventDefault()');
+    });
+
+    var check_hide_not_reach = async2.step_func((e) => {
+      document.body.removeChild(div);
+      rc.next();
+      assert_unreached('Unreachable hide listener as it is after a preventDefault()');
+    });
+
+    content1.addEventListener('show', check_show_not_reach);
+    content1.addEventListener('hide', check_hide_not_reach);
 
     content2.addEventListener('show', check_show);
     content2.addEventListener('hide', check_hide);
     window.location.hash = `case${param1}/case${param2}`;
   });
-  */
 
   rc.push(_ => {
     async1.step(_ => {
