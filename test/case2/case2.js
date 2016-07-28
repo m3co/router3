@@ -29,9 +29,8 @@
     var view = document.querySelector(`${tagView}[for="case2-test1"]`);
     assert_true(content.parentNode === view);
     assert_true(content.hidden);
-    var hashAsync = async_test(`Case 2: If change hash to "${hash}" then show its content`);
 
-    var check_hash = hashAsync.step_func((e) => {
+    var check_hash = async1.step_func((e) => {
       assert_false(content.hidden);
       assert_true(content.parentNode === view);
       assert_true(e.newURL.includes(hash));
@@ -40,7 +39,6 @@
       window.removeEventListener('hashchange', check_hash);
 
       //window.location.hash = '';
-      hashAsync.done();
       async1.done();
       async2.next();
 
@@ -55,9 +53,8 @@
     var view = document.querySelector(`${tagView}[for="case2-test2"]`);
     assert_true(content.parentNode === view);
     assert_true(content.hidden);
-    var hashAsync = async_test(`Case 2: If change hash to "${hash}" then show its content`);
 
-    var check_hash = hashAsync.step_func((e) => {
+    var check_hash = async2.step_func((e) => {
       assert_false(content.hidden);
       assert_true(content.parentNode === view);
       assert_true(e.newURL.includes(hash));
@@ -67,7 +64,6 @@
 
       //window.location.hash = '';
       document.body.removeChild(div);
-      hashAsync.done();
       async2.done();
       rc.next();
 
