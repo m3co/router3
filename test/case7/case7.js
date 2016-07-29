@@ -54,6 +54,7 @@
   });
 
   async2.next = async2.step_func(_ => {
+    window.location.hash = '';
     var content1 = document.querySelector('#case7-1');
     var content2 = document.querySelector('#case7-11');
     var order = [];
@@ -114,6 +115,7 @@
     content2.addEventListener('show', check_show);
     content2.addEventListener('hide', check_hide);
     window.location.hash = `case${param1}/case${param2}`;
+
   });
 
   rc.push(_ => {

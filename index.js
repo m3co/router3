@@ -28,6 +28,33 @@
     return flatten;
   }
 
+  function hideAll() {
+    var containers;
+    var _params = [];
+    var __params = {};
+
+    containers = document.querySelectorAll(`${tagContent}:not([hidden])`);
+    for (var i = 0; i < containers.length; i++) {
+      var container = containers[i];
+      var attrs = container.attributes;
+      container.hidden = true;
+
+      for (var j = 0; j < attrs.length; j++) {
+        if (/route-param\d+/.test(attrs[j].name)) {
+          __params[attrs[j].name.slice(6)] = attrs[j].value;
+          attrs.removeNamedItem(attrs[j].name);
+          j--;
+        }
+      }
+
+      __params.router = container;
+      container.dispatchEvent(new CustomEvent('hide', {
+        detail: __params,
+        bubbles: true
+      }));
+    }
+  }
+
   function matchHash(parent, hash, params) {
     var _params = params || [];
     var containers;
@@ -35,27 +62,6 @@
     var _hash = hash || window.location.hash;
 
     if (!parent) {
-      containers = document.querySelectorAll(`${tagContent}:not([hidden])`);
-      var __params = {};
-      for (var i = 0; i < containers.length; i++) {
-        var container = containers[i];
-        var attrs = container.attributes;
-        container.hidden = true;
-
-        for (var j = 0; j < attrs.length; j++) {
-          if (/route-param\d+/.test(attrs[j].name)) {
-            __params[attrs[j].name.slice(6)] = attrs[j].value;
-            attrs.removeNamedItem(attrs[j].name);
-            j--;
-          }
-        }
-
-        __params.router = container;
-        container.dispatchEvent(new CustomEvent('hide', {
-          detail: __params,
-          bubbles: true
-        }));
-      }
       containers = flat_selection(document.querySelectorAll(`${tagContent}`), document);
     } else {
       containers = flat_selection(parent.querySelectorAll(`${tagContent}`), parent);
@@ -111,6 +117,7 @@
   }
 
   window.addEventListener('hashchange', (e) => {
+    hideAll();
     matchHash();
   });
   window.addEventListener('load', (e) => {
