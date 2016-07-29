@@ -20,7 +20,7 @@
   var async3 = async_test('Case 7: (show/hide event) hash changed to content[hash="case(\d+)"]');
   var async4 = async_test('Case 7: (show event) hash changed to content[hash="case(\\d+)/case(\\d+)"]');
   var async5 = async_test('Case 7: (show event) hash changed to content[hash="case(\\d+)/case(\\d+)/case(\\w+)-(\\d+)"]');
-  //var async3 = async_test('Case 7; hash changed to content[hash="case(\\d+)/case(\\d+)/case(\\w+)-(\\d+)"] in order to reset last state');
+  var async6 = async_test('Case 7: (hide event) hash changed to content[hash="case(\\d+)/case(\\d+)"]');
 
   async1.next = async1.step_func(_ => {
     var content1 = document.querySelector('#case7-1');
@@ -169,81 +169,50 @@
 
     setTimeout(async5.step_func(_ => {
       window.location.hash = '';
-      document.body.removeChild(div);
-      rc.next(); // do you see this line? should I repeat this solution
+      async6.next(); // do you see this line? should I repeat this solution
                  // along to all other tests? I should...
       assert_array_equals(order, ['1', '2', '3']);
       async5.done();
     }), 0);
   });
 
-
-  /*
-  async2.next = async2.step_func(_ => {
-    window.location.hash = '';
+  async6.next = async6.step_func(_ => {
+    var order = [];
     var content1 = document.querySelector('#case7-1');
     var content2 = document.querySelector('#case7-11');
-    var order = [];
-    var param1 = '678';
-    var param2 = '432';
+    var param1 = '123';
+    var param2 = '654';
 
-    var check_show = async2.step_func((e) => {}}
-      e.preventDefault();
-      order.push(e.type);
-
-      content2.removeEventListener(e.type, check_show);
-      assert_false(content1.hidden);
-      assert_false(content2.hidden);
-
-      assert_equals(e.detail.param1, param1);
-      assert_equals(e.detail.param2, param2);
-
-      //assert_equals(e.detail.router, content2);
-
-      //window.location.hash = '';
-    });
-
-    var check_hide = async2.step_func((e) => {
-      e.preventDefault();
-      order.push(e.type);
-
-      content2.removeEventListener(e.type, check_hide);
+    var check_hide1 = async6.step_func((e) => {
+      order.push('2');
+      content1.removeEventListener(e.type, check_hide1);
       assert_true(content1.hidden);
-      assert_true(content2.hidden);
+      assert_equals(e.detail.param1, param1);
+    });
 
+    var check_hide2 = async6.step_func((e) => {
+      order.push('1');
+      content2.removeEventListener(e.type, check_hide2);
+      assert_true(content2.hidden);
       assert_equals(e.detail.param1, param1);
       assert_equals(e.detail.param2, param2);
-
-      //assert_equals(e.detail.router, content2);
-      assert_array_equals(order, ['show', 'hide']);
-
-      async2.done();
-      document.body.removeChild(div);
-      rc.next();
-
     });
 
-    var check_show_not_reach = async2.step_func((e) => {
-      document.body.removeChild(div);
-      rc.next();
-      assert_unreached('Unreachable show listener as it is after a preventDefault()');
-    });
-
-    var check_hide_not_reach = async2.step_func((e) => {
-      document.body.removeChild(div);
-      rc.next();
-      assert_unreached('Unreachable hide listener as it is after a preventDefault()');
-    });
-
-    content1.addEventListener('show', check_show_not_reach);
-    //content1.addEventListener('hide', check_hide_not_reach);
-
-    content2.addEventListener('show', check_show);
-    //content2.addEventListener('hide', check_hide);
+    content1.addEventListener('hide', check_hide1);
+    content2.addEventListener('hide', check_hide2);
     window.location.hash = `case${param1}/case${param2}`;
 
+    setTimeout(async6.step_func(_ => {
+      window.location.hash = '';
+    }), 0);
+    setTimeout(async6.step_func(_ => {
+      document.body.removeChild(div);
+      rc.next(); // do you see this line? should I repeat this solution
+                 // along to all other tests? I should...
+      assert_array_equals(order, ['1', '2']);
+      async6.done();
+    }), 0);
   });
-  */
 
   rc.push(_ => {
     async1.step(_ => {
