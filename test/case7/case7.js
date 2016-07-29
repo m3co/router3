@@ -19,6 +19,7 @@
   var async2 = async_test('Case 7: (hide event) hash changed to content[hash="case(\\d+)"]');
   var async3 = async_test('Case 7: (show/hide event) hash changed to content[hash="case(\d+)"]');
   var async4 = async_test('Case 7: (show event) hash changed to content[hash="case(\\d+)/case(\\d+)"]');
+  var async5 = async_test('Case 7: (show event) hash changed to content[hash="case(\\d+)/case(\\d+)/case(\\w+)-(\\d+)"]');
   //var async3 = async_test('Case 7; hash changed to content[hash="case(\\d+)/case(\\d+)/case(\\w+)-(\\d+)"] in order to reset last state');
 
   async1.next = async1.step_func(_ => {
@@ -119,13 +120,63 @@
 
     setTimeout(async4.step_func(_ => {
       window.location.hash = '';
-      document.body.removeChild(div);
-      rc.next(); // do you see this line? should I repeat this solution
+      async5.next(); // do you see this line? should I repeat this solution
                  // along to all other tests? I should...
       assert_array_equals(order, ['1', '2']);
       async4.done();
     }), 0);
   });
+
+  async5.next = async5.step_func(_ => {
+    var order = [];
+    var content1 = document.querySelector('#case7-1');
+    var content2 = document.querySelector('#case7-11');
+    var content3 = document.querySelector('#case7-111');
+    var param1 = '123';
+    var param2 = '654';
+    var param3 = 'abc';
+    var param4 = '789';
+
+    var check_show1 = async5.step_func((e) => {
+      order.push('3');
+      content1.removeEventListener(e.type, check_show1);
+      assert_false(content1.hidden);
+      assert_equals(e.detail.param1, param1);
+    });
+
+    var check_show2 = async5.step_func((e) => {
+      order.push('2');
+      content2.removeEventListener(e.type, check_show2);
+      assert_false(content2.hidden);
+      assert_equals(e.detail.param1, param1);
+      assert_equals(e.detail.param2, param2);
+    });
+
+    var check_show3 = async5.step_func((e) => {
+      order.push('1');
+      content3.removeEventListener(e.type, check_show3);
+      assert_false(content3.hidden);
+      assert_equals(e.detail.param1, param1);
+      assert_equals(e.detail.param2, param2);
+      assert_equals(e.detail.param3, param3);
+      assert_equals(e.detail.param4, param4);
+    });
+
+    content1.addEventListener('show', check_show1);
+    content2.addEventListener('show', check_show2);
+    content3.addEventListener('show', check_show3);
+    window.location.hash = `case${param1}/case${param2}/case${param3}-${param4}`;
+
+    setTimeout(async5.step_func(_ => {
+      window.location.hash = '';
+      document.body.removeChild(div);
+      rc.next(); // do you see this line? should I repeat this solution
+                 // along to all other tests? I should...
+      assert_array_equals(order, ['1', '2', '3']);
+      async5.done();
+    }), 0);
+  });
+
 
   /*
   async2.next = async2.step_func(_ => {
