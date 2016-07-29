@@ -96,7 +96,6 @@
           }
         });
 
-        __params.router = container;
         _hash = next_hash[next_hash.length - 1];
         if (_hash.length > 0) {
           matchHash(container, _hash, _params);

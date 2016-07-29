@@ -29,7 +29,6 @@
       content1.removeEventListener(e.type, check_show);
       assert_false(content1.hidden);
       assert_equals(e.detail.param1, param1);
-      assert_equals(e.detail.router, content1);
 
       window.location.hash = '';
       async1.done();
@@ -48,7 +47,6 @@
       content1.removeEventListener(e.type, check_hide);
       assert_true(content1.hidden);
       assert_equals(e.detail.param1, param1);
-      assert_equals(e.detail.router, content1);
 
       window.location.hash = '';
       async2.done();
@@ -72,7 +70,6 @@
       content1.removeEventListener(e.type, check_show);
       assert_false(content1.hidden);
       assert_equals(e.detail.param1, param1);
-      assert_equals(e.detail.router, content1);
     });
 
     var check_hide = async3.step_func((e) => {
@@ -80,7 +77,6 @@
       content1.removeEventListener(e.type, check_hide);
       assert_true(content1.hidden);
       assert_equals(e.detail.param1, param1);
-      assert_equals(e.detail.router, content1);
       assert_array_equals(order, ['show', 'hide']);
 
       async3.done();
@@ -107,7 +103,6 @@
       content1.removeEventListener(e.type, check_show1);
       assert_false(content1.hidden);
       assert_equals(e.detail.param1, param1);
-      assert_equals(e.detail.router, content2);
     });
 
     var check_show2 = async4.step_func((e) => {
@@ -116,7 +111,6 @@
       assert_false(content2.hidden);
       assert_equals(e.detail.param1, param1);
       assert_equals(e.detail.param2, param2);
-      assert_equals(e.detail.router, content2);
     });
 
     content1.addEventListener('show', check_show1);
