@@ -2,7 +2,7 @@
   'use strict';
   var tagContent = 'router2-content';
 
-  function flat_selection(containers, parent) {
+  function flatSelection(containers, parent) {
     var flatten = [];
     var container;
     var not_inside_container;
@@ -47,7 +47,6 @@
         }
       }
 
-      __params.router = container;
       container.dispatchEvent(new CustomEvent('hide', {
         detail: __params,
         bubbles: true
@@ -62,9 +61,9 @@
     var _hash = hash || window.location.hash;
 
     if (!parent) {
-      containers = flat_selection(document.querySelectorAll(`${tagContent}`), document);
+      containers = flatSelection(document.querySelectorAll(`${tagContent}`), document);
     } else {
-      containers = flat_selection(parent.querySelectorAll(`${tagContent}`), parent);
+      containers = flatSelection(parent.querySelectorAll(`${tagContent}`), parent);
     }
 
     if (_hash[0] === '/' || _hash[0] === '#') {
