@@ -17,6 +17,7 @@
 
   var async1 = async_test('Case 7: (show event) hash changed to content[hash="case(\\d+)"]');
   var async2 = async_test('Case 7: (hide event) hash changed to content[hash="case(\\d+)"]');
+  var async3 = async_test('Case 7: (show/hide event) hash changed to content[hash="case(\d+)"]');
   //var async2 = async_test('Case 7: hash changed to content[hash="case(\\d+)/case(\\d+)"]');
   //var async3 = async_test('Case 7; hash changed to content[hash="case(\\d+)/case(\\d+)/case(\\w+)-(\\d+)"] in order to reset last state');
 
@@ -49,18 +50,51 @@
       assert_equals(e.detail.param1, param1);
       assert_equals(e.detail.router, content1);
 
-      document.body.removeChild(div);
+      window.location.hash = '';
       async2.done();
-      rc.next();
+      async3.next();
     });
 
     content1.addEventListener('hide', check_hide);
     window.location.hash = `case${param1}`;
     setTimeout(async2.step_func(_ => {
       window.location.hash = '';
-    }), 10);
+    }), 0);
   });
 
+  async3.next = async3.step_func(_ => {
+    var content1 = document.querySelector('#case7-1');
+    var order = [];
+    var param1 = '123';
+
+    var check_show = async3.step_func((e) => {
+      order.push('show');
+      content1.removeEventListener(e.type, check_show);
+      assert_false(content1.hidden);
+      assert_equals(e.detail.param1, param1);
+      assert_equals(e.detail.router, content1);
+    });
+
+    var check_hide = async3.step_func((e) => {
+      order.push('hide');
+      content1.removeEventListener(e.type, check_hide);
+      assert_true(content1.hidden);
+      assert_equals(e.detail.param1, param1);
+      assert_equals(e.detail.router, content1);
+      assert_array_equals(order, ['show', 'hide']);
+
+      document.body.removeChild(div);
+      async3.done();
+      rc.next();
+    });
+
+    content1.addEventListener('hide', check_hide);
+    content1.addEventListener('show', check_show);
+    window.location.hash = `case${param1}`;
+    setTimeout(async3.step_func(_ => {
+      window.location.hash = '';
+    }), 0);
+  });
 
   /*
   async2.next = async2.step_func(_ => {
