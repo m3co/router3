@@ -21,6 +21,7 @@
   var async4 = async_test('Case 7: (show event) hash changed to content[hash="case(\\d+)/case(\\d+)"]');
   var async5 = async_test('Case 7: (show event) hash changed to content[hash="case(\\d+)/case(\\d+)/case(\\w+)-(\\d+)"]');
   var async6 = async_test('Case 7: (hide event) hash changed to content[hash="case(\\d+)/case(\\d+)"]');
+  var async7 = async_test('Case 7: (hide event) hash changed to content[hash="case(\\d+)/case(\\d+)/case(\\w+)-(\\d+)"]');
 
   async1.next = async1.step_func(_ => {
     var content1 = document.querySelector('#case7-1');
@@ -206,13 +207,65 @@
       window.location.hash = '';
     }), 0);
     setTimeout(async6.step_func(_ => {
-      document.body.removeChild(div);
-      rc.next(); // do you see this line? should I repeat this solution
+      async7.next(); // do you see this line? should I repeat this solution
                  // along to all other tests? I should...
       assert_array_equals(order, ['1', '2']);
       async6.done();
     }), 0);
   });
+
+  async7.next = async7.step_func(_ => {
+    var order = [];
+    var content1 = document.querySelector('#case7-1');
+    var content2 = document.querySelector('#case7-11');
+    var content3 = document.querySelector('#case7-111');
+    var param1 = '123';
+    var param2 = '654';
+    var param3 = 'abc';
+    var param4 = '789';
+
+    var check_hide1 = async7.step_func((e) => {
+      order.push('3');
+      content1.removeEventListener(e.type, check_hide1);
+      assert_false(content1.hidden);  /// WHY??
+      assert_equals(e.detail.param1, param1);
+    });
+
+    var check_hide2 = async7.step_func((e) => {
+      order.push('2');
+      content2.removeEventListener(e.type, check_hide2);
+      assert_false(content2.hidden);  /// WHY??
+      assert_equals(e.detail.param1, param1);
+      assert_equals(e.detail.param2, param2);
+    });
+
+    var check_hide3 = async7.step_func((e) => {
+      order.push('1');
+      content3.removeEventListener(e.type, check_hide3);
+      assert_false(content3.hidden);  /// WHY??
+      assert_equals(e.detail.param1, param1);
+      assert_equals(e.detail.param2, param2);
+      assert_equals(e.detail.param3, param3);
+      assert_equals(e.detail.param4, param4);
+    });
+
+    content1.addEventListener('show', check_hide1);
+    content2.addEventListener('show', check_hide2);
+    content3.addEventListener('show', check_hide3);
+    window.location.hash = `case${param1}/case${param2}/case${param3}-${param4}`;
+
+    setTimeout(async7.step_func(_ => {
+      window.location.hash = '';
+    }), 0);
+    setTimeout(async7.step_func(_ => {
+      document.body.removeChild(div);
+      rc.next(); // do you see this line? should I repeat this solution
+                 // along to all other tests? I should...
+      assert_array_equals(order, ['1', '2', '3']);
+      async7.done();
+    }), 0);
+  });
+
 
   rc.push(_ => {
     async1.step(_ => {
