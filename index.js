@@ -46,7 +46,8 @@
           j--;
         }
       }
-
+    }
+    if (container instanceof HTMLElement) {
       container.dispatchEvent(new CustomEvent('hide', {
         detail: __params,
         bubbles: true
