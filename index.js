@@ -65,6 +65,7 @@
       containers = flat_selection(document.querySelectorAll(`${tagContent}`), document);
     } else {
       containers = flat_selection(parent.querySelectorAll(`${tagContent}`), parent);
+      // this is the stop part?
       if (containers.length === 0) {
         return;
       }
