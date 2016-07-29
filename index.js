@@ -65,10 +65,6 @@
       containers = flat_selection(document.querySelectorAll(`${tagContent}`), document);
     } else {
       containers = flat_selection(parent.querySelectorAll(`${tagContent}`), parent);
-      // this is the stop part?
-      if (containers.length === 0) {
-        return;
-      }
     }
 
     if (_hash[0] === '/' || _hash[0] === '#') {
@@ -101,14 +97,14 @@
         });
 
         __params.router = container;
-        container.dispatchEvent(new CustomEvent('show', {
-          detail: __params,
-          bubbles: true
-        }));
-
         _hash = next_hash[next_hash.length - 1];
         if (_hash.length > 0) {
           matchHash(container, _hash, _params);
+        } else {
+          container.dispatchEvent(new CustomEvent('show', {
+            detail: __params,
+            bubbles: true
+          }));
         }
         return;
       }

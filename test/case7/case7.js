@@ -107,7 +107,7 @@
       content1.removeEventListener(e.type, check_show1);
       assert_false(content1.hidden);
       assert_equals(e.detail.param1, param1);
-      assert_equals(e.detail.router, content1);
+      assert_equals(e.detail.router, content2);
     });
 
     var check_show2 = async4.step_func((e) => {
