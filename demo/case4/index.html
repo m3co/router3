@@ -15,7 +15,7 @@
       <script>
         var router = document.currentScript.parentNode;
         var span = router.querySelector('span');
-        router.addEventListener('show', e => {
+        router.addEventListener('show', function(e) {
           span.textContent = e.detail.param1;
         });
       </script>
