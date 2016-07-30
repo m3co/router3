@@ -1,4 +1,4 @@
-;(_ => {
+;(function() {
   'use strict';
   var tagContent = 'router2-content';
 
@@ -84,11 +84,11 @@
         container.hidden = false;
         var __params = {};
         var next_hash = _hash.split(matcher);
-        _params.forEach((item, i) => {
+        _params.forEach(function(item, i) {
           container.setAttribute(`route-param${i + 1}`, item);
           __params[`param${i + 1}`] = item;
         });
-        _hash.match(matcher).forEach((item, i) => {
+        _hash.match(matcher).forEach(function(item, i) {
           if (i > 0 && item) {
             _params.push(item);
             __params[`param${_params.length}`] = item;
@@ -112,11 +112,11 @@
     throw new Error(`hash "${_hash}" does not match any content`);
   }
 
-  window.addEventListener('hashchange', (e) => {
+  window.addEventListener('hashchange', function(e) {
     hideAll();
     matchHash();
   });
-  window.addEventListener('load', (e) => {
+  window.addEventListener('load', function(e) {
     var containers = document.querySelectorAll(`${tagContent}:not([hidden])`);
     for (var i = 0; i < containers.length; i++) {
       var container = containers[i];
