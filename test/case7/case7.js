@@ -228,14 +228,14 @@
     var check_hide1 = async7.step_func((e) => {
       order.push('3');
       content1.removeEventListener(e.type, check_hide1);
-      assert_false(content1.hidden);  /// WHY??
+      assert_true(content1.hidden);
       assert_equals(e.detail.param1, param1);
     });
 
     var check_hide2 = async7.step_func((e) => {
       order.push('2');
       content2.removeEventListener(e.type, check_hide2);
-      assert_false(content2.hidden);  /// WHY??
+      assert_true(content2.hidden);
       assert_equals(e.detail.param1, param1);
       assert_equals(e.detail.param2, param2);
     });
@@ -243,25 +243,25 @@
     var check_hide3 = async7.step_func((e) => {
       order.push('1');
       content3.removeEventListener(e.type, check_hide3);
-      assert_false(content3.hidden);  /// WHY??
+      assert_true(content3.hidden);
       assert_equals(e.detail.param1, param1);
       assert_equals(e.detail.param2, param2);
       assert_equals(e.detail.param3, param3);
       assert_equals(e.detail.param4, param4);
     });
 
-    content1.addEventListener('show', check_hide1);
-    content2.addEventListener('show', check_hide2);
-    content3.addEventListener('show', check_hide3);
+    content1.addEventListener('hide', check_hide1);
+    content2.addEventListener('hide', check_hide2);
+    content3.addEventListener('hide', check_hide3);
     window.location.hash = `case${param1}/case${param2}/case${param3}-${param4}`;
 
     setTimeout(async7.step_func(_ => {
       window.location.hash = '';
     }), 0);
     setTimeout(async7.step_func(_ => {
+      assert_array_equals(order, ['2', '3', '1']);
       async8.next(); // do you see this line? should I repeat this solution
                  // along to all other tests? I should...
-      assert_array_equals(order, ['1', '2', '3']);
       async7.done();
     }), 0);
   });
@@ -304,14 +304,14 @@
     var check_hide1 = async8.step_func((e) => {
       order.push('3h');
       content1.removeEventListener(e.type, check_hide1);
-      assert_false(content1.hidden);  /// WHY??
+      assert_true(content1.hidden);
       assert_equals(e.detail.param1, param1);
     });
 
     var check_hide2 = async8.step_func((e) => {
       order.push('2h');
       content2.removeEventListener(e.type, check_hide2);
-      assert_false(content2.hidden);  /// WHY??
+      assert_true(content2.hidden);
       assert_equals(e.detail.param1, param1);
       assert_equals(e.detail.param2, param2);
     });
@@ -319,7 +319,7 @@
     var check_hide3 = async8.step_func((e) => {
       order.push('1h');
       content3.removeEventListener(e.type, check_hide3);
-      assert_false(content3.hidden);  /// WHY??
+      assert_true(content3.hidden);
       assert_equals(e.detail.param1, param1);
       assert_equals(e.detail.param2, param2);
       assert_equals(e.detail.param3, param3);
@@ -330,9 +330,9 @@
     content2.addEventListener('show', check_show2);
     content3.addEventListener('show', check_show3);
 
-    content1.addEventListener('show', check_hide1);
-    content2.addEventListener('show', check_hide2);
-    content3.addEventListener('show', check_hide3);
+    content1.addEventListener('hide', check_hide1);
+    content2.addEventListener('hide', check_hide2);
+    content3.addEventListener('hide', check_hide3);
     window.location.hash = `case${param1}/case${param2}/case${param3}-${param4}`;
 
     setTimeout(async8.step_func(_ => {
@@ -343,7 +343,7 @@
       rc.next(); // do you see this line? should I repeat this solution
                  // along to all other tests? I should...
       // RECONSIDER THE ORDER OF EXECUTION
-      assert_array_equals(order, ['1s', '1h', '2s', '2h', '3s', '3h']);
+      assert_array_equals(order, ['1h', '2h', '3h', '1s', '2s', '3s']);
       async8.done();
     }), 0);
   });
