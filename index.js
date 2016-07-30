@@ -33,7 +33,7 @@
     var _params = [];
     var __params = {};
 
-    containers = document.querySelectorAll(`${tagContent}:not([hidden])`);
+    containers = document.querySelectorAll(tagContent + ':not([hidden])');
     for (var i = 0; i < containers.length; i++) {
       var container = containers[i];
       var attrs = container.attributes;
@@ -62,9 +62,9 @@
     var _hash = hash || window.location.hash;
 
     if (!parent) {
-      containers = flatSelection(document.querySelectorAll(`${tagContent}`), document);
+      containers = flatSelection(document.querySelectorAll(tagContent), document);
     } else {
-      containers = flatSelection(parent.querySelectorAll(`${tagContent}`), parent);
+      containers = flatSelection(parent.querySelectorAll(tagContent), parent);
     }
 
     if (_hash[0] === '/' || _hash[0] === '#') {
@@ -77,7 +77,7 @@
     for (var i = 0; i < containers.length; i++) {
       container = containers[i];
       var search = container.getAttribute('hash');
-      var matcher = new RegExp(`^${search}$|^${search}\/`);
+      var matcher = new RegExp('^' + search + '$|^' + search + '\/');
       var match = matcher.test(_hash);
 
       if (match) {
@@ -85,14 +85,14 @@
         var __params = {};
         var next_hash = _hash.split(matcher);
         _params.forEach(function(item, i) {
-          container.setAttribute(`route-param${i + 1}`, item);
-          __params[`param${i + 1}`] = item;
+          container.setAttribute('route-param' + (i + 1), item);
+          __params['param' + (i + 1)] = item;
         });
         _hash.match(matcher).forEach(function(item, i) {
           if (i > 0 && item) {
             _params.push(item);
-            __params[`param${_params.length}`] = item;
-            container.setAttribute(`route-param${_params.length}`, item);
+            __params['param' + _params.length] = item;
+            container.setAttribute('route-param' + _params.length, item);
           }
         });
 
@@ -109,7 +109,7 @@
       }
     }
 
-    throw new Error(`hash "${_hash}" does not match any content`);
+    throw new Error('hash "' + _hash + '" does not match any content');
   }
 
   window.addEventListener('hashchange', function(e) {
@@ -117,7 +117,7 @@
     matchHash();
   });
   window.addEventListener('load', function(e) {
-    var containers = document.querySelectorAll(`${tagContent}:not([hidden])`);
+    var containers = document.querySelectorAll(tagContent + ':not([hidden])');
     for (var i = 0; i < containers.length; i++) {
       var container = containers[i];
       var attrs = container.attributes;
