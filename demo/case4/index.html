@@ -1,0 +1,44 @@
+<html>
+  <link href="../../" rel="import">
+  <body>
+
+    <a href="#">Reset</a>
+    <a href="#case2-1">case2 1</a>
+    <a href="#case2-2/case2-11">case2 11</a>
+    <a href="#case2-2/case2-11/case2-111">case2 111</a>
+    <a href="#case2-3/case2-12">case2 12</a>
+    <a href="#case2-4/case2-13">case2 13</a>
+    <br>
+    <router2-content id="r1" hash="case2-(\d+)" hidden>
+      Case 2 - <span></span>
+      <script>
+        var router = document.currentScript.parentNode;
+        var span = router.querySelector('span');
+        router.addEventListener('show', e => {
+          span.textContent = e.detail.param1;
+        });
+      </script>
+      <div>
+        <div>
+          <router2-content id="r11" hash="case2-11" hidden>
+            Case 2 - 1-1
+            <router2-content id="r111" hash="case2-(\d+)" hidden>
+              Case 2 - 1-1-1
+            </router2-content>
+          </router2-content>
+          <router2-content id="r12" hash="case2-12" hidden>
+            Case 2 - 3-2
+          </router2-content>
+          <div>
+            <router2-content id="r13" hash="case2-(\d+)" hidden>
+              Case 2 - 4-3
+            </router2-content>
+          </div>
+        </div>
+      </div>
+    </router2-content>
+
+    <script src="controller.js"></script>
+
+  </body>
+</html>
