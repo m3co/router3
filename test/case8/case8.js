@@ -6,7 +6,7 @@
 
   var div = document.createElement('div');
   div.innerHTML = `
-    <${tagContent} hash="case8" src="case8-external.html">
+    <${tagContent} hash="case8" src="/test/case8/case8-external.html">
     </${tagContent}>
   `;
 
@@ -17,16 +17,16 @@
     var content = document.querySelector(`${tagContent}[hash="${hash}"]`);
 
     // Simulate what the pseudoHTMLimport should do
-    content.innerHTML = `
-      <${tagSrc}>This is an external content</${tagSrc}>
-    `;
+    //content.innerHTML = `
+    //  <${tagSrc}><div>This is an external content</div></${tagSrc}>
+    //`;
 
     var check_hash = async1.step_func((e) => {
       assert_false(content.hidden);
 
       var src = content.querySelector(`${tagSrc}`);
       assert_true(src instanceof HTMLElement);
-      assert_equals(src.textContent, 'This is an external content');
+      assert_equals(src.textContent, 'This is an external content\n');
 
       // clean the test
       window.removeEventListener('hashchange', check_hash);

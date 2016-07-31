@@ -4,7 +4,7 @@
   var tagSrc = 'router2-src';
 
   function pseudoImportHTML(element, url) {
-    return fetch(src).then(response => {
+    return fetch(url).then(response => {
       return response.text();
     }).then(text => {
       element.innerHTML = text;
@@ -36,8 +36,19 @@
   }
 
   function updateAll() {
-    var containers = document.querySelector(tagContent);
-    console.log(containers);
+    var containers = document.querySelectorAll(tagContent);
+    for (var i = 0; i < containers.length; i++) {
+      var container = containers[i];
+      if (!container.updatePromise && container.hasAttribute('src')) {
+        var src = container.querySelector(tagSrc);
+        if (!src) {
+          src = document.createElement(tagSrc);
+          container.appendChild(src);
+        }
+        var url = container.getAttribute('src');
+        container.updatePromise = pseudoImportHTML(src, url);
+      }
+    }
   }
 
   function flatSelection(containers, parent) {
@@ -138,10 +149,19 @@
         if (_hash.length > 0) {
           matchHash(container, _hash, _params);
         } else {
-          container.dispatchEvent(new CustomEvent('show', {
-            detail: __params,
-            bubbles: true
-          }));
+          if (container.updatePromise) {
+            container.updatePromise.then(function() {
+              container.dispatchEvent(new CustomEvent('show', {
+                detail: __params,
+                bubbles: true
+              }));
+            })
+          } else {
+            container.dispatchEvent(new CustomEvent('show', {
+              detail: __params,
+              bubbles: true
+            }));
+          }
         }
         return;
       }
@@ -152,6 +172,7 @@
 
   window.addEventListener('hashchange', function(e) {
     hideAll();
+    updateAll();
     matchHash();
   });
   window.addEventListener('load', function(e) {
@@ -168,7 +189,7 @@
         }
       }
     }
-
+    updateAll();
     matchHash();
   });
 
