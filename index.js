@@ -1,7 +1,6 @@
 ;(function() {
   'use strict';
   var tagContent = 'router2-content';
-  /*
   var tagSrc = 'router2-src';
 
   function pseudoImportHTML(element, url) {
@@ -28,7 +27,6 @@
           new_script.setAttribute(old_script.attributes[j].name, old_script.attributes[j].value);
         }
 
-        // je-je-je
         var parent = old_script.parentNode;
         parent.replaceChild(new_script, old_script);
       }
@@ -36,7 +34,11 @@
       return element;
     });
   }
-  */
+
+  function updateAll() {
+    var containers = document.querySelector(tagContent);
+    console.log(containers);
+  }
 
   function flatSelection(containers, parent) {
     var flatten = [];

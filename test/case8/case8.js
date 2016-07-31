@@ -16,6 +16,11 @@
     var hash = "case8";
     var content = document.querySelector(`${tagContent}[hash="${hash}"]`);
 
+    // Simulate what the pseudoHTMLimport should do
+    content.innerHTML = `
+      <${tagSrc}>This is an external content</${tagSrc}>
+    `;
+
     var check_hash = async1.step_func((e) => {
       assert_false(content.hidden);
 
