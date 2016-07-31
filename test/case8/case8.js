@@ -11,17 +11,35 @@
   `;
 
   var async1 = async_test('Case 8: hash changed to content[hash="case8"] and imports from "case8-external.html"');
+  var async2 = async_test('Case 8: repeat last test and see if case8-external.html has been fetched once');
 
   async1.next = async1.step_func(_ => {
     var hash = "case8";
     var content = document.querySelector(`${tagContent}[hash="${hash}"]`);
 
-    // Simulate what the pseudoHTMLimport should do
-    //content.innerHTML = `
-    //  <${tagSrc}><div>This is an external content</div></${tagSrc}>
-    //`;
-
     var check_hash = async1.step_func((e) => {
+      assert_false(content.hidden);
+
+      var src = content.querySelector(`${tagSrc}`);
+      assert_true(src instanceof HTMLElement);
+      assert_equals(src.textContent, 'This is an external content\n');
+
+      // clean the test
+      window.location.hash = '';
+
+      async1.done();
+      async2.next();
+    });
+
+    content.addEventListener('show', check_hash);
+    window.location.hash = hash;
+  });
+
+  async2.next = async2.step_func(_ => {
+    var hash = "case8";
+    var content = document.querySelector(`${tagContent}[hash="${hash}"]`);
+
+    var check_hash = async2.step_func((e) => {
       assert_false(content.hidden);
 
       var src = content.querySelector(`${tagSrc}`);
@@ -33,7 +51,7 @@
       document.body.removeChild(div);
       window.location.hash = '';
 
-      async1.done();
+      async2.done();
       rc.next();
     });
 
