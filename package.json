@@ -1,0 +1,29 @@
+{
+  "name": "router3",
+  "version": "0.0.1",
+  "description": "A simple router tag called router3",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/m3co/router3.git"
+  },
+  "keywords": [
+    "routing",
+    "route",
+    "router",
+    "href",
+    "url"
+  ],
+  "author": "Andres Rios (rianby64@gmail.com)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/m3co/router3/issues"
+  },
+  "homepage": "https://github.com/m3co/router3#readme"
+}

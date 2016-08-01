@@ -1,0 +1,24 @@
+{
+  "name": "router3",
+  "description": "A simple router tag called router3",
+  "main": "index.js",
+  "authors": [
+    "Andres Rios (rianby64@gmail.com)"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "routing",
+    "route",
+    "router",
+    "href",
+    "url"
+  ],
+  "homepage": "https://github.com/m3co/router3",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
