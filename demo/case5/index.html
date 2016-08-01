@@ -2,11 +2,11 @@
 <html>
   <body>
     This is an example-prototype that shows how to import html code
-    <router2-content src="external.html"></router2-content>
+    <router3 src="external.html"></router3>
   </body>
   <script>
     window.addEventListener('load', e => {
-      var element = document.querySelector('router2-content');
+      var element = document.querySelector('router3');
       var src = element.getAttribute('src');
 
       function pseudoImportHTML(url) {
