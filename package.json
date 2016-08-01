@@ -1,6 +1,6 @@
 {
   "name": "router3",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A simple router tag called router3",
   "main": "index.js",
   "directories": {
