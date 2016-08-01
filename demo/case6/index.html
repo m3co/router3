@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="../../index.js"></script>
+  </head>
+  <body>
+    <a href="#">Reset</a>
+    <a href="#1">Go to 1</a>
+    <a href="#1/2">Go to 2</a>
+    <router2-content hash="(\d+)" src="/demo/case6/tmpl1/page.html">
+      <router2-src></router2-src>
+      <script src="/demo/case6/tmpl1/ctrl.js"></script>
+
+      <router2-content hash="(\d+)" src="/demo/case6/tmpl2/page.html">
+        <script src="/demo/case6/tmpl2/ctrl.js"></script>
+      </router2-content>
+    </router2-content>
+  </body>
+</html>
