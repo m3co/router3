@@ -1,7 +1,6 @@
 ;((rc) => {
   'use strict';
-  var tagContent = 'router2-content';
-  var tagView = 'router2-view';
+  var tagContent = 'router3';
 
   var div = document.createElement('div');
   div.innerHTML = `

@@ -14,7 +14,7 @@
     <a href="#case2-3/case2-12">case2 12</a>
     <a href="#case2-4/case2-13">case2 13</a>
     <br>
-    <router2-content id="r1" hash="case2-(\d+)" hidden>
+    <router3 id="r1" hash="case2-(\d+)" hidden>
       Case 2 - <span></span>
       <script>
         var router = document.currentScript.parentNode;
@@ -25,23 +25,23 @@
       </script>
       <div>
         <div>
-          <router2-content id="r11" hash="case2-11" hidden>
+          <router3 id="r11" hash="case2-11" hidden>
             Case 2 - 1-1
-            <router2-content id="r111" hash="case2-(\d+)" hidden>
+            <router3 id="r111" hash="case2-(\d+)" hidden>
               Case 2 - 1-1-1
-            </router2-content>
-          </router2-content>
-          <router2-content id="r12" hash="case2-12" hidden>
+            </router3>
+          </router3>
+          <router3 id="r12" hash="case2-12" hidden>
             Case 2 - 3-2
-          </router2-content>
+          </router3>
           <div>
-            <router2-content id="r13" hash="case2-(\d+)" hidden>
+            <router3 id="r13" hash="case2-(\d+)" hidden>
               Case 2 - 4-3
-            </router2-content>
+            </router3>
           </div>
         </div>
       </div>
-    </router2-content>
+    </router3>
 
     <script src="controller.js"></script>
 

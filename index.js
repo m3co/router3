@@ -1,7 +1,7 @@
 ;(function() {
   'use strict';
-  var tagContent = 'router2-content';
-  var tagSrc = 'router2-src';
+  var tagContent = 'router3';
+  var tagSrc = 'router3-src';
 
   function pseudoImportHTML(element, url) {
     return fetch(url).then(response => {
