@@ -7,22 +7,18 @@
   </head>
   <body>
     <a href="#">Reset</a>
-    <a href="#a-hash-template">first case</a>
-    <a href="#another-hash-template">second case</a>
-    <button>Test</button>
+    <a href="#case8-1">first case</a>
+    <a href="#case8-2">second case</a>
+    <router3-config-all class-hide="case8-hide" class-show="case8-show">
+    </router3-config-all>
 
-    <router3 id="first-id" hash="a-hash-template" hidden>
+    <router3 id="first-id" hash="case8-1">
       The content to render
     </router3>
 
-    <router3 id="second-id" hash="another-hash-template" hidden>
+    <router3 id="second-id" hash="case8-2" class-hide="case8-2-hide">
       This is another hash
     </router3>
 
   </body>
-  <script>
-    document.querySelector('button').addEventListener('click', function(e) {
-      location.hash = "myHash";
-    });
-  </script>
 </html>
