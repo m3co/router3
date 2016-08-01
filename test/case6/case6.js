@@ -32,7 +32,7 @@
       window.removeEventListener('hashchange', check_hash);
       var content1 = document.querySelector('#case6-1');
       assert_false(content1.hidden);
-      assert_equals(content1.getAttribute('route-param1'), '6');
+      assert_equals(content1.getAttribute('param1'), '6');
 
       async1.done();
       window.location.hash = '';
@@ -64,9 +64,9 @@
       assert_false(content1.hidden);
       assert_false(content2.hidden);
 
-      assert_equals(content1.getAttribute('route-param1'), '11');
-      assert_equals(content2.getAttribute('route-param1'), '11');
-      assert_equals(content2.getAttribute('route-param2'), '22');
+      assert_equals(content1.getAttribute('param1'), '11');
+      assert_equals(content2.getAttribute('param1'), '11');
+      assert_equals(content2.getAttribute('param2'), '22');
 
       async3.done();
       window.location.hash = '';
@@ -86,9 +86,9 @@
       assert_true(content2.hidden);
       assert_false(content3.hidden);
 
-      assert_equals(content1.getAttribute('route-param1'), null);
-      assert_equals(content2.getAttribute('route-param1'), null);
-      assert_equals(content2.getAttribute('route-param2'), null);
+      assert_equals(content1.getAttribute('param1'), null);
+      assert_equals(content2.getAttribute('param1'), null);
+      assert_equals(content2.getAttribute('param2'), null);
 
       async4.done();
       window.location.hash = '';
@@ -110,21 +110,21 @@
       assert_false(content3.hidden);
       assert_false(content4.hidden);
 
-      assert_equals(content1.getAttribute('route-param1'), '555');
+      assert_equals(content1.getAttribute('param1'), '555');
 
-      assert_equals(content2.getAttribute('route-param1'), '555');
-      assert_equals(content2.getAttribute('route-param2'), '666');
+      assert_equals(content2.getAttribute('param1'), '555');
+      assert_equals(content2.getAttribute('param2'), '666');
 
-      assert_equals(content3.getAttribute('route-param1'), '555');
-      assert_equals(content3.getAttribute('route-param2'), '666');
-      assert_equals(content3.getAttribute('route-param3'), 'AAA');
-      assert_equals(content3.getAttribute('route-param4'), '888');
+      assert_equals(content3.getAttribute('param1'), '555');
+      assert_equals(content3.getAttribute('param2'), '666');
+      assert_equals(content3.getAttribute('param3'), 'AAA');
+      assert_equals(content3.getAttribute('param4'), '888');
 
-      assert_equals(content4.getAttribute('route-param1'), '555');
-      assert_equals(content4.getAttribute('route-param2'), '666');
-      assert_equals(content4.getAttribute('route-param3'), 'AAA');
-      assert_equals(content4.getAttribute('route-param4'), '888');
-      assert_equals(content4.getAttribute('route-param5'), 'BBB');
+      assert_equals(content4.getAttribute('param1'), '555');
+      assert_equals(content4.getAttribute('param2'), '666');
+      assert_equals(content4.getAttribute('param3'), 'AAA');
+      assert_equals(content4.getAttribute('param4'), '888');
+      assert_equals(content4.getAttribute('param5'), 'BBB');
 
       document.body.removeChild(div);
       window.location.hash = '';

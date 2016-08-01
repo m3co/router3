@@ -89,8 +89,8 @@
       container.hidden = true;
 
       for (var j = 0; j < attrs.length; j++) {
-        if (/route-param\d+/.test(attrs[j].name)) {
-          __params[attrs[j].name.slice(6)] = attrs[j].value;
+        if (/param\d+/.test(attrs[j].name)) {
+          __params[attrs[j].name] = attrs[j].value;
           attrs.removeNamedItem(attrs[j].name);
           j--;
         }
@@ -134,14 +134,14 @@
         var __params = {};
         var next_hash = _hash.split(matcher);
         _params.forEach(function(item, i) {
-          container.setAttribute('route-param' + (i + 1), item);
+          container.setAttribute('param' + (i + 1), item);
           __params['param' + (i + 1)] = item;
         });
         _hash.match(matcher).forEach(function(item, i) {
           if (i > 0 && item) {
             _params.push(item);
             __params['param' + _params.length] = item;
-            container.setAttribute('route-param' + _params.length, item);
+            container.setAttribute('param' + _params.length, item);
           }
         });
 
@@ -184,7 +184,7 @@
       container.hidden = true;
 
       for (var j = 0; j < attrs.length; j++) {
-        if (/route-param\d+/.test(attrs[j].name)) {
+        if (/param\d+/.test(attrs[j].name)) {
           attrs.removeNamedItem(attrs[j].name);
           j--;
         }
