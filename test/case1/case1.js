@@ -74,7 +74,7 @@
 
     var check_error = async3.step_func((message) => {
       // clean the test
-      assert_equals(message, `Uncaught Error: hash "${hash}" does not match any content`);
+      assert_true(message.indexOf(`hash "${hash}" does not match any content`) > 0);
       window.location.hash = '';
 
       async3.done();
