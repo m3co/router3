@@ -10,7 +10,7 @@
       element.innerHTML = text;
 
       var scripts = element.querySelectorAll('script');
-      var i, l = scripts.length;
+      var i;
       for (var i = 0; i < scripts.length; i++) {
         var old_script = scripts[i];
         var new_script = document.createElement('script');
@@ -151,16 +151,10 @@
         } else {
           if (container.updatePromise) {
             container.updatePromise.then(function() {
-              container.dispatchEvent(new CustomEvent('show', {
-                detail: __params,
-                bubbles: true
-              }));
+              dispatchCustomEvent(container, __params);
             })
           } else {
-            container.dispatchEvent(new CustomEvent('show', {
-              detail: __params,
-              bubbles: true
-            }));
+            dispatchCustomEvent(container, __params);
           }
         }
         return;
@@ -168,6 +162,13 @@
     }
 
     throw new Error('hash "' + _hash + '" does not match any content');
+  }
+
+  function dispatchCustomEvent(container, __params) {
+    container.dispatchEvent(new CustomEvent('show', {
+      detail: __params,
+      bubbles: true
+    }));
   }
 
   window.addEventListener('hashchange', function(e) {
