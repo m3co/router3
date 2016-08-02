@@ -2,6 +2,11 @@
   'use strict';
   var tagContent = 'router3';
   var tagSrc = 'router3-src';
+  var tagConfig = 'router3-config';
+
+  var classShowAttribute = 'class-show';
+  var classHideAttribute = 'class-hide';
+  var specialHideAttribute = 'private-hidden';
 
   function pseudoImportHTML(element, url) {
     return fetch(url).then(response => {
@@ -77,6 +82,40 @@
     return flatten;
   }
 
+  function prepareClasses(container, action) {
+    var classShow = container.hasAttribute(classShowAttribute) ?
+                      container.getAttribute(classShowAttribute) :
+                      null;
+    var classHide = container.hasAttribute(classHideAttribute) ?
+                      container.getAttribute(classHideAttribute) :
+                      null;
+    if (action === 'show') {
+      if (classShow || classHide) {
+        if (classHide) {
+          container.classList.remove(classHide);
+        }
+        if (classShow) {
+          container.classList.add(classShow);
+        }
+      } else {
+        container.hidden = false;
+      }
+      container.removeAttribute(specialHideAttribute);
+    } else if (action === 'hide') {
+      if (classShow || classHide) {
+        if (classHide) {
+          container.classList.add(classHide);
+        }
+        if (classShow) {
+          container.classList.remove(classShow);
+        }
+      } else {
+        container.hidden = true;
+      }
+      container.setAttribute(specialHideAttribute, '');
+    }
+  }
+
   function hideAll() {
     var containers;
     var _params = [];
@@ -86,7 +125,7 @@
     for (var i = 0; i < containers.length; i++) {
       var container = containers[i];
       var attrs = container.attributes;
-      container.hidden = true;
+      prepareClasses(container, 'hide');
 
       for (var j = 0; j < attrs.length; j++) {
         if (/param\d+/.test(attrs[j].name)) {
@@ -130,7 +169,8 @@
       var match = matcher.test(_hash);
 
       if (match) {
-        container.hidden = false;
+        prepareClasses(container, 'show');
+
         var __params = {};
         var next_hash = _hash.split(matcher);
         _params.forEach(function(item, i) {
@@ -181,7 +221,7 @@
     for (var i = 0; i < containers.length; i++) {
       var container = containers[i];
       var attrs = container.attributes;
-      container.hidden = true;
+      prepareClasses(container, 'hide');
 
       for (var j = 0; j < attrs.length; j++) {
         if (/param\d+/.test(attrs[j].name)) {
