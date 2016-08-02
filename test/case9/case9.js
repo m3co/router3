@@ -65,6 +65,8 @@
       assert_true(content4.hasAttribute(hiddenAttr));
       assert_true(content5.hasAttribute(hiddenAttr));
 
+      assert_true(content1.classList.contains('class-show1'));
+
       rc.next();
       document.body.removeChild(div);
       async1.done();
