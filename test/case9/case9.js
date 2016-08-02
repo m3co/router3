@@ -8,9 +8,9 @@
   var div = document.createElement('div');
   div.innerHTML = `
     <${tagConfig} class-show="class-show0"
-                  class-hide="class-hide0"
-                  hidden-attribute="${hiddenAttr}">
+                  class-hide="class-hide0">
       <!--
+                  // removed because I want to dream in small steps :))
       By default, this config, if not given, will have the following
       values:
   class-show=""             // add to the element's class when showing
@@ -59,6 +59,11 @@
       assert_equals(content5.getAttribute(specialHideAttr), '');
 
       assert_false(content1.hasAttribute(hiddenAttr));
+      assert_false(content2.hasAttribute(hiddenAttr));
+      assert_false(content3.hasAttribute(hiddenAttr));
+
+      assert_true(content4.hasAttribute(hiddenAttr));
+      assert_true(content5.hasAttribute(hiddenAttr));
 
       rc.next();
       document.body.removeChild(div);
