@@ -42,6 +42,7 @@
   `;
 
   var async1 = async_test('Case 9: hash changed to content[hash="case9-1"]');
+  var async2 = async_test('Case 9: hash changed to content[hash="case9-2"]');
 
   async1.next = async1.step_func(_ => {
     var hash = 'case9-1';
@@ -52,6 +53,7 @@
     var content5 = document.querySelector(`${tagContent}[hash="case9-5"]`);
 
     var check_hash = async1.step_func(_ => {
+      content1.removeEventListener('show', check_hash);
       assert_equals(content1.getAttribute(specialHideAttr), null);
       assert_equals(content2.getAttribute(specialHideAttr), '');
       assert_equals(content3.getAttribute(specialHideAttr), '');
@@ -65,14 +67,50 @@
       assert_true(content4.hasAttribute(hiddenAttr));
       assert_true(content5.hasAttribute(hiddenAttr));
 
+      assert_false(content1.classList.contains('class-hide1'));
       assert_true(content1.classList.contains('class-show1'));
 
-      rc.next();
-      document.body.removeChild(div);
+      async2.next();
       async1.done();
     });
 
     content1.addEventListener('show', check_hash);
+    window.location.hash = hash;
+  });
+
+  async2.next = async2.step_func(_ => {
+    var hash = 'case9-2';
+    var content1 = document.querySelector(`${tagContent}[hash="case9-1"]`);
+    var content2 = document.querySelector(`${tagContent}[hash="case9-2"]`);
+    var content3 = document.querySelector(`${tagContent}[hash="case9-3"]`);
+    var content4 = document.querySelector(`${tagContent}[hash="case9-4"]`);
+    var content5 = document.querySelector(`${tagContent}[hash="case9-5"]`);
+
+    var check_hash = async2.step_func(_ => {
+      assert_equals(content1.getAttribute(specialHideAttr), '');
+      assert_equals(content2.getAttribute(specialHideAttr), null);
+      assert_equals(content3.getAttribute(specialHideAttr), '');
+      assert_equals(content4.getAttribute(specialHideAttr), '');
+      assert_equals(content5.getAttribute(specialHideAttr), '');
+
+      assert_false(content1.hasAttribute(hiddenAttr));
+      assert_false(content2.hasAttribute(hiddenAttr));
+      assert_false(content3.hasAttribute(hiddenAttr));
+
+      assert_true(content4.hasAttribute(hiddenAttr));
+      assert_true(content5.hasAttribute(hiddenAttr));
+
+      assert_false(content1.classList.contains('class-show1'));
+      assert_true(content1.classList.contains('class-hide1'));
+      assert_true(content2.classList.contains('class-show1'));
+      assert_true(content3.classList.contains('class-hide1'));
+
+      rc.next();
+      document.body.removeChild(div);
+      async2.done();
+    });
+
+    content2.addEventListener('show', check_hash);
     window.location.hash = hash;
   });
 
