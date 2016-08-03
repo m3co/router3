@@ -63,9 +63,8 @@
       assert_false(content1.hasAttribute(hiddenAttr));
       assert_false(content2.hasAttribute(hiddenAttr));
       assert_false(content3.hasAttribute(hiddenAttr));
-
-      assert_true(content4.hasAttribute(hiddenAttr));
-      assert_true(content5.hasAttribute(hiddenAttr));
+      assert_false(content4.hasAttribute(hiddenAttr));
+      assert_false(content5.hasAttribute(hiddenAttr));
 
       assert_false(content1.classList.contains('class-hide1'));
       assert_true(content1.classList.contains('class-show1'));
@@ -97,9 +96,8 @@
       assert_false(content1.hasAttribute(hiddenAttr));
       assert_false(content2.hasAttribute(hiddenAttr));
       assert_false(content3.hasAttribute(hiddenAttr));
-
-      assert_true(content4.hasAttribute(hiddenAttr));
-      assert_true(content5.hasAttribute(hiddenAttr));
+      assert_false(content4.hasAttribute(hiddenAttr));
+      assert_false(content5.hasAttribute(hiddenAttr));
 
       assert_false(content1.classList.contains('class-show1'));
       assert_true(content1.classList.contains('class-hide1'));
@@ -133,8 +131,8 @@
       assert_false(content1.hasAttribute(hiddenAttr));
       assert_false(content2.hasAttribute(hiddenAttr));
       assert_false(content3.hasAttribute(hiddenAttr));
-      assert_true(content4.hasAttribute(hiddenAttr));
-      assert_true(content5.hasAttribute(hiddenAttr));
+      assert_false(content4.hasAttribute(hiddenAttr));
+      assert_false(content5.hasAttribute(hiddenAttr));
 
       assert_false(content1.classList.contains('class-show1'));
       assert_true(content1.classList.contains('class-hide1'));
@@ -187,8 +185,8 @@
       assert_false(content1.hasAttribute(hiddenAttr));
       assert_false(content2.hasAttribute(hiddenAttr));
       assert_false(content3.hasAttribute(hiddenAttr));
-      assert_true(content4.hasAttribute(hiddenAttr));
-      assert_true(content5.hasAttribute(hiddenAttr));
+      assert_false(content4.hasAttribute(hiddenAttr));
+      assert_false(content5.hasAttribute(hiddenAttr));
 
       assert_false(content1.classList.contains('class-show1'));
       assert_true(content1.classList.contains('class-hide1'));

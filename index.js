@@ -240,7 +240,7 @@
     }));
   }
 
-  window.addEventListener('hashchange', function(e) {
+  function prepareConfig() {
     var configs = document.querySelectorAll(tagConfig);
     var config = configs[0]; // here I want to check if there are more than
                              // one config in the same document
@@ -255,12 +255,17 @@
       currentClassShow = null;
       currentClassHide = null;
     }
+  }
+
+  window.addEventListener('hashchange', function(e) {
+    prepareConfig();
     hideAll();
     updateAll();
     matchHash();
   });
   window.addEventListener('load', function(e) {
-    var containers = document.querySelectorAll(tagContent + ':not([hidden])');
+    prepareConfig();
+    var containers = document.querySelectorAll(tagContent + ':not([' + specialHideAttribute + '])');
     for (var i = 0; i < containers.length; i++) {
       var container = containers[i];
       var attrs = container.attributes;
