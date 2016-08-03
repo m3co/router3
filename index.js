@@ -105,7 +105,8 @@
           container.classList.add(currentClassShow);
         }
       } else {
-        if (currentClassShow || currentClassHide) {
+        if ((currentClassShow || currentClassHide) &&
+            (classShow !== '') && (classHide !== '')) {
           if (currentClassShow) {
             container.classList.add(currentClassShow);
           }
@@ -130,7 +131,8 @@
           container.classList.remove(currentClassShow);
         }
       } else {
-        if (currentClassShow || currentClassHide) {
+        if ((currentClassShow || currentClassHide) &&
+            (classShow !== '') && (classHide !== '')) {
           if (currentClassShow) {
             container.classList.remove(currentClassShow);
           }

@@ -65,7 +65,7 @@
       assert_false(content2.hasAttribute(hiddenAttr));
       assert_false(content3.hasAttribute(hiddenAttr));
       assert_false(content4.hasAttribute(hiddenAttr));
-      assert_false(content5.hasAttribute(hiddenAttr));
+      assert_true(content5.hasAttribute(hiddenAttr));
 
       assert_false(content1.classList.contains('class-hide1'));
       assert_true(content1.classList.contains('class-show1'));
@@ -98,7 +98,7 @@
       assert_false(content2.hasAttribute(hiddenAttr));
       assert_false(content3.hasAttribute(hiddenAttr));
       assert_false(content4.hasAttribute(hiddenAttr));
-      assert_false(content5.hasAttribute(hiddenAttr));
+      assert_true(content5.hasAttribute(hiddenAttr));
 
       assert_false(content1.classList.contains('class-show1'));
       assert_true(content1.classList.contains('class-hide1'));
@@ -133,7 +133,7 @@
       assert_false(content2.hasAttribute(hiddenAttr));
       assert_false(content3.hasAttribute(hiddenAttr));
       assert_false(content4.hasAttribute(hiddenAttr));
-      assert_false(content5.hasAttribute(hiddenAttr));
+      assert_true(content5.hasAttribute(hiddenAttr));
 
       assert_false(content1.classList.contains('class-show1'));
       assert_true(content1.classList.contains('class-hide1'));
@@ -187,7 +187,7 @@
       assert_false(content2.hasAttribute(hiddenAttr));
       assert_false(content3.hasAttribute(hiddenAttr));
       assert_false(content4.hasAttribute(hiddenAttr));
-      assert_false(content5.hasAttribute(hiddenAttr));
+      assert_true(content5.hasAttribute(hiddenAttr));
 
       assert_false(content1.classList.contains('class-show1'));
       assert_true(content1.classList.contains('class-hide1'));
@@ -261,7 +261,7 @@
       assert_false(content4.classList.contains('class-show0'));
       assert_true(content4.classList.contains('class-hide0'));
 
-      assert_true(content5.classList.contains('class-show0'));
+      assert_false(content5.classList.contains('class-show0'));
       assert_false(content5.classList.contains('class-hide0'));
 
       content5.addEventListener('hide', check_hash_hide);
@@ -271,6 +271,8 @@
     var check_hash_hide = async5.step_func(_ => {
       assert_true(content5.hasAttribute(specialHideAttr));
       content5.removeEventListener('hide', check_hash_hide);
+
+      assert_true(content5.hasAttribute(hiddenAttr));
 
       assert_false(content1.classList.contains('class-show1'));
       assert_true(content1.classList.contains('class-hide1'));
@@ -285,7 +287,7 @@
       assert_true(content4.classList.contains('class-hide0'));
 
       assert_false(content5.classList.contains('class-show0'));
-      assert_true(content5.classList.contains('class-hide0'));
+      assert_false(content5.classList.contains('class-hide0'));
 
       document.body.removeChild(div);
       rc.next();
