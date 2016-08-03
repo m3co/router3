@@ -149,6 +149,15 @@
     var check_hash_hide = async3.step_func(_ => {
       content3.removeEventListener('hide', check_hash_hide);
 
+      assert_false(content1.classList.contains('class-show1'));
+      assert_true(content1.classList.contains('class-hide1'));
+
+      assert_false(content2.classList.contains('class-show1'));
+      assert_true(content2.classList.contains('class-hide0'));
+
+      assert_false(content3.classList.contains('class-show0'));
+      assert_true(content3.classList.contains('class-hide1'));
+
       rc.next();
       document.body.removeChild(div);
       async3.done();
