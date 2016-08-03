@@ -150,7 +150,7 @@
     var _params = [];
     var __params = {};
 
-    containers = document.querySelectorAll(tagContent + ':not([hidden])');
+    containers = document.querySelectorAll(tagContent + ':not([' + specialHideAttribute + '])');
     for (var i = 0; i < containers.length; i++) {
       var container = containers[i];
       var attrs = container.attributes;

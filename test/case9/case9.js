@@ -159,8 +159,8 @@
       assert_false(content3.classList.contains('class-show0'));
       assert_true(content3.classList.contains('class-hide1'));
 
-      async3.done();
       async4.next();
+      async3.done();
     });
 
     content3.addEventListener('show', check_hash_show);
@@ -199,13 +199,10 @@
       assert_true(content3.classList.contains('class-hide1'));
 
       assert_true(content4.classList.contains('class-show0'));
-
-      async4.done();
-      rc.next();
-      document.body.removeChild(div);
+      content4.addEventListener('hide', check_hash_hide);
+      window.location.hash = '';
     });
 
-    /*
     var check_hash_hide = async4.step_func(_ => {
       content4.removeEventListener('hide', check_hash_hide);
 
@@ -222,8 +219,10 @@
       assert_true(content4.classList.contains('class-hide0'));
 
       async4.done();
+      document.body.removeChild(div);
+      rc.next();
     });
-    */
+
     content4.addEventListener('show', check_hash_show);
     window.location.hash = hash;
   });
