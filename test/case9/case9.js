@@ -54,11 +54,11 @@
 
     var check_hash = async1.step_func(_ => {
       content1.removeEventListener('show', check_hash);
-      assert_equals(content1.getAttribute(specialHideAttr), null);
-      assert_equals(content2.getAttribute(specialHideAttr), '');
-      assert_equals(content3.getAttribute(specialHideAttr), '');
-      assert_equals(content4.getAttribute(specialHideAttr), '');
-      assert_equals(content5.getAttribute(specialHideAttr), '');
+      assert_false(content1.hasAttribute(specialHideAttr));
+      assert_true(content2.hasAttribute(specialHideAttr));
+      assert_true(content3.hasAttribute(specialHideAttr));
+      assert_true(content4.hasAttribute(specialHideAttr));
+      assert_true(content5.hasAttribute(specialHideAttr));
 
       assert_false(content1.hasAttribute(hiddenAttr));
       assert_false(content2.hasAttribute(hiddenAttr));
@@ -88,11 +88,11 @@
 
     var check_hash = async2.step_func(_ => {
       content2.removeEventListener('show', check_hash);
-      assert_equals(content1.getAttribute(specialHideAttr), '');
-      assert_equals(content2.getAttribute(specialHideAttr), null);
-      assert_equals(content3.getAttribute(specialHideAttr), '');
-      assert_equals(content4.getAttribute(specialHideAttr), '');
-      assert_equals(content5.getAttribute(specialHideAttr), '');
+      assert_true(content1.hasAttribute(specialHideAttr));
+      assert_false(content2.hasAttribute(specialHideAttr));
+      assert_true(content3.hasAttribute(specialHideAttr));
+      assert_true(content4.hasAttribute(specialHideAttr));
+      assert_true(content5.hasAttribute(specialHideAttr));
 
       assert_false(content1.hasAttribute(hiddenAttr));
       assert_false(content2.hasAttribute(hiddenAttr));
@@ -124,11 +124,11 @@
 
     var check_hash_show = async3.step_func(_ => {
       content3.removeEventListener('show', check_hash_show);
-      assert_equals(content1.getAttribute(specialHideAttr), '');
-      assert_equals(content2.getAttribute(specialHideAttr), '');
-      assert_equals(content3.getAttribute(specialHideAttr), null);
-      assert_equals(content4.getAttribute(specialHideAttr), '');
-      assert_equals(content5.getAttribute(specialHideAttr), '');
+      assert_true(content1.hasAttribute(specialHideAttr));
+      assert_true(content2.hasAttribute(specialHideAttr));
+      assert_false(content3.hasAttribute(specialHideAttr));
+      assert_true(content4.hasAttribute(specialHideAttr));
+      assert_true(content5.hasAttribute(specialHideAttr));
 
       assert_false(content1.hasAttribute(hiddenAttr));
       assert_false(content2.hasAttribute(hiddenAttr));
@@ -149,6 +149,7 @@
     });
     var check_hash_hide = async3.step_func(_ => {
       content3.removeEventListener('hide', check_hash_hide);
+      assert_true(content3.hasAttribute(specialHideAttr));
 
       assert_false(content1.classList.contains('class-show1'));
       assert_true(content1.classList.contains('class-hide1'));
@@ -177,11 +178,11 @@
 
     var check_hash_show = async4.step_func(_ => {
       content4.removeEventListener('show', check_hash_show);
-      assert_equals(content1.getAttribute(specialHideAttr), '');
-      assert_equals(content2.getAttribute(specialHideAttr), '');
-      assert_equals(content3.getAttribute(specialHideAttr), '');
-      assert_equals(content4.getAttribute(specialHideAttr), null);
-      assert_equals(content5.getAttribute(specialHideAttr), '');
+      assert_true(content1.hasAttribute(specialHideAttr));
+      assert_true(content2.hasAttribute(specialHideAttr));
+      assert_true(content3.hasAttribute(specialHideAttr));
+      assert_false(content4.hasAttribute(specialHideAttr));
+      assert_true(content5.hasAttribute(specialHideAttr));
 
       assert_false(content1.hasAttribute(hiddenAttr));
       assert_false(content2.hasAttribute(hiddenAttr));
@@ -204,6 +205,7 @@
     });
 
     var check_hash_hide = async4.step_func(_ => {
+      assert_true(content4.hasAttribute(specialHideAttr));
       content4.removeEventListener('hide', check_hash_hide);
 
       assert_false(content1.classList.contains('class-show1'));
