@@ -8,6 +8,9 @@
   var classHideAttribute = 'class-hide';
   var specialHideAttribute = 'private-hidden';
 
+  var currentClassShow = null;
+  var currentClassHide = null;
+
   function pseudoImportHTML(element, url) {
     return fetch(url).then(response => {
       return response.text();
@@ -93,24 +96,50 @@
       if (classShow || classHide) {
         if (classHide) {
           container.classList.remove(classHide);
+        } else if (currentClassHide) {
+          container.classList.remove(currentClassHide);
         }
         if (classShow) {
           container.classList.add(classShow);
+        } else if (currentClassShow) {
+          container.classList.add(currentClassShow);
         }
       } else {
-        container.hidden = false;
+        if (currentClassShow || currentClassHide) {
+          if (currentClassShow) {
+            container.classList.add(currentClassShow);
+          }
+          if (currentClassHide) {
+            container.classList.remove(currentClassHide);
+          }
+        } else {
+          container.hidden = false;
+        }
       }
       container.removeAttribute(specialHideAttribute);
     } else if (action === 'hide') {
       if (classShow || classHide) {
         if (classHide) {
           container.classList.add(classHide);
+        } else if (currentClassShow) {
+          container.classList.add(currentClassHide);
         }
         if (classShow) {
           container.classList.remove(classShow);
+        } else if (currentClassShow) {
+          container.classList.remove(currentClassShow);
         }
       } else {
-        container.hidden = true;
+        if (currentClassShow || currentClassHide) {
+          if (currentClassShow) {
+            container.classList.remove(currentClassShow);
+          }
+          if (currentClassHide) {
+            container.classList.add(currentClassHide);
+          }
+        } else {
+          container.hidden = true;
+        }
       }
       container.setAttribute(specialHideAttribute, '');
     }
@@ -212,6 +241,20 @@
   }
 
   window.addEventListener('hashchange', function(e) {
+    var configs = document.querySelectorAll(tagConfig);
+    var config = configs[0]; // here I want to check if there are more than
+                             // one config in the same document
+    if (config instanceof HTMLElement) {
+      currentClassShow = config.hasAttribute(classShowAttribute) ?
+                           config.getAttribute(classShowAttribute) :
+                           null;
+      currentClassHide = config.hasAttribute(classHideAttribute) ?
+                           config.getAttribute(classHideAttribute) :
+                           null;
+    } else {
+      currentClassShow = null;
+      currentClassHide = null;
+    }
     hideAll();
     updateAll();
     matchHash();
