@@ -39,18 +39,11 @@
   var async1 = async_test('Case 1: hash changed to content[hash="case10-1"]');
 
   async1.next = async1.step_func(_ => {
-    // Pretty strange behavior
-    // consider the issue #4
-    setTimeout(_ => {
-      document.body.removeChild(div);
-      rc.next();
-    }, 50);
-
     var hash = "case10-1";
     var content1 = document.querySelector(`${tagContent}[hash="${hash}"]`);
     var content2 = document.querySelector(`${tagContent}#def`);
+
     assert_true(content1.hidden);
-    assert_false(content2.hidden);
 
     var check_hash_1 = async1.step_func((e) => {
       assert_false(content1.hidden);
@@ -62,9 +55,14 @@
     });
 
     var check_hash_def = async1.step_func(e => {
-      assert_false(content2.hidden);
+      setTimeout(_ => {
+        assert_false(content2.hidden);
+        async1.done();
+
+        document.body.removeChild(div);
+        rc.next();
+      }, 10);
       content1.removeEventListener('hide', check_hash_def);
-      async1.done();
     });
 
     content1.addEventListener('show', check_hash_1);

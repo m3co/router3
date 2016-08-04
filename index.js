@@ -87,6 +87,7 @@
   }
 
   function prepareClasses(container, action) {
+    if (!container) return;
     var classShow = container.hasAttribute(classShowAttribute) ?
                       container.getAttribute(classShowAttribute) :
                       null;
@@ -153,6 +154,11 @@
     var _params = [];
     var __params = {};
 
+    containers = document.querySelectorAll(tagContent + '[hash=""]');
+    for (var i = 0; i < containers.length; i++) {
+      prepareClasses(container, 'show');
+    }
+
     containers = document.querySelectorAll(tagContent + ':not([' + specialHideAttribute + '])');
     for (var i = 0; i < containers.length; i++) {
       var container = containers[i];
@@ -192,6 +198,12 @@
       _hash = _hash.slice(1);
     }
     if (!_hash) {
+      for (var i = 0; i < containers.length; i++) {
+        container = containers[i];
+        if (container.getAttribute('hash') === '') {
+          prepareClasses(container, 'show');
+        }
+      }
       return;
     }
 
