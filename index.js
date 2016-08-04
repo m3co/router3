@@ -38,6 +38,7 @@
         var parent = old_script.parentNode;
         parent.replaceChild(new_script, old_script);
       }
+      element.parentNode.dispatchEvent(new CustomEvent('load'));
 
       return element;
     });
