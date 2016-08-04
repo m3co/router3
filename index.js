@@ -234,6 +234,11 @@
         if (_hash.length > 0) {
           matchHash(container, _hash, _params);
         } else {
+          var defaults = flatSelection(container.querySelectorAll(tagContent + '[hash=""]'), container);
+          for (var j = 0; j < defaults.length; j++) {
+            prepareClasses(defaults[j], 'show');
+          }
+
           if (container.updatePromise) {
             container.updatePromise.then(function() {
               dispatchCustomEvent(container, __params);

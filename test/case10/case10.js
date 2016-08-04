@@ -31,23 +31,25 @@
     </${tagContent}>
 
     <!-- Default -->
-    <${tagContent} id="def" hash="" hidden>
+    <${tagContent} id="def" hash="">
       case 10-default
     </${tagContent}>
   `;
 
-  var async1 = async_test('Case 1: hash changed to content[hash="case10-1"]');
+  var async1 = async_test('Case 10: hash changed to content[hash="case10-1"]');
 
   async1.next = async1.step_func(_ => {
     var hash = "case10-1";
     var content1 = document.querySelector(`${tagContent}[hash="${hash}"]`);
     var content2 = document.querySelector(`${tagContent}#def`);
+    var content3 = document.querySelector(`${tagContent}#defC`);
 
     assert_true(content1.hidden);
 
     var check_hash_1 = async1.step_func((e) => {
       assert_false(content1.hidden);
       assert_true(content2.hidden);
+      assert_false(content3.hidden);
 
       content1.removeEventListener('show', check_hash_1);
       content1.addEventListener('hide', check_hash_def);
