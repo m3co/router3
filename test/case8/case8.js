@@ -62,6 +62,9 @@
     });
 
     content.addEventListener('show', check_hash);
+    content.addEventListener('load', async2.step_func(_ => {
+      assert_unreached();
+    }));
     window.location.hash = hash;
   });
 
