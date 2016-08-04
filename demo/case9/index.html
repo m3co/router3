@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://cdn.ravenjs.com/3.3.0/raven.min.js"></script>
+    <script>Raven.config('https://f4445b207a7441f1921c61ce991df095@app.getsentry.com/89786').install();</script>
+    <script src="../../index.js"></script>
+  </head>
+  <body>
+    <a href="#">Reset</a>
+    <a href="#case9-1">first case</a>
+    <a href="#case9-1/case9-11">second case</a>
+
+    <router3 id="case9-1" hash="case9-1" hidden>
+      The content to render
+
+      <router3 id="case9-11" hash="case9-11" hidden>
+        This is another hash
+      </router3>
+
+      <router3 hash="">
+        A default 9-11
+      </router3>
+    </router3>
+
+    <router3 hash="" hidden>
+      A default 9-1
+    </router3>
+
+
+  </body>
+</html>
