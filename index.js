@@ -179,6 +179,7 @@
     var _params = params || [];
     var containers;
     var container;
+    var match;
     var _hash = hash || window.location.hash;
 
     if (!parent) {
@@ -198,7 +199,7 @@
       container = containers[i];
       var search = container.getAttribute('hash');
       var matcher = new RegExp('^' + search + '$|^' + search + '\/');
-      var match = matcher.test(_hash);
+      match = matcher.test(_hash);
 
       if (match) {
         prepareClasses(container, 'show');
@@ -229,11 +230,13 @@
             dispatchCustomEvent(container, __params);
           }
         }
-        return;
+        break;
       }
     }
 
-    throw new Error('hash "' + _hash + '" does not match any content');
+    if (!match) {
+      throw new Error('hash "' + _hash + '" does not match any content');
+    }
   }
 
   function dispatchCustomEvent(container, __params) {

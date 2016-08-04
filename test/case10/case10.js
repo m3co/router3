@@ -31,7 +31,7 @@
     </${tagContent}>
 
     <!-- Default -->
-    <${tagContent} id="def" hash="">
+    <${tagContent} id="def" hash="" hidden>
       case 10-default
     </${tagContent}>
   `;
@@ -39,21 +39,35 @@
   var async1 = async_test('Case 1: hash changed to content[hash="case10-1"]');
 
   async1.next = async1.step_func(_ => {
-    var hash = "case10-1";
-    var content = document.querySelector(`${tagContent}[hash="${hash}"]`);
-    assert_true(content.hidden);
-
-    var check_hash = async1.step_func((e) => {
-      assert_false(content.hidden);
-
-      window.removeEventListener('hashchange', check_hash);
+    // Pretty strange behavior
+    // consider the issue #4
+    setTimeout(_ => {
       document.body.removeChild(div);
-
-      async1.done();
       rc.next();
+    }, 50);
+
+    var hash = "case10-1";
+    var content1 = document.querySelector(`${tagContent}[hash="${hash}"]`);
+    var content2 = document.querySelector(`${tagContent}#def`);
+    assert_true(content1.hidden);
+    assert_false(content2.hidden);
+
+    var check_hash_1 = async1.step_func((e) => {
+      assert_false(content1.hidden);
+      assert_true(content2.hidden);
+
+      content1.removeEventListener('show', check_hash_1);
+      content1.addEventListener('hide', check_hash_def);
+      window.location.hash = '';
     });
 
-    window.addEventListener('hashchange', check_hash);
+    var check_hash_def = async1.step_func(e => {
+      assert_false(content2.hidden);
+      content1.removeEventListener('hide', check_hash_def);
+      async1.done();
+    });
+
+    content1.addEventListener('show', check_hash_1);
     window.location.hash = hash;
   });
 
