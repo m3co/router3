@@ -12,9 +12,9 @@
   var currentClassHide = null;
 
   function pseudoImportHTML(element, url) {
-    return fetch(url).then(response => {
+    return fetch(url).then(function(response) {
       return response.text();
-    }).then(text => {
+    }).then(function(text) {
       element.innerHTML = text;
 
       var scripts = element.querySelectorAll('script');
