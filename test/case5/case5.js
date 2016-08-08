@@ -41,7 +41,8 @@
   var async3 = async_test('Case 5: hash changed to content[hash="case5-2/case5-21"]');
   var async4 = async_test('Case 5: hash changed to content[hash="case5-2"]');
 
-  async1.next = async1.step_func(_ => {
+  rc.push(async1.step_func(_ => {
+    document.body.appendChild(div);
     var check_hash = async1.step_func((e) => {
       window.removeEventListener('hashchange', check_hash);
 
@@ -50,15 +51,14 @@
       assert_false(content1.hidden);
       assert_false(content2.hidden);
 
-      async1.done();
       window.location.hash = '';
-      async2.next();
+      async1.done();
     });
     window.addEventListener('hashchange', check_hash);
     window.location.hash = "case5-1/case5-11";
-  });
+  }));
 
-  async2.next = async2.step_func(_ => {
+  rc.push(async2.step_func(_ => {
     var check_hash = async2.step_func((e) => {
       window.removeEventListener('hashchange', check_hash);
 
@@ -69,15 +69,14 @@
       assert_false(content2.hidden);
       assert_false(content3.hidden);
 
-      async2.done();
       window.location.hash = '';
-      async3.next();
+      async2.done();
     });
     window.addEventListener('hashchange', check_hash);
     window.location.hash = "case5-2/case5-21/case5-211";
-  });
+  }));
 
-  async3.next = async3.step_func(_ => {
+  rc.push(async3.step_func(_ => {
     var check_hash = async3.step_func((e) => {
       window.removeEventListener('hashchange', check_hash);
 
@@ -88,15 +87,14 @@
       assert_false(content2.hidden);
       assert_true(content3.hidden);
 
-      async3.done();
       window.location.hash = '';
-      async4.next();
+      async3.done();
     });
     window.addEventListener('hashchange', check_hash);
     window.location.hash = "case5-2/case5-21";
-  });
+  }));
 
-  async4.next = async4.step_func(_ => {
+  rc.push(async4.step_func(_ => {
     var check_hash = async4.step_func((e) => {
       window.removeEventListener('hashchange', check_hash);
 
@@ -110,18 +108,9 @@
       document.body.removeChild(div);
       window.location.hash = '';
       async4.done();
-      rc.next();
-
     });
     window.addEventListener('hashchange', check_hash);
     window.location.hash = "case5-2";
-  });
-
-  rc.push(_ => {
-    async1.step(_ => {
-      document.body.appendChild(div);
-      async1.next();
-    });
-  })
+  }));
 
 })(window.routeCases);
