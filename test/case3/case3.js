@@ -60,7 +60,8 @@
   var async8 = async_test('Case 3: hash changed to content[hash="case3-nested1/case3-nested11/case3-nested111/case3-nested1111"]');
 
 
-  async1.next = async1.step_func(_ => {
+  rc.push(async1.step_func(_ => {
+    document.body.appendChild(div);
     var check_hash = async1.step_func((e) => {
       window.removeEventListener('hashchange', check_hash);
 
@@ -71,13 +72,12 @@
 
       window.location.hash = '';
       async1.done();
-      async2.next();
     });
     window.addEventListener('hashchange', check_hash);
     window.location.hash = "case3-location1/case3-location2";
-  });
+  }));
 
-  async2.next = async2.step_func(_ => {
+  rc.push(async2.step_func(_ => {
     var check_hash = async2.step_func((e) => {
       window.removeEventListener('hashchange', check_hash);
 
@@ -86,15 +86,14 @@
       assert_false(content1.hidden);
       assert_true(content2.hidden);
 
-      async2.done();
       window.location.hash = '';
-      async3.next();
+      async2.done();
     });
     window.addEventListener('hashchange', check_hash);
     window.location.hash = "case3-location1";
-  });
+  }));
 
-  async3.next = async3.step_func(_ => {
+  rc.push(async3.step_func(_ => {
     var check_hash = async3.step_func((e) => {
       window.removeEventListener('hashchange', check_hash);
 
@@ -105,15 +104,14 @@
       assert_true(content2.hidden);
       assert_false(content3.hidden);
 
-      async3.done();
       window.location.hash = '';
-      async4.next();
+      async3.done();
     });
     window.addEventListener('hashchange', check_hash);
     window.location.hash = "case3-location2";
-  });
+  }));
 
-  async4.next = async4.step_func(_ => {
+  rc.push(async4.step_func(_ => {
     var check_hash = async4.step_func((e) => {
       window.removeEventListener('hashchange', check_hash);
 
@@ -130,15 +128,14 @@
       assert_false(content5.hidden);
       assert_false(content6.hidden);
 
-      async4.done();
       window.location.hash = '';
-      async5.next();
+      async4.done();
     });
     window.addEventListener('hashchange', check_hash);
     window.location.hash = "case3-nested1/case3-nested11/case3-nested111/case3-nested1111";
-  });
+  }));
 
-  async5.next = async5.step_func(_ => {
+  rc.push(async5.step_func(_ => {
     var check_hash = async5.step_func((e) => {
       window.removeEventListener('hashchange', check_hash);
 
@@ -155,15 +152,14 @@
       assert_true(content5.hidden);
       assert_false(content6.hidden);
 
-      async5.done();
       window.location.hash = '';
-      async6.next();
+      async5.done();
     });
     window.addEventListener('hashchange', check_hash);
     window.location.hash = "case3-nested1111";
-  });
+  }));
 
-  async6.next = async6.step_func(_ => {
+  rc.push(async6.step_func(_ => {
     var check_hash = async6.step_func((e) => {
       window.removeEventListener('hashchange', check_hash);
 
@@ -182,15 +178,14 @@
       assert_true(content6.hidden);
       assert_false(content7.hidden);
 
-      async6.done();
       window.location.hash = '';
-      async7.next();
+      async6.done();
     });
     window.addEventListener('hashchange', check_hash);
     window.location.hash = "case3-nested111/case3-nested1111";
-  });
+  }));
 
-  async7.next = async7.step_func(_ => {
+  rc.push(async7.step_func(_ => {
     var check_hash = async7.step_func((e) => {
       window.removeEventListener('hashchange', check_hash);
 
@@ -211,15 +206,14 @@
       assert_false(content7.hidden);
       assert_false(content8.hidden);
 
-      async7.done();
       window.location.hash = '';
-      async8.next();
+      async7.done();
     });
     window.addEventListener('hashchange', check_hash);
     window.location.hash = "case3-nested11/case3-nested111/case3-nested1111";
-  });
+  }));
 
-  async8.next = async8.step_func(_ => {
+  rc.push(async8.step_func(_ => {
     var check_hash = async8.step_func((e) => {
       window.removeEventListener('hashchange', check_hash);
 
@@ -242,22 +236,12 @@
       assert_false(content8.hidden);
       assert_false(content9.hidden);
 
-      async8.done();
       document.body.removeChild(div);
       window.location.hash = '';
-      rc.next();
-
+      async8.done();
     });
     window.addEventListener('hashchange', check_hash);
     window.location.hash = "case3-nested1/case3-nested11/case3-nested111/case3-nested1111";
-  });
-
-  rc.push(_ => {
-    async1.step(_ => {
-      document.body.appendChild(div);
-      async1.next();
-    });
-
-  });
+  }));
 
 })(window.routeCases);
