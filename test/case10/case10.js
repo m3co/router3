@@ -36,11 +36,18 @@
     </${tagContent}>
   `;
 
+  var async0 = async_test('Case 10: start');
   var async1 = async_test('Case 10: hash changed to content[hash="case10-1"]');
   var async2 = async_test('Case 10: hash changed to content[hash="case10-1/case10-11"]');
   var async3 = async_test('Case 10: hash changed to content[hash="case10-1/case10-11/case10-111"]');
 
-  async1.next = async1.step_func(_ => {
+  rc.push(async0.step_func(_ => {
+    window.location.hash = '';
+    document.body.appendChild(div);
+    async0.done();
+  }));
+
+  rc.push(async1.step_func(_ => {
     var hash = "case10-1";
     var content1 = document.querySelector(`${tagContent}[hash="${hash}"]`);
     var content2 = document.querySelector(`${tagContent}#def`);
@@ -49,29 +56,26 @@
     assert_true(content1.hidden);
 
     var check_hash_1 = async1.step_func((e) => {
-      assert_false(content1.hidden);
-      assert_true(content2.hidden);
+      assert_true(content1.hidden);
+      assert_false(content2.hidden);
       assert_false(content3.hidden);
 
       content1.removeEventListener('show', check_hash_1);
-      content1.addEventListener('hide', check_hash_def);
       window.location.hash = '';
     });
 
     var check_hash_def = async1.step_func(e => {
-      setTimeout(_ => {
-        assert_false(content2.hidden);
-        async1.done();
-        async2.next();
-      }, 10);
       content1.removeEventListener('hide', check_hash_def);
+      assert_true(content2.hidden);
+      async1.done();
     });
 
     content1.addEventListener('show', check_hash_1);
+    content1.addEventListener('hide', check_hash_def);
     window.location.hash = hash;
-  });
+  }));
 
-  async2.next = async2.step_func(_ => {
+  rc.push(async2.step_func(_ => {
     var hash = "case10-11";
     var content1 = document.querySelector(`${tagContent}[hash="${hash}"]`);
     var content2 = document.querySelector(`${tagContent}#def`);
@@ -92,20 +96,17 @@
     });
 
     var check_hash_def = async2.step_func(e => {
-      setTimeout(_ => {
-        assert_true(content4.hidden);
-        assert_true(content5.hidden);
-        async2.done();
-        async3.next();
-      }, 10);
       content1.removeEventListener('hide', check_hash_def);
+      assert_true(content4.hidden);
+      assert_true(content5.hidden);
+      async2.done();
     });
 
     content1.addEventListener('show', check_hash_1);
     window.location.hash = "case10-1/" + hash;
-  });
+  }));
 
-  async3.next = async3.step_func(_ => {
+  rc.push(async3.step_func(_ => {
     var hash = "case10-111";
     var content1 = document.querySelector(`${tagContent}[hash="${hash}"]`);
     var content2 = document.querySelector(`${tagContent}#def`);
@@ -126,25 +127,13 @@
     });
 
     var check_hash_def = async3.step_func(e => {
-      setTimeout(_ => {
-        async3.done();
-
-        document.body.removeChild(div);
-        rc.next();
-      }, 10);
+      document.body.removeChild(div);
       content1.removeEventListener('hide', check_hash_def);
+      async3.done();
     });
 
     content1.addEventListener('show', check_hash_1);
     window.location.hash = "case10-1/case10-11/" + hash;
-  });
-
-
-  rc.push(_ => {
-    async1.step(_ => {
-      document.body.appendChild(div);
-      async1.next();
-    });
-  })
+  }));
 
 })(window.routeCases);
