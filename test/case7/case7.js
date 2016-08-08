@@ -172,7 +172,7 @@
     }), 0);
   }));
 
-  rc.next(async6.step_func(_ => {
+  rc.push(async6.step_func(_ => {
     var order = [];
     var content1 = document.querySelector('#case7-1');
     var content2 = document.querySelector('#case7-11');
