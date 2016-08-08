@@ -24,7 +24,8 @@
   var async7 = async_test('Case 7: (hide event) hash changed to content[hash="case(\\d+)/case(\\d+)/case(\\w+)-(\\d+)"]');
   var async8 = async_test('Case 7: (show/hide event) hash changed to content[hash="case(\\d+)/case(\\d+)/case(\\w+)-(\\d+)"]');
 
-  async1.next = async1.step_func(_ => {
+  rc.push(async1.step_func(_ => {
+    document.body.appendChild(div);
     var content1 = document.querySelector('#case7-1');
     var param1 = '123';
 
@@ -35,14 +36,13 @@
 
       window.location.hash = '';
       async1.done();
-      async2.next();
     });
 
     content1.addEventListener('show', check_show);
     window.location.hash = `case${param1}`;
-  });
+  }));
 
-  async2.next = async2.step_func(_ => {
+  rc.push(async2.step_func(_ => {
     var content1 = document.querySelector('#case7-1');
     var param1 = '123';
 
@@ -53,7 +53,6 @@
 
       window.location.hash = '';
       async2.done();
-      async3.next();
     });
 
     content1.addEventListener('hide', check_hide);
@@ -61,9 +60,9 @@
     setTimeout(async2.step_func(_ => {
       window.location.hash = '';
     }), 0);
-  });
+  }));
 
-  async3.next = async3.step_func(_ => {
+  rc.push(async3.step_func(_ => {
     var content1 = document.querySelector('#case7-1');
     var order = [];
     var param1 = '123';
@@ -83,7 +82,6 @@
       assert_array_equals(order, ['show', 'hide']);
 
       async3.done();
-      async4.next();
     });
 
     content1.addEventListener('hide', check_hide);
@@ -92,9 +90,9 @@
     setTimeout(async3.step_func(_ => {
       window.location.hash = '';
     }), 0);
-  });
+  }));
 
-  async4.next = async4.step_func(_ => {
+  rc.push(async4.step_func(_ => {
     var order = [];
     var content1 = document.querySelector('#case7-1');
     var content2 = document.querySelector('#case7-11');
@@ -122,14 +120,12 @@
 
     setTimeout(async4.step_func(_ => {
       window.location.hash = '';
-      async5.next(); // do you see this line? should I repeat this solution
-                 // along to all other tests? I should...
       assert_array_equals(order, ['1', '2']);
       async4.done();
     }), 0);
-  });
+  }));
 
-  async5.next = async5.step_func(_ => {
+  rc.push(async5.step_func(_ => {
     var order = [];
     var content1 = document.querySelector('#case7-1');
     var content2 = document.querySelector('#case7-11');
@@ -171,14 +167,12 @@
 
     setTimeout(async5.step_func(_ => {
       window.location.hash = '';
-      async6.next(); // do you see this line? should I repeat this solution
-                 // along to all other tests? I should...
       assert_array_equals(order, ['1', '2', '3']);
       async5.done();
     }), 0);
-  });
+  }));
 
-  async6.next = async6.step_func(_ => {
+  rc.next(async6.step_func(_ => {
     var order = [];
     var content1 = document.querySelector('#case7-1');
     var content2 = document.querySelector('#case7-11');
@@ -208,14 +202,12 @@
       window.location.hash = '';
     }), 0);
     setTimeout(async6.step_func(_ => {
-      async7.next(); // do you see this line? should I repeat this solution
-                 // along to all other tests? I should...
       assert_array_equals(order, ['1', '2']);
       async6.done();
     }), 0);
-  });
+  }));
 
-  async7.next = async7.step_func(_ => {
+  rc.push(async7.step_func(_ => {
     var order = [];
     var content1 = document.querySelector('#case7-1');
     var content2 = document.querySelector('#case7-11');
@@ -260,13 +252,11 @@
     }), 0);
     setTimeout(async7.step_func(_ => {
       assert_array_equals(order, ['2', '3', '1']);
-      async8.next(); // do you see this line? should I repeat this solution
-                 // along to all other tests? I should...
       async7.done();
     }), 0);
-  });
+  }));
 
-  async8.next = async8.step_func(_ => {
+  rc.push(async8.step_func(_ => {
     var order = [];
     var content1 = document.querySelector('#case7-1');
     var content2 = document.querySelector('#case7-11');
@@ -340,19 +330,9 @@
     }), 0);
     setTimeout(async8.step_func(_ => {
       document.body.removeChild(div);
-      rc.next(); // do you see this line? should I repeat this solution
-                 // along to all other tests? I should...
-      // RECONSIDER THE ORDER OF EXECUTION
       assert_array_equals(order, ['1h', '2h', '3h', '1s', '2s', '3s']);
       async8.done();
     }), 0);
-  });
-
-  rc.push(_ => {
-    async1.step(_ => {
-      document.body.appendChild(div);
-      async1.next();
-    });
-  })
+  }));
 
 })(window.routeCases);
