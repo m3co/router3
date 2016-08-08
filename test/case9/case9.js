@@ -39,13 +39,22 @@
     </${tagContent}>
   `;
 
+  var async0 = async_test('Case 9: start');
   var async1 = async_test('Case 9: hash changed to content[hash="case9-1"]');
   var async2 = async_test('Case 9: hash changed to content[hash="case9-2"]');
   var async3 = async_test('Case 9: hash changed to content[hash="case9-3"]');
   var async4 = async_test('Case 9: hash changed to content[hash="case9-4"]');
   var async5 = async_test('Case 9: hash changed to content[hash="case9-5"]');
 
-  async1.next = async1.step_func(_ => {
+  // A Bit strange test that allows all the other tests to begin...
+  rc.push(async0.step_func(_ => {
+    document.body.appendChild(div);
+    setTimeout(_ => {
+      async0.done();
+    }, 10);
+  }));
+
+  rc.push(async1.step_func(_ => {
     var hash = 'case9-1';
     var content1 = document.querySelector(`${tagContent}[hash="case9-1"]`);
     var content2 = document.querySelector(`${tagContent}[hash="case9-2"]`);
@@ -70,15 +79,14 @@
       assert_false(content1.classList.contains('class-hide1'));
       assert_true(content1.classList.contains('class-show1'));
 
-      async2.next();
       async1.done();
     });
 
     content1.addEventListener('show', check_hash);
     window.location.hash = hash;
-  });
+  }));
 
-  async2.next = async2.step_func(_ => {
+  rc.push(async2.step_func(_ => {
     var hash = 'case9-2';
     var content1 = document.querySelector(`${tagContent}[hash="case9-1"]`);
     var content2 = document.querySelector(`${tagContent}[hash="case9-2"]`);
@@ -105,15 +113,14 @@
       assert_true(content2.classList.contains('class-show1'));
       assert_true(content3.classList.contains('class-hide1'));
 
-      async3.next();
       async2.done();
     });
 
     content2.addEventListener('show', check_hash);
     window.location.hash = hash;
-  });
+  }));
 
-  async3.next = async3.step_func(_ => {
+  rc.push(async3.step_func(_ => {
     var hash = 'case9-3';
     var content1 = document.querySelector(`${tagContent}[hash="case9-1"]`);
     var content2 = document.querySelector(`${tagContent}[hash="case9-2"]`);
@@ -159,15 +166,14 @@
       assert_false(content3.classList.contains('class-show0'));
       assert_true(content3.classList.contains('class-hide1'));
 
-      async4.next();
       async3.done();
     });
 
     content3.addEventListener('show', check_hash_show);
     window.location.hash = hash;
-  });
+  }));
 
-  async4.next = async4.step_func(_ => {
+  rc.push(async4.step_func(_ => {
     var hash = 'case9-4';
     var content1 = document.querySelector(`${tagContent}[hash="case9-1"]`);
     var content2 = document.querySelector(`${tagContent}[hash="case9-2"]`);
@@ -219,15 +225,14 @@
       assert_false(content4.classList.contains('class-show0'));
       assert_true(content4.classList.contains('class-hide0'));
 
-      async5.next()
       async4.done();
     });
 
     content4.addEventListener('show', check_hash_show);
     window.location.hash = hash;
-  });
+  }));
 
-  async5.next = async5.step_func(_ => {
+  rc.push(async5.step_func(_ => {
     var hash = 'case9-5';
     var content1 = document.querySelector(`${tagContent}[hash="case9-1"]`);
     var content2 = document.querySelector(`${tagContent}[hash="case9-2"]`);
@@ -290,19 +295,11 @@
       assert_false(content5.classList.contains('class-hide0'));
 
       document.body.removeChild(div);
-      rc.next();
       async5.done();
     });
 
     content5.addEventListener('show', check_hash_show);
     window.location.hash = hash;
-  });
-
-  rc.push(_ => {
-    async1.step(_ => {
-      document.body.appendChild(div);
-      async1.next();
-    });
-  });
+  }));
 
 })(window.routeCases);
