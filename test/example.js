@@ -66,8 +66,8 @@
   });
   function call_next_test() {         // 3)
     if (tests.length > 0) {
-      var next = tests.splice(0, 1);
-      next[0]();
+      var next = tests.shift();
+      next();
     }
   };
   call_next_test();                   // 4)
