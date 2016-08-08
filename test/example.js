@@ -10,6 +10,8 @@
   var async5 = async_test('test 5');
   var async6 = async_test('test 6');
 
+  var tests = [];                     // 1)
+
   tests.push(async1.step_func(_ => {
     async1.step_timeout(_ => {
       console.log('1');
@@ -55,11 +57,10 @@
 
   // In order to arrange a sequential testing of
   // async tests I want to use
-  //   1) a global array called tests;
+  //   1) a global array called tests  * see above
   //   2) a callback that fires the test under any circumstances
   //   3) an internal function that queues the next test to launch
   //   4) a call that fires the queue
-  var tests = [];                     // 1)
   add_result_callback(() => {         // 2)
     call_next_test();
   });
