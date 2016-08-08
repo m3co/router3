@@ -9,13 +9,24 @@
   </head>
   <script>
     setup({ allow_uncaught_exception: true });
+
     window.routeCases = [];
-    window.routeCases.next = function() {
-      var current = window.routeCases.pop();
-      if (current instanceof Function) {
-        current();
+    // In order to arrange a sequential testing of
+    // async tests I want to use
+    //   1) a global array called tests  * see above
+    //   2) a callback that fires the test under any circumstances
+    //   3) an internal function that queues the next test to launch
+    //   4) a call that fires the queue
+    add_result_callback(() => {         // 2)
+      window.call_next_test();
+    });
+    window.call_next_test = function call_next_test() {         // 3)
+      if (this.routeCases.length > 0) {
+        var next = this.routeCases.shift();
+        next();
       }
     };
+
   </script>
   <body>
   </body>
@@ -24,6 +35,7 @@
   -->
   <script src="definition.js"></script>
   <script src="case1/case1.js"></script>
+  <!--
   <script src="case3/case3.js"></script>
   <script src="case4/case4.js"></script>
   <script src="case5/case5.js"></script>
@@ -32,7 +44,9 @@
   <script src="case8/case8.js"></script>
   <script src="case9/case9.js"></script>
   <script src="case10/case10.js"></script>
+  -->
   <script>
-    window.routeCases.next();
+    window.call_next_test();                   // 4)
+    // This construction is enough to implement within all the tests
   </script>
 </html>

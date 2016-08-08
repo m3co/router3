@@ -26,7 +26,11 @@
   var async3 = async_test('Case 1: click over button leads to unmatching route');
   var async4 = async_test('Case 1: reset to the window.location.hash="" state at case 1');
 
-  async1.next = async1.step_func(_ => {
+  rc.push(async1.step_func(_ => {
+
+    // this line is a dirty add for all consecuent tests for this first case
+    document.body.appendChild(div);
+
     var hash = "a-hash-template";
     var content = document.querySelector(`${tagContent}[hash="${hash}"]`);
     assert_true(content.hidden);
@@ -37,16 +41,14 @@
 
       // clean the test
       window.removeEventListener('hashchange', check_hash);
-
       async1.done();
-      async2.next();
     });
 
     window.addEventListener('hashchange', check_hash);
     window.location.hash = hash;
-  });
+  }));
 
-  async2.next = async2.step_func(_ => {
+  rc.push(async2.step_func(_ => {
     var hash = "another-hash-template";
     var content = document.querySelector(`${tagContent}[hash="${hash}"]`);
     assert_true(content.hidden);
@@ -57,17 +59,15 @@
 
       // clean the test
       window.removeEventListener('hashchange', check_hash);
-
       async2.done();
-      async3.next();
     });
 
     window.addEventListener('hashchange', check_hash);
     window.location.hash = hash;
 
-  });
+  }));
 
-  async3.next = async3.step_func(_ => {
+  rc.push(async3.step_func(_ => {
     var hash = "myHash";
     var content = document.querySelector(`${tagContent}[hash="${hash}"]`);
     assert_equals(content, null);
@@ -75,33 +75,24 @@
     var check_error = async3.step_func((message) => {
       // clean the test
       assert_true(message.indexOf(`hash "${hash}" does not match any content`) > 0);
-      window.location.hash = '';
 
+      window.location.hash = '';
       async3.done();
-      async4.next();
     });
 
     onerror = check_error;
     document.querySelector('button').dispatchEvent(new Event('click'));
-  });
+  }));
 
-  async4.next = async4.step_func(_ => {
+  rc.push(async4.step_func(_ => {
     var check_hash = async4.step_func((e) => {
       window.removeEventListener('hashchange', check_hash);
-      async4.done();
-      rc.next();
       document.body.removeChild(div);
+      async4.done();
     });
 
     window.addEventListener('hashchange', check_hash);
     window.location.hash = '';
-  });
-
-  rc.push(_ => {
-    async1.step(_ => {
-      document.body.appendChild(div);
-      async1.next();
-    });
-  })
+  }));
 
 })(window.routeCases);
