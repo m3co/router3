@@ -59,7 +59,7 @@ If src is defined for a router them it can accept the __load__ event, e.g.
 </script>
 ```
 
-When a router matches a ```window.location.hash``` then the __show/hide__ event is dispatched, e.g.
+When a router matches a ```window.location.hash``` then the __show / hide__ events are dispatched, e.g.
 
 ```html
 <router3 hash="page1">
@@ -82,6 +82,8 @@ When a router matches a ```window.location.hash``` then the __show/hide__ event 
 </script>
 ```
 
+### Default router
+
 The default router can be achieved if set ```hash=""```. E.g.
 
 ```html
@@ -89,5 +91,7 @@ The default router can be achieved if set ```hash=""```. E.g.
 <router3 hash="">A default view</router3>
 ```
 
-So, when ```window.location.hash === 'page1'``` then the ```router[hash="page1"]``` will appear. But, if ```window.location.hash === ''``` then the ```router[hash=""]``` will appear and the other will hide.
+So, when ```window.location.hash === 'page1'``` then ```router[hash="page1"]``` will appear.
+
+But, if ```window.location.hash === ''``` then ```router[hash=""]``` will appear and the other will hide.
 
