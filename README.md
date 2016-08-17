@@ -91,7 +91,7 @@ The default router can be achieved if set ```hash=""```. E.g.
 <router3 hash="">A default view</router3>
 ```
 
-So, when ```window.location.hash === 'page1'``` then ```router[hash="page1"]``` will appear.
+So, if ```window.location.hash === 'page1'``` then ```router[hash="page1"]``` is visible.
 
-But, if ```window.location.hash === ''``` then ```router[hash=""]``` will appear and the other will hide.
+But, if ```window.location.hash === ''``` then ```router[hash=""]``` is visible and the other is hidden.
 
