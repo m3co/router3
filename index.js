@@ -213,7 +213,6 @@
 
           if (container.updatePromise) {
             container.updatePromise.then(function() {
-              console.log(container);
               dispatchCustomEvent(container, __params);
             })
           } else {
