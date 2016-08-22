@@ -43,6 +43,21 @@ The full set of attributes that are present in the router3 tag are:
 - class-hide [string] the class that will appear instead of hidden
 - class-show [string] the class that will appear when not hidden
 
+A second example that allows to fetch HTML code from outside
+```html
+<router3 hash="page1" src="/page1.hml">
+  Some default html code
+  <router3-src></router3-src>
+  More html code
+</router3>
+<a href="#page1">Show page1</a>
+```
+
+In this second example you should care about the __/absolute URL path__.
+The tag ```<router3-src>``` holds everything that comes from ```/page1.html```.
+If this tag is not indicated, by default it will be appended via ```appendChild``` [as indicated here](https://github.com/m3co/router3/blob/master/index.js#L53).
+
+
 ### Events
 
 If src is defined for a router them it can accept the __load__ event, e.g.
