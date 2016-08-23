@@ -22,16 +22,9 @@
           container.appendChild(src);
         }
         var url = container.getAttribute('src');
-        var pim = document.createElement('pseudoimport-html');
-        pim.setAttribute('src', url);
-        src.appendChild(pim);
         container.updatePromise = window
           .PseudoimportHTML
-          .importHTML(pim, url, "pseudoimport-html-src")
-          .then(_ => {
-            console.log(container);
-            container.dispatchEvent(new CustomEvent('load'));
-          });
+          .importHTML(container, url, src);
       }
     }
   }
