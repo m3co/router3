@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="/resources/testharness.js/testharness.css" rel="stylesheet">
+    <script src="/resources/testharness.js/testharness.js"></script>
+
+    <script src="/CustomEventPolyfill.js"></script>
+    <script src="/bower_components/es6-promise/es6-promise.min.js"></script>
+    <script src="/bower_components/fetch/fetch.js"></script>
+    <script src="/bower_components/pseudoimport-html/index.js" defer></script>
+    <script src="/index.js"></script>
+  </head>
+  <body>
+    <a href="">Reset</a>
+    <a href="#import1">import1</a>
+    <router3 hash="import1" src="import1.html"></router3>
+  </body>
+  <script>
+    'use strict';
+    var async1 = async_test('check if router loads info from import1.html');
+    var container = document.querySelector('router3');
+    container.addEventListener('load', async1.step_func(e => {
+      assert_true(container.innerHTML.includes('983u49jg3oijg34og3498g34oiu3j4g93j4g'));
+      async1.done();
+    }));
+  </script>
+</html>
