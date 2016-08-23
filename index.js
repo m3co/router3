@@ -257,6 +257,7 @@
   });
   window.addEventListener('load', function(e) {
     prepareConfig();
+    window.PseudoimportHTML.run(tagContent, tagSrc);
     var containers = document.querySelectorAll(tagContent + ':not([' + specialHideAttribute + '])');
     for (var i = 0; i < containers.length; i++) {
       var container = containers[i];

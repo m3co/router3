@@ -18,8 +18,17 @@
   <script>
     'use strict';
     var async1 = async_test('check if router loads info from import1.html');
+    var async2 = async_test('check if router loads info from import2.html');
+
     var container = document.querySelector('router3');
     container.addEventListener('load', async1.step_func(e => {
+      var container1 = container.querySelector('router3');
+
+      container1.addEventListener('load', async2.step_func(e => {
+        assert_true(container1.innerHTML.includes('i3j430984u349j34oim43o3m4o3j434gj'));
+        async2.done();
+      }));
+
       assert_true(container.innerHTML.includes('983u49jg3oijg34og3498g34oiu3j4g93j4g'));
       async1.done();
     }));
