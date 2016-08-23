@@ -257,22 +257,23 @@
   });
   window.addEventListener('load', function(e) {
     prepareConfig();
-    window.PseudoimportHTML.run(tagContent, tagSrc);
-    var containers = document.querySelectorAll(tagContent + ':not([' + specialHideAttribute + '])');
-    for (var i = 0; i < containers.length; i++) {
-      var container = containers[i];
-      var attrs = container.attributes;
-      prepareClasses(container, 'hide');
+    window.PseudoimportHTML.run(tagContent, tagSrc).then(function() {
+      var containers = document.querySelectorAll(tagContent + ':not([' + specialHideAttribute + '])');
+      for (var i = 0; i < containers.length; i++) {
+        var container = containers[i];
+        var attrs = container.attributes;
+        prepareClasses(container, 'hide');
 
-      for (var j = 0; j < attrs.length; j++) {
-        if (/param\d+/.test(attrs[j].name)) {
-          attrs.removeNamedItem(attrs[j].name);
-          j--;
+        for (var j = 0; j < attrs.length; j++) {
+          if (/param\d+/.test(attrs[j].name)) {
+            attrs.removeNamedItem(attrs[j].name);
+            j--;
+          }
         }
       }
-    }
-    updateAll();
-    matchHash();
+      updateAll();
+      matchHash();
+    });
   });
 
 })();
