@@ -20,6 +20,19 @@ Still I've to develop some things...
 
 Check the demos' source code. They can give you a big picture about what I want to develop.
 
+## Setup
+
+```
+<script src="bower_components/customevent-polyfill/customevent-polyfill.min.js"></script>
+<script src="bower_components/es6-promise/es6-promise.min.js"></script>
+<script src="bower_components/fetch/fetch.js"></script>
+<script src="bower_components/pseudoimport-html/index.js" defer></script>
+<script src="bower_components/router3/router3.js"></script>
+```
+
+In fact, if you're using a recent browser then you may omit ```customevent-polyfill```, ```es6-promise``` and ```fetch``` scripts.
+
+
 ## Usage
 
 _If you can express your idea in HTML then you can express it in JS_
