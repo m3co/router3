@@ -4,7 +4,7 @@
 
   var div = document.createElement('div');
   div.innerHTML = `
-    <${tagContent} hash="" hidden>
+    <${tagContent} id="case12-default" hash="" hidden>
       The default content
     </${tagContent}>
 
@@ -38,7 +38,7 @@
     var hash = "case12-1";
     var defaultHash = "";
     var content = document.querySelector(`${tagContent}[hash="${hash}"]`);
-    var defaultContent = document.querySelector(`${tagContent}[hash="${defaultHash}"]`);
+    var defaultContent = document.querySelector(`${tagContent}#case12-default`);
 
     var check_default = async1.step_func((e) => {
       assert_true(content.hidden);
@@ -46,12 +46,12 @@
 
       // clean the test
       document.body.removeChild(div);
-      window.removeEventListener('hashchange', check_hash);
       window.location.hash = '';
       async1.done();
     });
 
     var check_hash = async1.step_func((e) => {
+      window.removeEventListener('hashchange', check_hash);
       defaultContent.addEventListener('show', check_default);
       assert_false(content.hidden);
       window.location.hash = defaultHash;
