@@ -171,6 +171,7 @@
         container = containers[i];
         if (container.getAttribute('hash') === '') {
           prepareClasses(container, 'show');
+          dispatchCustomEvent(container, _params);
         }
       }
       return;
