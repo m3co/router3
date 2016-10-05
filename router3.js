@@ -170,8 +170,11 @@
       for (var i = 0; i < containers.length; i++) {
         container = containers[i];
         if (container.getAttribute('hash') === '') {
+          var isHidden = container.hasAttribute(specialHideAttribute);
           prepareClasses(container, 'show');
-          dispatchCustomEvent(container, _params);
+          if (isHidden) {
+            dispatchCustomEvent(container, _params);
+          }
         }
       }
       return;
