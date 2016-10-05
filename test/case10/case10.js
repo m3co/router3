@@ -125,20 +125,13 @@
       assert_true(content4.hidden);
       assert_true(content5.hidden);
 
+      document.body.removeChild(div);
       content1.removeEventListener('show', check_hash_1);
       window.location.hash = '';
-    });
-
-    var check_hash_def = async3.step_func(e => {
-      document.body.removeChild(div);
-      content1.removeEventListener('hide', check_hash_def);
-      async3.step_timeout(_ => {
-        async3.done();
-      }, 1);
+      async3.done();
     });
 
     content1.addEventListener('show', check_hash_1);
-    content1.addEventListener('hide', check_hash_def);
     window.location.hash = "case10-1/case10-11/" + hash;
   }));
 
