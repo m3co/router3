@@ -13,8 +13,8 @@ Is it working? Check [the tests](http://router2-demo.m3c.space/test)
 Still I've to develop some things...
 
 1. Add a relative tag. The idea is located at test/case2 (is it necessary?)
-2. Make possible to define nested views inside the src=url file
-3. Dispatch show/hide events for default routers
+2. Set a name for params
+3. Don't let the routers to rely on the order of appearance
 
 ## Demo
 
