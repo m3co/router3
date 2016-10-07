@@ -28,11 +28,10 @@
     </${tagContent}>
   `;
 
-  var async1 = async_test('Case 12: hash changed to content[hash="case12-1"]');
+  var async1 = async_test('Case 12: default show/fire events for #case12-default');
+  var async2 = async_test('Case 12: default show/fire events for #case12-1-default');
 
   rc.push(async1.step_func(_ => {
-
-    // this line is a dirty add for all consecuent tests for this first case
     document.body.appendChild(div);
 
     var hash1 = "case12-2";
@@ -68,6 +67,44 @@
 
     content1.addEventListener('show', check_hash);
     window.location.hash = hash1;
+  }));
+
+  rc.push(async2.step_func(_ => {
+    document.body.appendChild(div);
+
+    var hash1 = "case12-12";
+    var hash2 = "case12-11";
+    var defaultHash = "";
+    var content1 = document.querySelector(`${tagContent}[hash="${hash1}"]`);
+    var content2 = document.querySelector(`${tagContent}[hash="${hash2}"]`);
+    var defaultContent = document.querySelector(`${tagContent}#case12-1-default`);
+
+    var check_default = async2.step_func(e => {
+      assert_false(defaultContent.hidden);
+
+      window.location.hash = 'case12-1/' + hash2;
+    });
+
+    var check_default_hide = async2.step_func(e => {
+      assert_true(defaultContent.hidden);
+
+      // clean the test
+      document.body.removeChild(div);
+      window.location.hash = '';
+      async2.done();
+    });
+
+    var check_hash = async2.step_func((e) => {
+      content1.removeEventListener('show', check_hash);
+
+      defaultContent.addEventListener('show', check_default);
+      defaultContent.addEventListener('hide', check_default_hide);
+
+      window.location.hash = defaultHash;
+    });
+
+    content1.addEventListener('show', check_hash);
+    window.location.hash = 'case12-1/' + hash1;
   }));
 
 })(window.routeCases);
