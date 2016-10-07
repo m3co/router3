@@ -8,7 +8,7 @@
       The default content
     </${tagContent}>
 
-    <${tagContent} hash="case12-1" hidden>
+    <${tagContent} id="case12-1-default" hash="case12-1" hidden>
       The content at case12-1
       <${tagContent} hash="" hidden>
         The default content at case12-1
@@ -35,14 +35,21 @@
     // this line is a dirty add for all consecuent tests for this first case
     document.body.appendChild(div);
 
-    var hash = "case12-1";
+    var hash1 = "case12-2";
+    var hash2 = "case12-1";
     var defaultHash = "";
-    var content = document.querySelector(`${tagContent}[hash="${hash}"]`);
+    var content1 = document.querySelector(`${tagContent}[hash="${hash1}"]`);
+    var content2 = document.querySelector(`${tagContent}[hash="${hash2}"]`);
     var defaultContent = document.querySelector(`${tagContent}#case12-default`);
 
-    var check_default = async1.step_func((e) => {
-      assert_true(content.hidden);
+    var check_default = async1.step_func(e => {
       assert_false(defaultContent.hidden);
+
+      window.location.hash = hash2;
+    });
+
+    var check_default_hide = async1.step_func(e => {
+      assert_true(defaultContent.hidden);
 
       // clean the test
       document.body.removeChild(div);
@@ -51,14 +58,16 @@
     });
 
     var check_hash = async1.step_func((e) => {
-      window.removeEventListener('hashchange', check_hash);
+      content1.removeEventListener('show', check_hash);
+
       defaultContent.addEventListener('show', check_default);
-      assert_false(content.hidden);
+      defaultContent.addEventListener('hide', check_default_hide);
+
       window.location.hash = defaultHash;
     });
 
-    window.addEventListener('hashchange', check_hash);
-    window.location.hash = hash;
+    content1.addEventListener('show', check_hash);
+    window.location.hash = hash1;
   }));
 
 })(window.routeCases);
