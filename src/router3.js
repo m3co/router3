@@ -1,6 +1,4 @@
-'use strict';
-
-;(function () {
+;(() => {
   var tagContent = 'router3';
   var tagSrc = 'router3-src';
   var tagConfig = 'router3-config';
@@ -23,7 +21,9 @@
           container.appendChild(src);
         }
         var url = container.getAttribute('src');
-        container.updatePromise = window.PseudoimportHTML.importHTML(container, url, src);
+        container.updatePromise = window
+          .PseudoimportHTML
+          .importHTML(container, url, src);
       }
     }
   }
@@ -56,8 +56,12 @@
 
   function prepareClasses(container, action) {
     if (!container) return;
-    var classShow = container.hasAttribute(classShowAttribute) ? container.getAttribute(classShowAttribute) : null;
-    var classHide = container.hasAttribute(classHideAttribute) ? container.getAttribute(classHideAttribute) : null;
+    var classShow = container.hasAttribute(classShowAttribute) ?
+                      container.getAttribute(classShowAttribute) :
+                      null;
+    var classHide = container.hasAttribute(classHideAttribute) ?
+                      container.getAttribute(classHideAttribute) :
+                      null;
     if (action === 'show') {
       if (classShow || classHide) {
         if (classHide) {
@@ -71,7 +75,8 @@
           container.classList.add(currentClassShow);
         }
       } else {
-        if ((currentClassShow || currentClassHide) && classShow !== '' && classHide !== '') {
+        if ((currentClassShow || currentClassHide) &&
+            (classShow !== '') && (classHide !== '')) {
           if (currentClassShow) {
             container.classList.add(currentClassShow);
           }
@@ -96,7 +101,8 @@
           container.classList.remove(currentClassShow);
         }
       } else {
-        if ((currentClassShow || currentClassHide) && classShow !== '' && classHide !== '') {
+        if ((currentClassShow || currentClassHide) &&
+            (classShow !== '') && (classHide !== '')) {
           if (currentClassShow) {
             container.classList.remove(currentClassShow);
           }
@@ -184,11 +190,11 @@
 
         var __params = {};
         var next_hash = _hash.split(matcher);
-        _params.forEach(function (item, i) {
+        _params.forEach(function(item, i) {
           container.setAttribute('param' + (i + 1), item);
           __params['param' + (i + 1)] = item;
         });
-        _hash.match(matcher).forEach(function (item, i) {
+        _hash.match(matcher).forEach(function(item, i) {
           if (i > 0 && item) {
             _params.push(item);
             __params['param' + _params.length] = item;
@@ -206,9 +212,9 @@
           }
 
           if (container.updatePromise) {
-            container.updatePromise.then(function () {
+            container.updatePromise.then(function() {
               dispatchCustomEvent(container, __params);
-            });
+            })
           } else {
             dispatchCustomEvent(container, __params);
           }
@@ -232,25 +238,29 @@
   function prepareConfig() {
     var configs = document.querySelectorAll(tagConfig);
     var config = configs[0]; // here I want to check if there are more than
-    // one config in the same document
+                             // one config in the same document
     if (config instanceof HTMLElement) {
-      currentClassShow = config.hasAttribute(classShowAttribute) ? config.getAttribute(classShowAttribute) : null;
-      currentClassHide = config.hasAttribute(classHideAttribute) ? config.getAttribute(classHideAttribute) : null;
+      currentClassShow = config.hasAttribute(classShowAttribute) ?
+                           config.getAttribute(classShowAttribute) :
+                           null;
+      currentClassHide = config.hasAttribute(classHideAttribute) ?
+                           config.getAttribute(classHideAttribute) :
+                           null;
     } else {
       currentClassShow = null;
       currentClassHide = null;
     }
   }
 
-  window.addEventListener('hashchange', function (e) {
+  window.addEventListener('hashchange', function(e) {
     prepareConfig();
     hideAll();
     updateAll();
     matchHash();
   });
-  window.addEventListener('load', function (e) {
+  window.addEventListener('load', function(e) {
     prepareConfig();
-    window.PseudoimportHTML.run(tagContent, tagSrc).then(function () {
+    window.PseudoimportHTML.run(tagContent, tagSrc).then(function() {
       var containers = document.querySelectorAll(tagContent + ':not([' + specialHideAttribute + '])');
       for (var i = 0; i < containers.length; i++) {
         var container = containers[i];
@@ -268,4 +278,5 @@
       matchHash();
     });
   });
+
 })();
