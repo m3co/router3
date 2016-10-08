@@ -20,13 +20,11 @@
     "url": "https://github.com/m3co/router3/issues"
   },
   "homepage": "https://github.com/m3co/router3#readme",
-  "dependencies": {
+  "devDependencies": {
     "eslint": "^3.7.1",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
-    "gulp-eslint": "^3.0.1"
-  },
-  "devDependencies": {
+    "gulp-eslint": "^3.0.1",
     "babel-preset-es2015": "^6.16.0"
   }
 }
