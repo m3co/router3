@@ -122,12 +122,12 @@
     var _params = [];
     var __params = {};
 
-    containers = document.querySelectorAll(tagContent + '[hash=""]');
+    containers = document.querySelectorAll(`${tagContent}[hash=""]`);
     for (var i = 0; i < containers.length; i++) {
       prepareClasses(container, 'show');
     }
 
-    containers = document.querySelectorAll(tagContent + ':not([' + specialHideAttribute + '])');
+    containers = document.querySelectorAll(`${tagContent}:not([${specialHideAttribute}])`);
     for (var i = 0; i < containers.length; i++) {
       var container = containers[i];
       var attrs = container.attributes;
@@ -182,7 +182,7 @@
     for (var i = 0; i < containers.length; i++) {
       container = containers[i];
       var search = container.getAttribute('hash');
-      var matcher = new RegExp('^' + search + '$|^' + search + '\/');
+      var matcher = new RegExp(`^${search}$|^${search}\/`);
       match = matcher.test(_hash);
 
       if (match) {
@@ -190,15 +190,15 @@
 
         var __params = {};
         var next_hash = _hash.split(matcher);
-        _params.forEach(function(item, i) {
-          container.setAttribute('param' + (i + 1), item);
-          __params['param' + (i + 1)] = item;
+        _params.forEach((item, i) => {
+          container.setAttribute(`param${i + 1}`, item);
+          __params[`param${i + 1}`] = item;
         });
-        _hash.match(matcher).forEach(function(item, i) {
+        _hash.match(matcher).forEach((item, i) => {
           if (i > 0 && item) {
             _params.push(item);
-            __params['param' + _params.length] = item;
-            container.setAttribute('param' + _params.length, item);
+            __params[`param${_params.length}`] = item;
+            container.setAttribute(`param${ _params.length}`, item);
           }
         });
 
@@ -206,13 +206,13 @@
         if (_hash.length > 0) {
           matchHash(container, _hash, _params);
         } else {
-          var defaults = flatSelection(container.querySelectorAll(tagContent + '[hash=""]'), container);
+          var defaults = flatSelection(container.querySelectorAll(`${tagContent}[hash=""]`), container);
           for (var j = 0; j < defaults.length; j++) {
             prepareClasses(defaults[j], 'show');
           }
 
           if (container.updatePromise) {
-            container.updatePromise.then(function() {
+            container.updatePromise.then(() => {
               dispatchCustomEvent(container, __params);
             })
           } else {
@@ -224,7 +224,7 @@
     }
 
     if (!match) {
-      throw new Error('hash "' + _hash + '" does not match any content');
+      throw new Error(`hash "${ _hash}" does not match any content`);
     }
   }
 
@@ -252,16 +252,16 @@
     }
   }
 
-  window.addEventListener('hashchange', function(e) {
+  window.addEventListener('hashchange', e => {
     prepareConfig();
     hideAll();
     updateAll();
     matchHash();
   });
-  window.addEventListener('load', function(e) {
+  window.addEventListener('load', e => {
     prepareConfig();
-    window.PseudoimportHTML.run(tagContent, tagSrc).then(function() {
-      var containers = document.querySelectorAll(tagContent + ':not([' + specialHideAttribute + '])');
+    window.PseudoimportHTML.run(tagContent, tagSrc).then(() => {
+      var containers = document.querySelectorAll(`${tagContent}:not([${specialHideAttribute}])`);
       for (var i = 0; i < containers.length; i++) {
         var container = containers[i];
         var attrs = container.attributes;

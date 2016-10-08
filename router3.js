@@ -176,7 +176,7 @@
     for (var i = 0; i < containers.length; i++) {
       container = containers[i];
       var search = container.getAttribute('hash');
-      var matcher = new RegExp('^' + search + '$|^' + search + '\/');
+      var matcher = new RegExp('^' + search + '$|^' + search + '/');
       match = matcher.test(_hash);
 
       if (match) {
