@@ -1,6 +1,6 @@
 ;(function() {
   'use strict';
-  var router = document.currentScript.parentNode;
+  var router = document.querySelector('[src="/demo/case6/tmpl2/page.html"]');
   router.addEventListener('show', function (e) {
     console.log(e.detail);
     console.log('show location 2');

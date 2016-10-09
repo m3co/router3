@@ -22,7 +22,7 @@
     <router3 id="r1" hash="case2-(\d+)" hidden>
       Case 2 - <span></span>
       <script>
-        var router = document.currentScript.parentNode;
+        var router = document.querySelector('#r1');
         var span = router.querySelector('span');
         router.addEventListener('show', function(e) {
           span.textContent = e.detail.param1;

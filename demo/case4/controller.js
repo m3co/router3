@@ -1,4 +1,4 @@
-;(_ => {
+;(function() {
   'use strict';
   var content1   = document.querySelector('#r1');
   var content11  = document.querySelector('#r11');
