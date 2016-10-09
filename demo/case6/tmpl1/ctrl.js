@@ -1,4 +1,4 @@
-;(_ => {
+;(function() {
   'use strict';
   var router = document.currentScript.parentNode;
   router.addEventListener('show', function (e) {
