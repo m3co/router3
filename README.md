@@ -24,13 +24,13 @@ Check the demos' source code. They can give you a big picture about what I want 
 
 ```
 <script src="bower_components/customevent-polyfill/customevent-polyfill.min.js"></script>
-<script src="bower_components/es6-promise/es6-promise.min.js"></script>
+<script src="bower_components/promise-polyfill/promise.min.js"></script>
 <script src="bower_components/fetch/fetch.js"></script>
 <script src="bower_components/pseudoimport-html/pseudoimport-html.js" defer></script>
 <script src="bower_components/router3/router3.js"></script>
 ```
 
-In fact, if you're using a recent browser then you may omit ```customevent-polyfill```, ```es6-promise``` and ```fetch``` scripts.
+In fact, if you're using a recent browser then you may omit ```customevent-polyfill```, ```promise-polyfill``` and ```fetch``` scripts.
 
 
 ## Usage
