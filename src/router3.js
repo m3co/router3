@@ -260,7 +260,7 @@
   });
   window.addEventListener('load', e => {
     prepareConfig();
-    window.PseudoimportHTML.run(tagContent).then(() => {
+    window.PseudoimportHTML.run(tagContent, tagSrc).then(() => {
       var containers = document.querySelectorAll(`${tagContent}:not([${specialHideAttribute}])`);
       for (var i = 0; i < containers.length; i++) {
         var container = containers[i];
