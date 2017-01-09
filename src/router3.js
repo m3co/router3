@@ -20,10 +20,15 @@
           src = document.createElement(tagSrc);
           container.appendChild(src);
         }
+        src.setAttribute('src', container.getAttribute('src'));
+        src.classList.add('mdl-fragment');
         var url = container.getAttribute('src');
-        container.updatePromise = window
-          .PseudoimportHTML
-          .importHTML(container, url, src);
+        container.updatePromise = new Promise(function(resolve) {
+          src.addEventListener('load', function(e) {
+            resolve(e);
+          });
+        });
+        componentHandler.upgradeElement(src);
       }
     }
   }
@@ -260,23 +265,21 @@
   });
   window.addEventListener('load', e => {
     prepareConfig();
-    window.PseudoimportHTML.run(tagContent, tagSrc).then(() => {
-      var containers = document.querySelectorAll(`${tagContent}:not([${specialHideAttribute}])`);
-      for (var i = 0; i < containers.length; i++) {
-        var container = containers[i];
-        var attrs = container.attributes;
-        prepareClasses(container, 'hide');
+    var containers = document.querySelectorAll(`${tagContent}:not([${specialHideAttribute}])`);
+    for (var i = 0; i < containers.length; i++) {
+      var container = containers[i];
+      var attrs = container.attributes;
+      prepareClasses(container, 'hide');
 
-        for (var j = 0; j < attrs.length; j++) {
-          if (/param\d+/.test(attrs[j].name)) {
-            attrs.removeNamedItem(attrs[j].name);
-            j--;
-          }
+      for (var j = 0; j < attrs.length; j++) {
+        if (/param\d+/.test(attrs[j].name)) {
+          attrs.removeNamedItem(attrs[j].name);
+          j--;
         }
       }
-      updateAll();
-      matchHash();
-    });
+    }
+    updateAll();
+    matchHash();
   });
 
 })();
