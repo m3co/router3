@@ -4,11 +4,13 @@
   "description": "The second try for writting a normal and simple router tag",
   "main": "router3.js",
   "directories": {
-    "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "gulp"
+    "prestart": "npm install",
+    "postinstall": "bower install",
+    "start": "gulp",
+    "doc": "gulp doc",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -21,10 +23,17 @@
   },
   "homepage": "https://github.com/m3co/router3#readme",
   "devDependencies": {
-    "eslint": "^3.7.1",
+    "babel-preset-es2015": "^6.16.0",
+    "bower": "^1.7.9",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
-    "gulp-eslint": "^3.0.1",
-    "babel-preset-es2015": "^6.16.0"
+    "gulp-connect": "^5.0.0",
+    "gulp-csslint": "^1.0.0",
+    "gulp-htmlhint": "^0.3.1",
+    "gulp-jscs": "^4.0.0",
+    "gulp-jsdoc3": "^1.0.1",
+    "gulp-jshint": "^2.0.4",
+    "jshint-stylish": "^2.2.1"
+
   }
 }
