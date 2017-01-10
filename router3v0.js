@@ -1,5 +1,7 @@
 'use strict';
 
+/* jshint ignore:start */
+// jscs:disable
 ;(function () {
   var tagContent = 'router3';
   var tagSrc = 'router3-src';
@@ -274,3 +276,4 @@
     matchHash();
   });
 })();
+/* jshint ignore:end */

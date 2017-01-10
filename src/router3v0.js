@@ -1,3 +1,5 @@
+/* jshint ignore:start */
+// jscs:disable
 ;(() => {
   var tagContent = 'router3';
   var tagSrc = 'router3-src';
@@ -283,3 +285,4 @@
   });
 
 })();
+/* jshint ignore:end */
