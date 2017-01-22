@@ -4,6 +4,13 @@
   const cssRouter = "mdl-router3";
   const selRouter = `.${cssRouter}`;
 
+  function selectHash(el, hash) {
+    if (el instanceof HTMLDocument || el instanceof HTMLElement) {
+      return el.querySelector(`[hash="${hash}"]`);
+    }
+    return document.querySelector(`[hash="${el}"]`);
+  }
+
   onload_test(function() {
     var router3 = document.querySelector(selRouter);
 
@@ -11,5 +18,22 @@
 
     this.done();
   }, "Check API");
+
+
+  onload_test(function() {
+    // [setup]
+    let hash1 = selectHash("hash1");
+    let handler = this.step_func((e) => {
+      // [verify]
+      assert_false(hash1.hidden);
+
+      // [teardown]
+      this.done();
+    });
+    window.addEventListener('hashchange', handler);
+
+    // [run]
+    window.location.hash = "hash1";
+  }, "Change route from '' to '#hash'");
 
 })();
