@@ -23,18 +23,22 @@
   onload_test(function() {
     // [setup]
     let hash1 = selectHash("hash1");
+    let hash2 = selectHash("hash2");
+
     let handler = this.step_func((e) => {
       // [verify]
       assert_false(hash1.hidden);
+      assert_true(hash2.hidden);
 
       // [teardown]
       this.done();
     });
     window.addEventListener('hashchange', handler);
     assert_true(hash1.hidden);
+    assert_true(hash2.hidden);
 
     // [run]
     window.location.hash = "hash1";
-  }, "Change route from '' to '#hash'");
+  }, "Change route from '' to '#hash1'");
 
 })();
