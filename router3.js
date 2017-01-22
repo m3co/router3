@@ -48,6 +48,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             _this.element_.hidden = false;
           }
         });
+        this.element_.hidden = true;
       }
     }]);
 

@@ -31,6 +31,7 @@
       this.done();
     });
     window.addEventListener('hashchange', handler);
+    assert_true(hash1.hidden);
 
     // [run]
     window.location.hash = "hash1";

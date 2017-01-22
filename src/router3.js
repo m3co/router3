@@ -33,7 +33,7 @@
           this.element_.hidden = false;
         }
       });
-
+      this.element_.hidden = true;
     }
 
   }
