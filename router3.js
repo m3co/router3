@@ -38,7 +38,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     _createClass(MaterialRouter3, [{
       key: 'init',
-      value: function init() {}
+      value: function init() {
+        var _this = this;
+
+        var hash = this.element_.getAttribute('hash');
+        window.addEventListener('hashchange', function (e) {
+          var newHash = e.newURL.split('#')[1];
+          if (newHash === hash) {
+            _this.element_.hidden = false;
+          }
+        });
+      }
     }]);
 
     return MaterialRouter3;

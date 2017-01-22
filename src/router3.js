@@ -26,6 +26,13 @@
      *
      */
     init() {
+      let hash = this.element_.getAttribute('hash');
+      window.addEventListener('hashchange', (e) => {
+        let newHash = e.newURL.split('#')[1];
+        if (newHash === hash) {
+          this.element_.hidden = false;
+        }
+      });
 
     }
 
