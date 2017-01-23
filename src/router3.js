@@ -29,53 +29,49 @@
     init() {
       window.addEventListener('hashchange', (e) => {
         let newHash = e.newURL.split('#')[1];
-        let hash = this.element_.getAttribute('hash');
+        let hashes = [this.element_.getAttribute('hash')];
+        let parents = [this.element_];
 
-        var parent1 = this.element_.parentElement.closest(selClass);
-        if (parent1) {
+        parents.push(this.element_.parentElement.closest(selClass));
+        if (parents[1]) {
 
-          let parentHash1 = parent1.getAttribute('hash');
+          hashes.push(parents[1].getAttribute('hash'));
+          parents.push(parents[1].parentElement.closest(selClass));
 
-          var parent2 = parent1.parentElement.closest(selClass);
-          if (parent2) {
+          if (parents[2]) {
 
-            let parentHash2 = parent2.getAttribute('hash');
+            hashes.push(parents[2].getAttribute('hash'));
+            parents.push(parents[2].parentElement.closest(selClass));
 
-            var parent3 = parent2.parentElement.closest(selClass);
-            if (parent3) {
+            if (parents[3]) {
 
-              let parentHash3 = parent3.getAttribute('hash');
-              if (newHash === [parentHash3, parentHash2, parentHash1, hash].join('/')) {
-                parent3.hidden = false;
-                parent2.hidden = false;
-                parent1.hidden = false;
-                this.element_.hidden = false;
+              hashes.push(parents[3].getAttribute('hash'));
+
+              if (newHash === hashes.slice(0, 4).reverse().join('/')) {
+                parents.slice(0, 4).forEach(parent => parent.hidden = false);
               } else {
-                this.element_.hidden = true;
+                parents[0].hidden = true;
               }
 
             } else {
-              if (newHash === [parentHash2, parentHash1, hash].join('/')) {
-                parent2.hidden = false;
-                parent1.hidden = false;
-                this.element_.hidden = false;
+              if (newHash === hashes.slice(0, 3).reverse().join('/')) {
+                parents.slice(0, 3).forEach(parent => parent.hidden = false);
               } else {
-                this.element_.hidden = true;
+                parents[0].hidden = true;
               }
             }
           } else {
-            if (newHash === [parentHash1, hash].join('/')) {
-              parent1.hidden = false;
-              this.element_.hidden = false;
+            if (newHash === hashes.slice(0, 2).reverse().join('/')) {
+              parents.slice(0, 2).forEach(parent => parent.hidden = false);
             } else {
-              this.element_.hidden = true;
+              parents[0].hidden = true;
             }
           }
         } else {
-          if (newHash === hash) {
-            this.element_.hidden = false;
+          if (newHash === hashes.slice(0, 1).reverse().join('/')) {
+            parents.slice(0, 1).forEach(parent => parent.hidden = false);
           } else {
-            this.element_.hidden = true;
+            parents[0].hidden = true;
           }
         }
       });
