@@ -11,16 +11,15 @@ window.addEventListener('load', () => {
     return document.querySelector(`[hash="${el}"]`);
   }
 
-  async_test(function() {
+  promise_test(function() { return new Promise((resolve, reject) => {
     var router3 = document.querySelector(selRouter);
 
     assert_true(router3.MaterialRouter3 instanceof MaterialRouter3);
 
-    this.done();
-  }, "Check API");
+    resolve();
+  }); }, "Check API");
 
-
-  async_test(function() {
+  promise_test(function() { return new Promise((resolve, reject) => {
     // [setup]
     let hash1 = selectHash("hash1");
     let hash2 = selectHash("hash2");
@@ -31,20 +30,20 @@ window.addEventListener('load', () => {
       assert_true(hash2.hidden);
 
       // [teardown]
-      this.done();
-      console.log(2);
+      window.removeEventListener('hashchange', handler);
+      window.location.hash = "";
+      resolve();
     });
     window.addEventListener('hashchange', handler);
     assert_true(hash1.hidden);
     assert_true(hash2.hidden);
-    console.log(1);
 
     // [run]
     window.location.hash = "hash1";
-  }, "Change route from '' to '#hash1'");
+  }); }, "Change route from '' to '#hash1'");
 
 
-  async_test(function() {
+  promise_test(function() { return new Promise((resolve, reject) => {
     // [setup]
     let hash1 = selectHash("hash1");
     let hash2 = selectHash("hash2");
@@ -55,16 +54,16 @@ window.addEventListener('load', () => {
       assert_false(hash2.hidden);
 
       // [teardown]
-      this.done();
-      console.log(4);
+      window.removeEventListener('hashchange', handler);
+      window.location.hash = "";
+      resolve();
     });
     window.addEventListener('hashchange', handler);
     assert_true(hash1.hidden);
     assert_true(hash2.hidden);
-    console.log(3);
 
     // [run]
     window.location.hash = "hash2";
-  }, "Change route from '' to '#hash2'");
+  }); }, "Change route from '' to '#hash2'");
 
 });
