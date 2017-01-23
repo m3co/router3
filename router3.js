@@ -51,6 +51,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             if (newHash === [parentHash, hash].join('/')) {
               parent.hidden = false;
               _this.element_.hidden = false;
+            } else {
+              _this.element_.hidden = true;
             }
           } else {
             if (newHash === hash) {

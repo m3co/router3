@@ -36,6 +36,8 @@
           if (newHash === [parentHash, hash].join('/')) {
             parent.hidden = false;
             this.element_.hidden = false;
+          } else {
+            this.element_.hidden = true;
           }
         } else {
           if (newHash === hash) {

@@ -55,14 +55,16 @@ window.addEventListener('load', () => {
   }); }, "Change route from '' to '#hash2'");
 
   promise_test(function() { return new Promise((resolve, reject) => {
-    // setup
+    // [setup]
     let hash1 = selectHash("hash1");
     let hash3 = selectHash("hash3");
+    let hash4 = selectHash("hash4");
 
     let handler = this.step_func((e) => {
       // [verify]
       assert_false(hash1.hidden);
       assert_false(hash3.hidden);
+      assert_true(hash4.hidden);
 
       // [teardown]
       teardown(resolve, handler);
@@ -70,10 +72,33 @@ window.addEventListener('load', () => {
     window.addEventListener('hashchange', handler);
     assert_true(hash1.hidden);
     assert_true(hash3.hidden);
+    assert_true(hash4.hidden);
 
     // [run]
-    console.log('go to hash1/hash3');
     window.location.hash = "hash1/hash3";
   }); }, "Change route from '' to #hash1/hash3");
 
+  promise_test(function() { return new Promise((resolve, reject) => {
+    // [setup]
+    let hash1 = selectHash("hash1");
+    let hash3 = selectHash("hash3");
+    let hash4 = selectHash("hash4");
+
+    let handler = this.step_func((e) => {
+      // [verify]
+      assert_false(hash1.hidden);
+      assert_true(hash3.hidden);
+      assert_false(hash4.hidden);
+
+      // [teardown]
+      teardown(resolve, handler);
+    });
+    window.addEventListener('hashchange', handler);
+    assert_true(hash1.hidden);
+    assert_true(hash3.hidden);
+    assert_true(hash4.hidden);
+
+    // [run]
+    window.location.hash = "hash1/hash4";
+  }); }, "Change route from '' to #hash1/hash4");
 });
