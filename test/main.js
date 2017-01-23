@@ -101,4 +101,28 @@ window.addEventListener('load', () => {
     // [run]
     window.location.hash = "hash1/hash4";
   }); }, "Change route from '' to #hash1/hash4");
+
+  promise_test(function() { return new Promise((resolve, reject) => {
+    // [setup]
+    let hash1 = selectHash("hash1");
+    let hash3 = selectHash("hash3");
+    let hash5 = selectHash("hash5");
+
+    let handler = this.step_func((e) => {
+      // [verify]
+      assert_false(hash1.hidden);
+      assert_false(hash3.hidden);
+      assert_false(hash5.hidden);
+
+      // [teardown]
+      teardown(resolve, handler);
+    });
+    window.addEventListener('hashchange', handler);
+    assert_true(hash1.hidden);
+    assert_true(hash3.hidden);
+    assert_true(hash5.hidden);
+
+    // [run]
+    window.location.hash = "hash1/hash3/hash5";
+  }); }, "Change route from '' to #hash1/hash3/hash5");
 });
