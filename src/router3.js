@@ -31,6 +31,8 @@
         let newHash = e.newURL.split('#')[1];
         if (newHash === hash) {
           this.element_.hidden = false;
+        } else {
+          this.element_.hidden = true;
         }
       });
       this.element_.hidden = true;

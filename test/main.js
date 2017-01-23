@@ -32,7 +32,7 @@ window.addEventListener('load', () => {
       // [teardown]
       window.removeEventListener('hashchange', handler);
       window.location.hash = "";
-      resolve();
+      setTimeout(() => resolve(), 0);
     });
     window.addEventListener('hashchange', handler);
     assert_true(hash1.hidden);
@@ -56,7 +56,7 @@ window.addEventListener('load', () => {
       // [teardown]
       window.removeEventListener('hashchange', handler);
       window.location.hash = "";
-      resolve();
+      setTimeout(() => resolve(), 0);
     });
     window.addEventListener('hashchange', handler);
     assert_true(hash1.hidden);

@@ -46,6 +46,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           var newHash = e.newURL.split('#')[1];
           if (newHash === hash) {
             _this.element_.hidden = false;
+          } else {
+            _this.element_.hidden = true;
           }
         });
         this.element_.hidden = true;
