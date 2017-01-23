@@ -4,13 +4,6 @@ window.addEventListener('load', () => {
   const cssRouter = "mdl-router3";
   const selRouter = `.${cssRouter}`;
 
-  function selectHash(el, hash) {
-    if (el instanceof HTMLDocument || el instanceof HTMLElement) {
-      return el.querySelector(`[hash="${hash}"]`);
-    }
-    return document.querySelector(`[hash="${el}"]`);
-  }
-
   promise_test(function() { return new Promise((resolve, reject) => {
     var router3 = document.querySelector(selRouter);
 
@@ -30,9 +23,7 @@ window.addEventListener('load', () => {
       assert_true(hash2.hidden);
 
       // [teardown]
-      window.removeEventListener('hashchange', handler);
-      window.location.hash = "";
-      setTimeout(() => resolve(), 0);
+      teardown(resolve, handler);
     });
     window.addEventListener('hashchange', handler);
     assert_true(hash1.hidden);
@@ -54,9 +45,7 @@ window.addEventListener('load', () => {
       assert_false(hash2.hidden);
 
       // [teardown]
-      window.removeEventListener('hashchange', handler);
-      window.location.hash = "";
-      setTimeout(() => resolve(), 0);
+      teardown(resolve, handler);
     });
     window.addEventListener('hashchange', handler);
     assert_true(hash1.hidden);
