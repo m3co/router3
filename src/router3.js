@@ -33,19 +33,19 @@
         let parents = [this.element_];
 
         parents.push(this.element_.parentElement.closest(selClass));
-        if (parents[1]) {
+        if (parents[parents.length - 1]) {
 
-          hashes.push(parents[1].getAttribute('hash'));
-          parents.push(parents[1].parentElement.closest(selClass));
+          hashes.push(parents[parents.length - 1].getAttribute('hash'));
+          parents.push(parents[parents.length - 1].parentElement.closest(selClass));
 
-          if (parents[2]) {
+          if (parents[parents.length - 1]) {
 
-            hashes.push(parents[2].getAttribute('hash'));
-            parents.push(parents[2].parentElement.closest(selClass));
+            hashes.push(parents[parents.length - 1].getAttribute('hash'));
+            parents.push(parents[parents.length - 1].parentElement.closest(selClass));
 
-            if (parents[3]) {
+            if (parents[parents.length - 1]) {
 
-              hashes.push(parents[3].getAttribute('hash'));
+              hashes.push(parents[parents.length - 1].getAttribute('hash'));
 
               if (newHash === hashes.slice(0, 4).reverse().join('/')) {
                 parents.slice(0, 4).forEach(parent => parent.hidden = false);
