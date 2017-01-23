@@ -3,6 +3,7 @@
 
   const classAsString = 'MaterialRouter3';
   const cssClass = 'mdl-router3';
+  const selClass = `.${cssClass}`;
 
   /**
    * Class MaterialRouter3
@@ -29,10 +30,19 @@
       let hash = this.element_.getAttribute('hash');
       window.addEventListener('hashchange', (e) => {
         let newHash = e.newURL.split('#')[1];
-        if (newHash === hash) {
-          this.element_.hidden = false;
+        var parent = this.element_.parentElement.closest(selClass);
+        if (parent) {
+          let parentHash = parent.getAttribute('hash');
+          if (newHash === [parentHash, hash].join('/')) {
+            parent.hidden = false;
+            this.element_.hidden = false;
+          }
         } else {
-          this.element_.hidden = true;
+          if (newHash === hash) {
+            this.element_.hidden = false;
+          } else {
+            this.element_.hidden = true;
+          }
         }
       });
       this.element_.hidden = true;
