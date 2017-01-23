@@ -27,25 +27,45 @@
      *
      */
     init() {
-      let hash = this.element_.getAttribute('hash');
       window.addEventListener('hashchange', (e) => {
         let newHash = e.newURL.split('#')[1];
-        var parent = this.element_.parentElement.closest(selClass);
-        if (parent) {
-          let parentHash = parent.getAttribute('hash');
-          var parent2 = parent.parentElement.closest(selClass);
+        let hash = this.element_.getAttribute('hash');
+
+        var parent1 = this.element_.parentElement.closest(selClass);
+        if (parent1) {
+
+          let parentHash1 = parent1.getAttribute('hash');
+
+          var parent2 = parent1.parentElement.closest(selClass);
           if (parent2) {
+
             let parentHash2 = parent2.getAttribute('hash');
-            if (newHash === [parentHash2, parentHash, hash].join('/')) {
-              parent2.hidden = false;
-              parent.hidden = false;
-              this.element_.hidden = false;
+
+            var parent3 = parent2.parentElement.closest(selClass);
+            if (parent3) {
+
+              let parentHash3 = parent3.getAttribute('hash');
+              if (newHash === [parentHash3, parentHash2, parentHash1, hash].join('/')) {
+                parent3.hidden = false;
+                parent2.hidden = false;
+                parent1.hidden = false;
+                this.element_.hidden = false;
+              } else {
+                this.element_.hidden = true;
+              }
+
             } else {
-              this.element_.hidden = true;
+              if (newHash === [parentHash2, parentHash1, hash].join('/')) {
+                parent2.hidden = false;
+                parent1.hidden = false;
+                this.element_.hidden = false;
+              } else {
+                this.element_.hidden = true;
+              }
             }
           } else {
-            if (newHash === [parentHash, hash].join('/')) {
-              parent.hidden = false;
+            if (newHash === [parentHash1, hash].join('/')) {
+              parent1.hidden = false;
               this.element_.hidden = false;
             } else {
               this.element_.hidden = true;

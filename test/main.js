@@ -155,4 +155,65 @@ window.addEventListener('load', () => {
     // [run]
     window.location.hash = "hash1/hash3/hash6";
   }); }, "Change route from '' to #hash1/hash3/hash6");
+
+  promise_test(function() { return new Promise((resolve, reject) => {
+    // [setup]
+    let hash1 = selectHash("hash1");
+    let hash3 = selectHash("hash3");
+    let hash5 = selectHash("hash5");
+    let hash7 = selectHash("hash7");
+    let hash8 = selectHash("hash8");
+
+    let handler = this.step_func((e) => {
+      // [verify]
+      assert_false(hash1.hidden);
+      assert_false(hash3.hidden);
+      assert_false(hash5.hidden);
+      assert_false(hash7.hidden);
+      assert_true(hash8.hidden);
+
+      // [teardown]
+      teardown(resolve, handler);
+    });
+    window.addEventListener('hashchange', handler);
+    assert_true(hash1.hidden);
+    assert_true(hash3.hidden);
+    assert_true(hash5.hidden);
+    assert_true(hash7.hidden);
+    assert_true(hash8.hidden);
+
+    // [run]
+    window.location.hash = "hash1/hash3/hash5/hash7";
+  }); }, "Change route from '' to #hash1/hash3/hash5/hash7");
+
+  promise_test(function() { return new Promise((resolve, reject) => {
+    // [setup]
+    let hash1 = selectHash("hash1");
+    let hash3 = selectHash("hash3");
+    let hash5 = selectHash("hash5");
+    let hash7 = selectHash("hash7");
+    let hash8 = selectHash("hash8");
+
+    let handler = this.step_func((e) => {
+      // [verify]
+      assert_false(hash1.hidden);
+      assert_false(hash3.hidden);
+      assert_false(hash5.hidden);
+      assert_true(hash7.hidden);
+      assert_false(hash8.hidden);
+
+      // [teardown]
+      teardown(resolve, handler);
+    });
+    window.addEventListener('hashchange', handler);
+    assert_true(hash1.hidden);
+    assert_true(hash3.hidden);
+    assert_true(hash5.hidden);
+    assert_true(hash7.hidden);
+    assert_true(hash8.hidden);
+
+    // [run]
+    window.location.hash = "hash1/hash3/hash5/hash8";
+  }); }, "Change route from '' to #hash1/hash3/hash5/hash8");
+
 });
