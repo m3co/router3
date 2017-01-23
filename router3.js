@@ -48,11 +48,23 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           var parent = _this.element_.parentElement.closest(selClass);
           if (parent) {
             var parentHash = parent.getAttribute('hash');
-            if (newHash === [parentHash, hash].join('/')) {
-              parent.hidden = false;
-              _this.element_.hidden = false;
+            var parent2 = parent.parentElement.closest(selClass);
+            if (parent2) {
+              var parentHash2 = parent2.getAttribute('hash');
+              if (newHash === [parentHash2, parentHash, hash].join('/')) {
+                parent2.hidden = false;
+                parent.hidden = false;
+                _this.element_.hidden = false;
+              } else {
+                _this.element_.hidden = true;
+              }
             } else {
-              _this.element_.hidden = true;
+              if (newHash === [parentHash, hash].join('/')) {
+                parent.hidden = false;
+                _this.element_.hidden = false;
+              } else {
+                _this.element_.hidden = true;
+              }
             }
           } else {
             if (newHash === hash) {
