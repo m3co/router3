@@ -29,37 +29,41 @@
     init() {
       window.addEventListener('hashchange', (e) => {
         let newHash = e.newURL.split('#')[1];
-        let hashes = [];
-        let parents = [this.element_];
-
-        this.route_(newHash, parents, hashes);
+        let hash = this.element_.getAttribute('hash');
+        var lastHash = newHash.split('/').reverse()[0];
+        if (hash === lastHash) {
+          route_(newHash, [this.element_], []);
+        } else {
+          this.element_.hidden = true;
+        }
       });
       this.element_.hidden = true;
     }
 
-    /**
-     * Route/Navigate to chain-hash
-     *
-     * @param {String} newHash - The new hash to navigate
-     * @param {Array} parents - The array of pushed parents
-     * @param {Array} hashes - The array of pushed hashes
-     * @private
-     */
-    route_(newHash, parents, hashes) {
-      parents.push(parents[hashes.length].parentElement.closest(selClass));
-      hashes.push(parents[hashes.length].getAttribute('hash'));
+  }
 
-      if (parents[hashes.length]) {
-        this.route_(newHash, parents, hashes);
-      } else {
-        if (newHash === hashes.slice(0, hashes.length).reverse().join('/')) {
-          parents.slice(0, hashes.length).forEach(parent => parent.hidden = false);
-        } else {
-          parents[0].hidden = true;
-        }
+  /**
+   * Route/Navigate to chain-hash
+   *
+   * @param {String} newHash - The new hash to navigate
+   * @param {Array} parents - The array of pushed parents
+   * @param {Array} hashes - The array of pushed hashes
+   * @private
+   */
+  function route_(newHash, parents, hashes) {
+    parents.push(parents[hashes.length].parentElement.closest(selClass));
+    hashes.push(parents[hashes.length].getAttribute('hash'));
+
+    let hash = hashes.slice(0, hashes.length).reverse().join('/');
+    if (parents[hashes.length]) {
+      return route_(newHash, parents, hashes);
+    } else {
+      if (newHash === hash) {
+        parents.slice(0, hashes.length).forEach(parent => parent.hidden = false);
+        return hash;
       }
     }
-
+    return null;
   }
 
   window[classAsString] = MaterialRouter3;

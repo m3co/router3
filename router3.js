@@ -44,45 +44,48 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         window.addEventListener('hashchange', function (e) {
           var newHash = e.newURL.split('#')[1];
-          var hashes = [];
-          var parents = [_this.element_];
-
-          _this.route_(newHash, parents, hashes);
+          var hash = _this.element_.getAttribute('hash');
+          var lastHash = newHash.split('/').reverse()[0];
+          if (hash === lastHash) {
+            route_(newHash, [_this.element_], []);
+          } else {
+            _this.element_.hidden = true;
+          }
         });
         this.element_.hidden = true;
-      }
-
-      /**
-       * Route/Navigate to chain-hash
-       *
-       * @param {String} newHash - The new hash to navigate
-       * @param {Array} parents - The array of pushed parents
-       * @param {Array} hashes - The array of pushed hashes
-       * @private
-       */
-
-    }, {
-      key: 'route_',
-      value: function route_(newHash, parents, hashes) {
-        parents.push(parents[hashes.length].parentElement.closest(selClass));
-        hashes.push(parents[hashes.length].getAttribute('hash'));
-
-        if (parents[hashes.length]) {
-          this.route_(newHash, parents, hashes);
-        } else {
-          if (newHash === hashes.slice(0, hashes.length).reverse().join('/')) {
-            parents.slice(0, hashes.length).forEach(function (parent) {
-              return parent.hidden = false;
-            });
-          } else {
-            parents[0].hidden = true;
-          }
-        }
       }
     }]);
 
     return MaterialRouter3;
   }();
+
+  /**
+   * Route/Navigate to chain-hash
+   *
+   * @param {String} newHash - The new hash to navigate
+   * @param {Array} parents - The array of pushed parents
+   * @param {Array} hashes - The array of pushed hashes
+   * @private
+   */
+
+
+  function route_(newHash, parents, hashes) {
+    parents.push(parents[hashes.length].parentElement.closest(selClass));
+    hashes.push(parents[hashes.length].getAttribute('hash'));
+
+    var hash = hashes.slice(0, hashes.length).reverse().join('/');
+    if (parents[hashes.length]) {
+      return route_(newHash, parents, hashes);
+    } else {
+      if (newHash === hash) {
+        parents.slice(0, hashes.length).forEach(function (parent) {
+          return parent.hidden = false;
+        });
+        return hash;
+      }
+    }
+    return null;
+  }
 
   window[classAsString] = MaterialRouter3;
 
