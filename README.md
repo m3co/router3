@@ -1,24 +1,13 @@
-# router3
+# MDL router3
 The second try for writting a normal and simple router tag
-
-## How to?
-
-Wanna see it in action? Check [the demos](http://router2-demo.m3c.space/demo)
-
-Is it working? Check [the tests](http://router2-demo.m3c.space/test)
 
 
 ## TODO
 
 Still I've to develop some things...
 
-1. Add a relative tag. The idea is located at test/case2 (is it necessary?)
 2. Set a name for params
 3. Don't let the routers to rely on the order of appearance
-
-## Demo
-
-Check the demos' source code. They can give you a big picture about what I want to develop.
 
 ## Setup
 
@@ -41,9 +30,9 @@ A router is an HTML tag that defines a region that browser shows when ```window.
 
 Check this simple example:
 ```html
-<router3 hash="page1">
+<div class="mdl-router3" hash="page1">
   Some HTML content
-</router3>
+</div>
 <a href="#page1">Show page1</a>
 ```
 
@@ -52,34 +41,26 @@ If click over the anchor then the router becomes visible. Otherwise it's hidden.
 The full set of attributes that are present in the router3 tag are:
 
 - hash [string] or "regexp"
-- src [string] points to an absolute URL
-- class-hide [string] the class that will appear instead of hidden
-- class-show [string] the class that will appear when not hidden
+- src [string] points to an absolute URL *still under consideration*
 
 A second example that allows to fetch HTML code from outside
 ```html
-<router3 hash="page1" src="/page1.hml">
+<div class="mdl-router3" hash="page1" src="/page1.hml">
   Some default html code
-  <router3-src></router3-src>
   More html code
-</router3>
+</div>
 <a href="#page1">Show page1</a>
 ```
-
-In this second example you should care about the __/absolute URL path__.
-The tag ```<router3-src>``` holds everything that comes from ```/page1.html```.
-If this tag is not indicated, by default it will be appended via ```appendChild``` [as indicated here](https://github.com/m3co/router3/blob/master/index.js#L53).
-
 
 ### Events
 
 If src is defined for a router them it can accept the __load__ event, e.g.
 
 ```html
-<router3 hash="page1" src="/page1.html"></router3>
+<div class="mdl-router3" hash="page1" src="/page1.html"></div>
 <script>
   document
-    .querySelector('router3[hash="page1"]')
+    .querySelector('[hash="page1"]')
     .addEventListener('load', e => {
     // this event will be executed after
     // the browser loads the url /page1.html
@@ -90,18 +71,18 @@ If src is defined for a router them it can accept the __load__ event, e.g.
 When a router matches a ```window.location.hash``` then the __show / hide__ events are dispatched, e.g.
 
 ```html
-<router3 hash="page1">
+<div class="mdl-router3" hash="page1">
   some content
-</router3>
+</div>
 <script>
   document
-    .querySelector('router3[hash="page1"]')
+    .querySelector('[hash="page1"]')
     .addEventListener('show', e => {
     // this event will be executed after
     // the browser changes its hash to #page1
   });
   document
-    .querySelector('router3[hash="page1"]')
+    .querySelector('[hash="page1"]')
     .addEventListener('hide', e => {
     // this event will be executed after
     // the browser changes its hash to something
@@ -115,11 +96,11 @@ When a router matches a ```window.location.hash``` then the __show / hide__ even
 The default router can be achieved if set ```hash=""```. E.g.
 
 ```html
-<router3 hash="page1" src="/page1.html"></router3>
-<router3 hash="">A default view</router3>
+<div class="mdl-router3" hash="page1" src="/page1.html"></div>
+<div class="mdl-router3" hash="">A default view</div>
 ```
 
-So, if ```window.location.hash === 'page1'``` then ```router[hash="page1"]``` is visible.
+So, if ```window.location.hash === 'page1'``` then ```[hash="page1"]``` is visible.
 
-But, if ```window.location.hash === ''``` then ```router[hash=""]``` is visible and the other is hidden.
+But, if ```window.location.hash === ''``` then ```[hash=""]``` is visible and the other is hidden.
 
