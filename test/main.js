@@ -283,7 +283,7 @@ window.addEventListener('load', () => {
 
     // [run]
     window.location.hash = "hash1";
-  }); }, "Change route from '' to '#hash1'");
+  }); }, "Catch router's show event if go from '' to '#hash1'");
 
   promise_test(function() { return new Promise((resolve, reject) => {
     // [setup]
@@ -314,7 +314,7 @@ window.addEventListener('load', () => {
 
     // [run]
     window.location.hash = "hash1/hash3/hash5/hash7";
-  }); }, "Change route from '' to #hash1/hash3/hash5/hash7");
+  }); }, "Catch router's show event if go from '' to #hash1/hash3/hash5/hash7");
 
   promise_test(function() { return new Promise((resolve, reject) => {
     // [setup]
@@ -345,6 +345,6 @@ window.addEventListener('load', () => {
 
     // [run]
     window.location.hash = "hash1/hash3/hash5/hash7";
-  }); }, "Change route from '' to #hash1/hash3/hash5/hash7");
+  }); }, "Catch router's show event if go from '' to #hash1/hash3/hash5/hash7");
 
 });
