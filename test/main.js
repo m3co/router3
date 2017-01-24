@@ -23,6 +23,36 @@ window.addEventListener('load', () => {
     let handler = this.step_func((e) => {
       // [verify]
       assert_false(hashRE1.hidden);
+      assert_false(hashRE2.hidden);
+      assert_true(hash2.hidden);
+      assert_true(hash1.hidden);
+
+      assert_equals(e.detail.param1, "123");
+      assert_equals(e.detail.param2, "456");
+
+      // [teardown]
+      teardown(resolve, handler);
+    });
+    hashRE2.addEventListener('show', handler);
+    assert_true(hashRE1.hidden);
+    assert_true(hashRE2.hidden);
+    assert_true(hash2.hidden);
+    assert_true(hash1.hidden);
+
+    // [run]
+    window.location.hash = "hash-exp123/hash1-exp456";
+  }); }, "Catch route's param if go from '' to '#hash-exp123/hash1-exp456' that matches /hash-exp([0-9]+)/hash1-exp([0-9]+) with param1=123 and param2=456");
+
+  promise_test(function() { return new Promise((resolve, reject) => {
+    // [setup]
+    let hash1 = selectHash("hash1");
+    let hash2 = selectHash("hash2");
+    let hashRE1 = selectHash("hash-exp([0-9]+)");
+    let hashRE2 = selectHash("hash1-exp([0-9]+)");
+
+    let handler = this.step_func((e) => {
+      // [verify]
+      assert_false(hashRE1.hidden);
       assert_true(hash2.hidden);
       assert_true(hash1.hidden);
 
