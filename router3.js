@@ -51,6 +51,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
           if (hash === lastHash) {
             lastMatch = route_(newHash, [_this.element_], []);
+            _this.element_.dispatchEvent(new CustomEvent('show', {
+              bubbles: true,
+              detail: {
+                router: _this.element_
+              }
+            }));
           } else {
             _this.element_.hidden = true;
           }

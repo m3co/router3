@@ -36,6 +36,12 @@
 
         if (hash === lastHash) {
           lastMatch = route_(newHash, [this.element_], []);
+          this.element_.dispatchEvent(new CustomEvent('show', {
+            bubbles: true,
+            detail: {
+              router: this.element_
+            }
+          }));
         } else {
           this.element_.hidden = true;
         }
