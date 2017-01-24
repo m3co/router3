@@ -1,56 +1,62 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <link href="../resources/testharness.js/testharness.css" rel="stylesheet">
-    <script src="../resources/testharness.js/testharness.js"></script>
-    <script>
-      window.location.hash = '';
-    </script>
-    <script src="/bower_components/material-design-lite/material.min.js"></script>
-    <script src="/bower_components/customevent-polyfill/customevent-polyfill.js"></script>
-    <script src="/bower_components/promise-polyfill/promise.min.js"></script>
-    <script src="/bower_components/fetch/fetch.js"></script>
-    <script src="/bower_components/pseudoimport-html/fragment.js"></script>
+    <title>Router3 test page</title>
+    <script src="/resources/testharness.js/testharness.js"></script>
+    <script src="/bower_components/material-design-lite/material.js"></script>
     <script src="/router3.js"></script>
+    <script src="helper.js"></script>
+    <script>
+      'use strict';
+      window.location.hash = "";
+    </script>
+
+    <script src="main.js"></script>
   </head>
-  <script>
-    setup({ allow_uncaught_exception: true });
-
-    window.routeCases = [];
-    // In order to arrange a sequential testing of
-    // async tests I want to use
-    //   1) a global array called tests  * see above
-    //   2) a callback that fires the test under any circumstances
-    //   3) an internal function that queues the next test to launch
-    //   4) a call that fires the queue
-    add_result_callback(() => {         // 2)
-      window.call_next_test();
-    });
-    window.call_next_test = function call_next_test() {         // 3)
-      if (this.routeCases.length > 0) {
-        var next = this.routeCases.shift();
-        next();
-      }
-    };
-
-  </script>
   <body>
+    <a href="#hash1">Hash 1</a>
+    <a href="#hash1/hash3">Hash 3</a>
+    <a href="#hash1/hash3/hash5">Hash 5</a>
+    <a href="#hash1/hash3/hash5/hash7">Hash 7</a>
+    <br>
+    <a href="#hash1">Hash 1</a>
+    <a href="#hash1/hash3">Hash 3</a>
+    <a href="#hash1/hash3/hash5">Hash 5</a>
+    <a href="#hash1/hash3/hash5/hash8">Hash 8</a>
+    <br>
+    <a href="#hash1">Hash 1</a>
+    <a href="#hash1/hash3">Hash 3</a>
+    <a href="#hash1/hash3/hash6">Hash 6</a>
+    <br>
+    <a href="#hash1">Hash 1</a>
+    <a href="#hash1/hash4">Hash 4</a>
+    <br>
+    <a href="#hash2">Hash 2</a>
+
+    <div class="mdl-router3" hash="hash2">
+      Hash 2
+    </div>
+    <div class="mdl-router3" hash="hash1">
+      Hash 1
+      <div class="mdl-router3" hash="hash4">
+        Hash 4
+      </div>
+      <div class="mdl-router3" hash="hash3">
+        Hash 3
+        <div class="mdl-router3" hash="hash6">
+          Hash 6
+        </div>
+        <div class="mdl-router3" hash="hash5">
+          Hash 5
+          <div class="mdl-router3" hash="hash8">
+            Hash 8
+          </div>
+          <div class="mdl-router3" hash="hash7">
+            Hash 7
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
-  <!--
-  <script src="case2/case2.js"></script>
-  -->
-  <script src="definition.js"></script>
-  <script src="case1/case1.js"></script>
-  <script src="case3/case3.js"></script>
-  <script src="case4/case4.js"></script>
-  <script src="case5/case5.js"></script>
-  <script src="case6/case6.js"></script>
-  <script src="case7/case7.js"></script>
-  <script src="case8/case8.js"></script>
-  <script src="case9/case9.js"></script>
-  <script src="case10/case10.js"></script>
-  <script>
-    window.call_next_test();                   // 4)
-    // This construction is enough to implement within all the tests
-  </script>
 </html>
+

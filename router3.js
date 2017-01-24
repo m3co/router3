@@ -1,276 +1,121 @@
 'use strict';
 
-;(function () {
-  var tagContent = 'router3';
-  var tagSrc = 'router3-src';
-  var tagConfig = 'router3-config';
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-  var classShowAttribute = 'class-show';
-  var classHideAttribute = 'class-hide';
-  var specialHideAttribute = 'private-hidden';
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-  var currentClassShow = null;
-  var currentClassHide = null;
+(function () {
+  'use strict';
 
-  function updateAll() {
-    var containers = document.querySelectorAll(tagContent);
-    for (var i = 0; i < containers.length; i++) {
-      var container = containers[i];
-      if (!container.updatePromise && container.hasAttribute('src')) {
-        var src = container.querySelector(tagSrc);
-        if (!src) {
-          src = document.createElement(tagSrc);
-          container.appendChild(src);
-        }
-        src.setAttribute('src', container.getAttribute('src'));
-        src.classList.add('mdl-fragment');
-        var url = container.getAttribute('src');
-        container.updatePromise = new Promise(function (resolve) {
-          src.addEventListener('load', function (e) {
-            resolve(e);
-          });
-        });
-        componentHandler.upgradeElement(src);
-      }
-    }
-  }
+  var classAsString = 'MaterialRouter3';
+  var cssClass = 'mdl-router3';
+  var selClass = '.' + cssClass;
 
-  function flatSelection(containers, parent) {
-    var flatten = [];
-    var container;
-    var not_inside_container;
-    for (var i = 0; i < containers.length; i++) {
-      container = containers[i];
-      not_inside_container = true;
-      while (container) {
-        container = container.parentNode;
-        if (container === parent) {
-          break;
-        }
-        if (container) {
-          if (container.tagName === tagContent.toUpperCase()) {
-            not_inside_container = false;
-            break;
-          }
-        }
-      }
-      if (not_inside_container) {
-        flatten.push(containers[i]);
-      }
-    }
-    return flatten;
-  }
+  var lastMatch = null;
 
-  function prepareClasses(container, action) {
-    if (!container) return;
-    var classShow = container.hasAttribute(classShowAttribute) ? container.getAttribute(classShowAttribute) : null;
-    var classHide = container.hasAttribute(classHideAttribute) ? container.getAttribute(classHideAttribute) : null;
-    if (action === 'show') {
-      if (classShow || classHide) {
-        if (classHide) {
-          container.classList.remove(classHide);
-        } else if (currentClassHide) {
-          container.classList.remove(currentClassHide);
-        }
-        if (classShow) {
-          container.classList.add(classShow);
-        } else if (currentClassShow) {
-          container.classList.add(currentClassShow);
-        }
-      } else {
-        if ((currentClassShow || currentClassHide) && classShow !== '' && classHide !== '') {
-          if (currentClassShow) {
-            container.classList.add(currentClassShow);
-          }
-          if (currentClassHide) {
-            container.classList.remove(currentClassHide);
-          }
-        } else {
-          container.hidden = false;
-        }
-      }
-      container.removeAttribute(specialHideAttribute);
-    } else if (action === 'hide') {
-      if (classShow || classHide) {
-        if (classHide) {
-          container.classList.add(classHide);
-        } else if (currentClassShow) {
-          container.classList.add(currentClassHide);
-        }
-        if (classShow) {
-          container.classList.remove(classShow);
-        } else if (currentClassShow) {
-          container.classList.remove(currentClassShow);
-        }
-      } else {
-        if ((currentClassShow || currentClassHide) && classShow !== '' && classHide !== '') {
-          if (currentClassShow) {
-            container.classList.remove(currentClassShow);
-          }
-          if (currentClassHide) {
-            container.classList.add(currentClassHide);
-          }
-        } else {
-          container.hidden = true;
-        }
-      }
-      container.setAttribute(specialHideAttribute, '');
-    }
-  }
+  /**
+   * Class MaterialRouter3
+   */
 
-  function hideAll() {
-    var containers;
-    var _params = [];
-    var __params = {};
+  var MaterialRouter3 = function () {
 
-    containers = document.querySelectorAll(tagContent + '[hash=""]');
-    for (var i = 0; i < containers.length; i++) {
-      prepareClasses(container, 'show');
+    /**
+     * Class constructor for dropdown MDL component.
+     * Implements {@link https://github.com/jasonmayes/mdl-component-design-pattern|MDL component design pattern}
+     *
+     * @param {HTMLElement} element - The element that will be upgraded.
+     */
+    function MaterialRouter3(element) {
+      _classCallCheck(this, MaterialRouter3);
+
+      this.element_ = element;
+
+      this.init();
     }
 
-    containers = document.querySelectorAll(tagContent + ':not([' + specialHideAttribute + '])');
-    for (var i = 0; i < containers.length; i++) {
-      var container = containers[i];
-      var attrs = container.attributes;
-      prepareClasses(container, 'hide');
+    /**
+     * Initialize element.
+     *
+     */
 
-      for (var j = 0; j < attrs.length; j++) {
-        if (/param\d+/.test(attrs[j].name)) {
-          __params[attrs[j].name] = attrs[j].value;
-          attrs.removeNamedItem(attrs[j].name);
-          j--;
-        }
-      }
-    }
-    if (container instanceof HTMLElement) {
-      container.dispatchEvent(new CustomEvent('hide', {
-        detail: __params,
-        bubbles: true
-      }));
-    }
-  }
 
-  function matchHash(parent, hash, params) {
-    var _params = params || [];
-    var containers;
-    var container;
-    var match;
-    var _hash = hash || window.location.hash;
+    _createClass(MaterialRouter3, [{
+      key: 'init',
+      value: function init() {
+        var _this = this;
 
-    if (!parent) {
-      containers = flatSelection(document.querySelectorAll(tagContent), document);
-    } else {
-      containers = flatSelection(parent.querySelectorAll(tagContent), parent);
-    }
+        window.addEventListener('hashchange', function (e) {
+          var newHash = e.newURL.split('#')[1];
+          var lastHash = newHash.split('/').reverse()[0];
+          var hash = _this.element_.getAttribute('hash');
 
-    if (_hash[0] === '/' || _hash[0] === '#') {
-      _hash = _hash.slice(1);
-    }
-    if (!_hash) {
-      for (var i = 0; i < containers.length; i++) {
-        container = containers[i];
-        if (container.getAttribute('hash') === '') {
-          var isHidden = container.hasAttribute(specialHideAttribute);
-          prepareClasses(container, 'show');
-          if (isHidden) {
-            dispatchCustomEvent(container, _params);
-          }
-        }
-      }
-      return;
-    }
-
-    for (var i = 0; i < containers.length; i++) {
-      container = containers[i];
-      var search = container.getAttribute('hash');
-      var matcher = new RegExp('^' + search + '$|^' + search + '/');
-      match = matcher.test(_hash);
-
-      if (match) {
-        prepareClasses(container, 'show');
-
-        var __params = {};
-        var next_hash = _hash.split(matcher);
-        _params.forEach(function (item, i) {
-          container.setAttribute('param' + (i + 1), item);
-          __params['param' + (i + 1)] = item;
-        });
-        _hash.match(matcher).forEach(function (item, i) {
-          if (i > 0 && item) {
-            _params.push(item);
-            __params['param' + _params.length] = item;
-            container.setAttribute('param' + _params.length, item);
-          }
-        });
-
-        _hash = next_hash[next_hash.length - 1];
-        if (_hash.length > 0) {
-          matchHash(container, _hash, _params);
-        } else {
-          var defaults = flatSelection(container.querySelectorAll(tagContent + '[hash=""]'), container);
-          for (var j = 0; j < defaults.length; j++) {
-            prepareClasses(defaults[j], 'show');
-          }
-
-          if (container.updatePromise) {
-            container.updatePromise.then(function () {
-              dispatchCustomEvent(container, __params);
-            });
+          if (hash === lastHash) {
+            lastMatch = route_(newHash, [_this.element_], []);
+            _this.element_.dispatchEvent(new CustomEvent('show', {
+              bubbles: true,
+              detail: {
+                router: _this.element_
+              }
+            }));
           } else {
-            dispatchCustomEvent(container, __params);
+            _this.element_.hidden = true;
           }
-        }
-        break;
+        });
+        this.element_.hidden = true;
       }
-    }
+    }]);
 
-    if (!match) {
-      throw new Error('hash "' + _hash + '" does not match any content');
-    }
-  }
+    return MaterialRouter3;
+  }();
 
-  function dispatchCustomEvent(container, __params) {
-    container.dispatchEvent(new CustomEvent('show', {
-      detail: __params,
-      bubbles: true
-    }));
-  }
+  /**
+   * Route/Navigate to chain-hash
+   *
+   * @param {String} newHash - The new hash to navigate
+   * @param {Array} parents - The array of pushed parents
+   * @param {Array} hashes - The array of pushed hashes
+   * @private
+   */
 
-  function prepareConfig() {
-    var configs = document.querySelectorAll(tagConfig);
-    var config = configs[0]; // here I want to check if there are more than
-    // one config in the same document
-    if (config instanceof HTMLElement) {
-      currentClassShow = config.hasAttribute(classShowAttribute) ? config.getAttribute(classShowAttribute) : null;
-      currentClassHide = config.hasAttribute(classHideAttribute) ? config.getAttribute(classHideAttribute) : null;
+
+  function route_(newHash, parents, hashes) {
+    parents.push(parents[hashes.length].parentElement.closest(selClass));
+    hashes.push(parents[hashes.length].getAttribute('hash'));
+
+    var hash = hashes.slice(0, hashes.length).reverse().join('/');
+    if (parents[hashes.length]) {
+      return route_(newHash, parents, hashes);
     } else {
-      currentClassShow = null;
-      currentClassHide = null;
+      parents.slice(0, hashes.length).map(function (parent) {
+        return parent.hidden = false;
+      });
+      return hash;
     }
+    return null;
   }
 
-  window.addEventListener('hashchange', function (e) {
-    prepareConfig();
-    hideAll();
-    updateAll();
-    matchHash();
-  });
-  window.addEventListener('load', function (e) {
-    prepareConfig();
-    var containers = document.querySelectorAll(tagContent + ':not([' + specialHideAttribute + '])');
-    for (var i = 0; i < containers.length; i++) {
-      var container = containers[i];
-      var attrs = container.attributes;
-      prepareClasses(container, 'hide');
+  window[classAsString] = MaterialRouter3;
 
-      for (var j = 0; j < attrs.length; j++) {
-        if (/param\d+/.test(attrs[j].name)) {
-          attrs.removeNamedItem(attrs[j].name);
-          j--;
+  componentHandler.register({
+    constructor: MaterialRouter3,
+    classAsString: classAsString,
+    cssClass: cssClass,
+    widget: true
+  });
+
+  window.addEventListener('load', function () {
+    var lastMatch_ = void 0;
+    window.addEventListener('hashchange', function (e) {
+      var newHash = e.newURL.split('#')[1];
+      if (newHash !== '') {
+        if (lastMatch) {
+          lastMatch_ = lastMatch;
+          lastMatch = null;
+        } else {
+          window.location.hash = lastMatch_;
+          throw new Error('Cannot navigate to ' + newHash);
         }
       }
-    }
-    updateAll();
-    matchHash();
+    });
   });
 })();
