@@ -83,30 +83,6 @@ window.addEventListener('load', () => {
     // [setup]
     let hash1 = selectHash("hash1");
     let hash3 = selectHash("hash3");
-    let hash4 = selectHash("hash4");
-
-    let handler = this.step_func((e) => {
-      // [verify]
-      assert_false(hash1.hidden);
-      assert_true(hash3.hidden);
-      assert_false(hash4.hidden);
-
-      // [teardown]
-      teardown(resolve, handler);
-    });
-    window.addEventListener('hashchange', handler);
-    assert_true(hash1.hidden);
-    assert_true(hash3.hidden);
-    assert_true(hash4.hidden);
-
-    // [run]
-    window.location.hash = "hash1/hash4";
-  }); }, "Change route from '' to #hash1/hash4");
-
-  promise_test(function() { return new Promise((resolve, reject) => {
-    // [setup]
-    let hash1 = selectHash("hash1");
-    let hash3 = selectHash("hash3");
     let hash5 = selectHash("hash5");
     let hash6 = selectHash("hash6");
 
@@ -225,13 +201,11 @@ window.addEventListener('load', () => {
     let handler = this.step_func((e) => {
       // [verify]
       assert_equals(e.message, "Uncaught Error: Cannot navigate to hash!1");
-      assert_true(hash1.hidden);
-      assert_true(hash2.hidden);
 
       // [teardown]
       window.removeEventListener('error', handler);
       window.location.hash = "#hash1/hash3/hash6";
-      this.step_timeout(() => resolve(), 0);
+      setTimeout(() => resolve(), 0);
     });
     window.addEventListener('error', handler);
     assert_true(hash1.hidden);
@@ -253,13 +227,8 @@ window.addEventListener('load', () => {
 
       // [teardown]
       window.removeEventListener('error', handler);
-      this.step_timeout(() => {
-        assert_false(hash1.hidden);
-        assert_false(hash3.hidden);
-        assert_false(hash6.hidden);
-        window.location.hash = "";
-        resolve();
-      }, 0);
+      window.location.hash = "";
+      setTimeout(() => resolve(), 0);
     });
     window.addEventListener('error', handler);
     assert_false(hash1.hidden);
@@ -269,5 +238,29 @@ window.addEventListener('load', () => {
     // [run]
     window.location.hash = "#hash1/hash!3";
   }); }, "Change route from '#hash1/hash3/hash6' to absent '#hash1/hash!3' see an error and stay at oldURL");
+
+  promise_test(function() { return new Promise((resolve, reject) => {
+    // [setup]
+    let hash1 = selectHash("hash1");
+    let hash3 = selectHash("hash3");
+    let hash4 = selectHash("hash4");
+
+    let handler = this.step_func((e) => {
+      // [verify]
+      assert_false(hash1.hidden);
+      assert_true(hash3.hidden);
+      assert_false(hash4.hidden);
+
+      // [teardown]
+      teardown(resolve, handler);
+    });
+    window.addEventListener('hashchange', handler);
+    assert_true(hash1.hidden);
+    assert_true(hash3.hidden);
+    assert_true(hash4.hidden);
+
+    // [run]
+    window.location.hash = "hash1/hash4";
+  }); }, "Change route from '' to #hash1/hash4");
 
 });
