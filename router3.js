@@ -106,7 +106,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           lastMatch_ = lastMatch;
           lastMatch = null;
         } else {
-          console.log(lastMatch_);
+          window.location.hash = lastMatch_;
           throw new Error('Cannot navigate to ' + newHash);
         }
       }

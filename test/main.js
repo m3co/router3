@@ -230,8 +230,8 @@ window.addEventListener('load', () => {
 
       // [teardown]
       window.removeEventListener('error', handler);
-      window.location.hash = "";
-      setTimeout(() => resolve(), 0);
+      window.location.hash = "#hash1/hash3/hash6";
+      this.step_timeout(() => resolve(), 0);
     });
     window.addEventListener('error', handler);
     assert_true(hash1.hidden);
@@ -246,19 +246,20 @@ window.addEventListener('load', () => {
     let hash1 = selectHash("hash1");
     let hash3 = selectHash("hash3");
     let hash6 = selectHash("hash6");
-    window.location.hash = "#hash1/hash3/hash6";
 
     let handler = this.step_func((e) => {
       // [verify]
       assert_equals(e.message, "Uncaught Error: Cannot navigate to hash1/hash!3");
-      assert_false(hash1.hidden);
-      assert_false(hash3.hidden);
-      assert_false(hash6.hidden);
 
       // [teardown]
       window.removeEventListener('error', handler);
-      window.location.hash = "";
-      setTimeout(() => resolve(), 0);
+      this.step_timeout(() => {
+        assert_false(hash1.hidden);
+        assert_false(hash3.hidden);
+        assert_false(hash6.hidden);
+        window.location.hash = "";
+        resolve();
+      }, 0);
     });
     window.addEventListener('error', handler);
     assert_false(hash1.hidden);
