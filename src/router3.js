@@ -37,11 +37,14 @@
 
         if ((match) && (match[0] === lastHash)) {
           lastMatch = route_(newHash, [this.element_], []);
+          let detail = { router: this.element_ };
+          for (let i = 1; i < match.length; i++) {
+            detail[`param${i}`] = match[i];
+          }
+
           this.element_.dispatchEvent(new CustomEvent('show', {
             bubbles: true,
-            detail: {
-              router: this.element_
-            }
+            detail: detail
           }));
         } else {
           this.element_.hidden = true;

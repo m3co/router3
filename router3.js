@@ -52,11 +52,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
           if (match && match[0] === lastHash) {
             lastMatch = route_(newHash, [_this.element_], []);
+            var detail = { router: _this.element_ };
+            for (var i = 1; i < match.length; i++) {
+              detail['param' + i] = match[i];
+            }
+
             _this.element_.dispatchEvent(new CustomEvent('show', {
               bubbles: true,
-              detail: {
-                router: _this.element_
-              }
+              detail: detail
             }));
           } else {
             _this.element_.hidden = true;
