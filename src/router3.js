@@ -37,6 +37,7 @@
 
         if ((match) && (match[0] === lastHash)) {
           lastMatch = route_(newHash, [this.element_], []);
+          match = newHash.match(new RegExp(lastMatch));
           let detail = { router: this.element_ };
           for (let i = 1; i < match.length; i++) {
             detail[`param${i}`] = match[i];

@@ -52,6 +52,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
           if (match && match[0] === lastHash) {
             lastMatch = route_(newHash, [_this.element_], []);
+            match = newHash.match(new RegExp(lastMatch));
             var detail = { router: _this.element_ };
             for (var i = 1; i < match.length; i++) {
               detail['param' + i] = match[i];
