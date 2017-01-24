@@ -5,6 +5,8 @@
   const cssClass = 'mdl-router3';
   const selClass = `.${cssClass}`;
 
+  let lastMatch = null;
+
   /**
    * Class MaterialRouter3
    */
@@ -33,7 +35,7 @@
         let hash = this.element_.getAttribute('hash');
 
         if (hash === lastHash) {
-          route_(newHash, [this.element_], []);
+          lastMatch = route_(newHash, [this.element_], []);
         } else {
           this.element_.hidden = true;
         }
@@ -73,4 +75,17 @@
     cssClass: cssClass,
     widget: true
   });
+
+  window.addEventListener('load', () =>
+    window.addEventListener('hashchange', (e) => {
+      let newHash = e.newURL.split('#')[1];
+      if (newHash !== '') {
+        if (lastMatch) {
+          lastMatch = null;
+        } else {
+          throw new Error(`Cannot navigate to ${newHash}`);
+        }
+      }
+    })
+  );
 })();

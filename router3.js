@@ -11,6 +11,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   var cssClass = 'mdl-router3';
   var selClass = '.' + cssClass;
 
+  var lastMatch = null;
+
   /**
    * Class MaterialRouter3
    */
@@ -48,7 +50,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           var hash = _this.element_.getAttribute('hash');
 
           if (hash === lastHash) {
-            route_(newHash, [_this.element_], []);
+            lastMatch = route_(newHash, [_this.element_], []);
           } else {
             _this.element_.hidden = true;
           }
@@ -93,5 +95,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     classAsString: classAsString,
     cssClass: cssClass,
     widget: true
+  });
+
+  window.addEventListener('load', function () {
+    return window.addEventListener('hashchange', function (e) {
+      var newHash = e.newURL.split('#')[1];
+      if (newHash !== '') {
+        if (lastMatch) {
+          lastMatch = null;
+        } else {
+          throw new Error('Cannot navigate to ' + newHash);
+        }
+      }
+    });
   });
 })();
