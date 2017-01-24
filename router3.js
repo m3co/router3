@@ -47,31 +47,42 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           var hashes = [];
           var parents = [_this.element_];
 
-          route(newHash, parents, hashes);
+          _this.route_(newHash, parents, hashes);
         });
         this.element_.hidden = true;
+      }
+
+      /**
+       * Route/Navigate to chain-hash
+       *
+       * @param {String} newHash - The new hash to navigate
+       * @param {Array} parents - The array of pushed parents
+       * @param {Array} hashes - The array of pushed hashes
+       * @private
+       */
+
+    }, {
+      key: 'route_',
+      value: function route_(newHash, parents, hashes) {
+        parents.push(parents[hashes.length].parentElement.closest(selClass));
+        hashes.push(parents[hashes.length].getAttribute('hash'));
+
+        if (parents[hashes.length]) {
+          this.route_(newHash, parents, hashes);
+        } else {
+          if (newHash === hashes.slice(0, hashes.length).reverse().join('/')) {
+            parents.slice(0, hashes.length).forEach(function (parent) {
+              return parent.hidden = false;
+            });
+          } else {
+            parents[0].hidden = true;
+          }
+        }
       }
     }]);
 
     return MaterialRouter3;
   }();
-
-  function route(newHash, parents, hashes) {
-    parents.push(parents[hashes.length].parentElement.closest(selClass));
-    hashes.push(parents[hashes.length].getAttribute('hash'));
-
-    if (parents[hashes.length]) {
-      route(newHash, parents, hashes);
-    } else {
-      if (newHash === hashes.slice(0, hashes.length).reverse().join('/')) {
-        parents.slice(0, hashes.length).forEach(function (parent) {
-          return parent.hidden = false;
-        });
-      } else {
-        parents[0].hidden = true;
-      }
-    }
-  }
 
   window[classAsString] = MaterialRouter3;
 

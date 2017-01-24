@@ -32,26 +32,34 @@
         let hashes = [];
         let parents = [this.element_];
 
-        route(newHash, parents, hashes);
+        this.route_(newHash, parents, hashes);
       });
       this.element_.hidden = true;
     }
 
-  }
+    /**
+     * Route/Navigate to chain-hash
+     *
+     * @param {String} newHash - The new hash to navigate
+     * @param {Array} parents - The array of pushed parents
+     * @param {Array} hashes - The array of pushed hashes
+     * @private
+     */
+    route_(newHash, parents, hashes) {
+      parents.push(parents[hashes.length].parentElement.closest(selClass));
+      hashes.push(parents[hashes.length].getAttribute('hash'));
 
-  function route(newHash, parents, hashes) {
-    parents.push(parents[hashes.length].parentElement.closest(selClass));
-    hashes.push(parents[hashes.length].getAttribute('hash'));
-
-    if (parents[hashes.length]) {
-      route(newHash, parents, hashes);
-    } else {
-      if (newHash === hashes.slice(0, hashes.length).reverse().join('/')) {
-        parents.slice(0, hashes.length).forEach(parent => parent.hidden = false);
+      if (parents[hashes.length]) {
+        this.route_(newHash, parents, hashes);
       } else {
-        parents[0].hidden = true;
+        if (newHash === hashes.slice(0, hashes.length).reverse().join('/')) {
+          parents.slice(0, hashes.length).forEach(parent => parent.hidden = false);
+        } else {
+          parents[0].hidden = true;
+        }
       }
     }
+
   }
 
   window[classAsString] = MaterialRouter3;
