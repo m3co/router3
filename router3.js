@@ -47,9 +47,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         window.addEventListener('hashchange', function (e) {
           var newHash = e.newURL.split('#')[1];
           var lastHash = newHash.split('/').reverse()[0];
-          var hash = _this.element_.getAttribute('hash');
+          var hash = new RegExp(_this.element_.getAttribute('hash'));
+          var match = lastHash.match(hash);
 
-          if (hash === lastHash) {
+          if (match && match[0] === lastHash) {
             lastMatch = route_(newHash, [_this.element_], []);
             _this.element_.dispatchEvent(new CustomEvent('show', {
               bubbles: true,

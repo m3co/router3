@@ -17,6 +17,30 @@ window.addEventListener('load', () => {
     // [setup]
     let hash1 = selectHash("hash1");
     let hash2 = selectHash("hash2");
+    let hashRE1 = selectHash("hash-exp([0-9]+)");
+
+    let handler = this.step_func((e) => {
+      // [verify]
+      assert_false(hashRE1.hidden);
+      assert_true(hash2.hidden);
+      assert_true(hash1.hidden);
+
+      // [teardown]
+      teardown(resolve, handler);
+    });
+    window.addEventListener('hashchange', handler);
+    assert_true(hashRE1.hidden);
+    assert_true(hash2.hidden);
+    assert_true(hash1.hidden);
+
+    // [run]
+    window.location.hash = "hash-exp123";
+  }); }, "Change route from '' to '#hash-exp123' that matches /hash-exp([0-9]+)/");
+
+  promise_test(function() { return new Promise((resolve, reject) => {
+    // [setup]
+    let hash1 = selectHash("hash1");
+    let hash2 = selectHash("hash2");
 
     let handler = this.step_func((e) => {
       // [verify]
