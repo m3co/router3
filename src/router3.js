@@ -40,44 +40,11 @@
   }
 
   function route(newHash, parents, hashes) {
-
     parents.push(parents[hashes.length].parentElement.closest(selClass));
     hashes.push(parents[hashes.length].getAttribute('hash'));
 
     if (parents[hashes.length]) {
-
-      parents.push(parents[hashes.length].parentElement.closest(selClass));
-      hashes.push(parents[hashes.length].getAttribute('hash'));
-
-      if (parents[hashes.length]) {
-
-        parents.push(parents[hashes.length].parentElement.closest(selClass));
-        hashes.push(parents[hashes.length].getAttribute('hash'));
-
-        if (parents[hashes.length]) {
-
-          hashes.push(parents[hashes.length].getAttribute('hash'));
-
-          if (newHash === hashes.slice(0, hashes.length).reverse().join('/')) {
-            parents.slice(0, hashes.length).forEach(parent => parent.hidden = false);
-          } else {
-            parents[0].hidden = true;
-          }
-
-        } else {
-          if (newHash === hashes.slice(0, hashes.length).reverse().join('/')) {
-            parents.slice(0, hashes.length).forEach(parent => parent.hidden = false);
-          } else {
-            parents[0].hidden = true;
-          }
-        }
-      } else {
-        if (newHash === hashes.slice(0, hashes.length).reverse().join('/')) {
-          parents.slice(0, hashes.length).forEach(parent => parent.hidden = false);
-        } else {
-          parents[0].hidden = true;
-        }
-      }
+      route(newHash, parents, hashes);
     } else {
       if (newHash === hashes.slice(0, hashes.length).reverse().join('/')) {
         parents.slice(0, hashes.length).forEach(parent => parent.hidden = false);
@@ -85,7 +52,6 @@
         parents[0].hidden = true;
       }
     }
-
   }
 
   window[classAsString] = MaterialRouter3;
