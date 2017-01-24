@@ -118,7 +118,7 @@ window.addEventListener('load', () => {
 
     // [run]
     window.location.hash = "hash-exp123-456";
-  }); }, "Change route from '' to '#hash-exp123-456' that matches /hash-exp([0-9]+)-([0-9]+)/");
+  }); }, "Catch route's param if go from '' to '#hash-exp123-456' that matches /hash-exp([0-9]+)-([0-9]+)/ with param1=123 and param2=456");
 
   promise_test(function() { return new Promise((resolve, reject) => {
     // [setup]
@@ -145,7 +145,7 @@ window.addEventListener('load', () => {
 
     // [run]
     window.location.hash = "hash-exp123";
-  }); }, "Change route from '' to '#hash-exp123' that matches /hash-exp([0-9]+)/");
+  }); }, "Catch route's param if go '' to '#hash-exp123' that matches /hash-exp([0-9]+)/ with param1=123");
 
   promise_test(function() { return new Promise((resolve, reject) => {
     // [setup]
