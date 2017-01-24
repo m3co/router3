@@ -263,4 +263,25 @@ window.addEventListener('load', () => {
     window.location.hash = "hash1/hash4";
   }); }, "Change route from '' to #hash1/hash4");
 
+  promise_test(function() { return new Promise((resolve, reject) => {
+    // [setup]
+    let hash1 = selectHash("hash1");
+    let hash2 = selectHash("hash2");
+
+    let handler = this.step_func((e) => {
+      // [verify]
+      assert_false(hash1.hidden);
+      assert_true(hash2.hidden);
+
+      // [teardown]
+      teardown(resolve, handler);
+    });
+    hash1.addEventListener('show', handler);
+    assert_true(hash1.hidden);
+    assert_true(hash2.hidden);
+
+    // [run]
+    window.location.hash = "hash1";
+  }); }, "Change route from '' to '#hash1'");
+
 });
