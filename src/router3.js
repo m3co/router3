@@ -76,16 +76,19 @@
     widget: true
   });
 
-  window.addEventListener('load', () =>
+  window.addEventListener('load', () => {
+    let lastMatch_;
     window.addEventListener('hashchange', (e) => {
       let newHash = e.newURL.split('#')[1];
       if (newHash !== '') {
         if (lastMatch) {
+          lastMatch_ = lastMatch;
           lastMatch = null;
         } else {
+          console.log(lastMatch_);
           throw new Error(`Cannot navigate to ${newHash}`);
         }
       }
-    })
-  );
+    });
+  });
 })();

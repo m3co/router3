@@ -98,12 +98,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   });
 
   window.addEventListener('load', function () {
-    return window.addEventListener('hashchange', function (e) {
+    var lastMatch_ = void 0;
+    window.addEventListener('hashchange', function (e) {
       var newHash = e.newURL.split('#')[1];
       if (newHash !== '') {
         if (lastMatch) {
+          lastMatch_ = lastMatch;
           lastMatch = null;
         } else {
+          console.log(lastMatch_);
           throw new Error('Cannot navigate to ' + newHash);
         }
       }

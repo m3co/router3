@@ -225,6 +225,8 @@ window.addEventListener('load', () => {
     let handler = this.step_func((e) => {
       // [verify]
       assert_equals(e.message, "Uncaught Error: Cannot navigate to hash!1");
+      assert_true(hash1.hidden);
+      assert_true(hash2.hidden);
 
       // [teardown]
       window.removeEventListener('error', handler);
@@ -238,5 +240,33 @@ window.addEventListener('load', () => {
     // [run]
     window.location.hash = "#hash!1";
   }); }, "Change route from '' to absent '#hash!1' and see an error");
+
+  promise_test(function() { return new Promise((resolve, reject) => {
+    // [setup]
+    let hash1 = selectHash("hash1");
+    let hash3 = selectHash("hash3");
+    let hash6 = selectHash("hash6");
+    window.location.hash = "#hash1/hash3/hash6";
+
+    let handler = this.step_func((e) => {
+      // [verify]
+      assert_equals(e.message, "Uncaught Error: Cannot navigate to hash1/hash!3");
+      assert_false(hash1.hidden);
+      assert_false(hash3.hidden);
+      assert_false(hash6.hidden);
+
+      // [teardown]
+      window.removeEventListener('error', handler);
+      window.location.hash = "";
+      setTimeout(() => resolve(), 0);
+    });
+    window.addEventListener('error', handler);
+    assert_false(hash1.hidden);
+    assert_false(hash3.hidden);
+    assert_false(hash6.hidden);
+
+    // [run]
+    window.location.hash = "#hash1/hash!3";
+  }); }, "Change route from '#hash1/hash3/hash6' to absent '#hash1/hash!3' see an error and stay at oldURL");
 
 });
