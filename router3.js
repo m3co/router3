@@ -44,58 +44,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         window.addEventListener('hashchange', function (e) {
           var newHash = e.newURL.split('#')[1];
-          var hashes = [_this.element_.getAttribute('hash')];
+          var hashes = [];
           var parents = [_this.element_];
 
-          parents.push(_this.element_.parentElement.closest(selClass));
-          if (parents[parents.length - 1]) {
-
-            hashes.push(parents[parents.length - 1].getAttribute('hash'));
-            parents.push(parents[parents.length - 1].parentElement.closest(selClass));
-
-            if (parents[parents.length - 1]) {
-
-              hashes.push(parents[parents.length - 1].getAttribute('hash'));
-              parents.push(parents[parents.length - 1].parentElement.closest(selClass));
-
-              if (parents[parents.length - 1]) {
-
-                hashes.push(parents[parents.length - 1].getAttribute('hash'));
-
-                if (newHash === hashes.slice(0, 4).reverse().join('/')) {
-                  parents.slice(0, 4).forEach(function (parent) {
-                    return parent.hidden = false;
-                  });
-                } else {
-                  parents[0].hidden = true;
-                }
-              } else {
-                if (newHash === hashes.slice(0, 3).reverse().join('/')) {
-                  parents.slice(0, 3).forEach(function (parent) {
-                    return parent.hidden = false;
-                  });
-                } else {
-                  parents[0].hidden = true;
-                }
-              }
-            } else {
-              if (newHash === hashes.slice(0, 2).reverse().join('/')) {
-                parents.slice(0, 2).forEach(function (parent) {
-                  return parent.hidden = false;
-                });
-              } else {
-                parents[0].hidden = true;
-              }
-            }
-          } else {
-            if (newHash === hashes.slice(0, 1).reverse().join('/')) {
-              parents.slice(0, 1).forEach(function (parent) {
-                return parent.hidden = false;
-              });
-            } else {
-              parents[0].hidden = true;
-            }
-          }
+          route(newHash, parents, hashes);
         });
         this.element_.hidden = true;
       }
@@ -103,6 +55,61 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     return MaterialRouter3;
   }();
+
+  function route(newHash, parents, hashes) {
+
+    parents.push(parents[hashes.length].parentElement.closest(selClass));
+    hashes.push(parents[hashes.length].getAttribute('hash'));
+
+    if (parents[hashes.length]) {
+
+      parents.push(parents[hashes.length].parentElement.closest(selClass));
+      hashes.push(parents[hashes.length].getAttribute('hash'));
+
+      if (parents[hashes.length]) {
+
+        parents.push(parents[hashes.length].parentElement.closest(selClass));
+        hashes.push(parents[hashes.length].getAttribute('hash'));
+
+        if (parents[hashes.length]) {
+
+          hashes.push(parents[hashes.length].getAttribute('hash'));
+
+          if (newHash === hashes.slice(0, hashes.length).reverse().join('/')) {
+            parents.slice(0, hashes.length).forEach(function (parent) {
+              return parent.hidden = false;
+            });
+          } else {
+            parents[0].hidden = true;
+          }
+        } else {
+          if (newHash === hashes.slice(0, hashes.length).reverse().join('/')) {
+            parents.slice(0, hashes.length).forEach(function (parent) {
+              return parent.hidden = false;
+            });
+          } else {
+            parents[0].hidden = true;
+          }
+        }
+      } else {
+        if (newHash === hashes.slice(0, hashes.length).reverse().join('/')) {
+          parents.slice(0, hashes.length).forEach(function (parent) {
+            return parent.hidden = false;
+          });
+        } else {
+          parents[0].hidden = true;
+        }
+      }
+    } else {
+      if (newHash === hashes.slice(0, hashes.length).reverse().join('/')) {
+        parents.slice(0, hashes.length).forEach(function (parent) {
+          return parent.hidden = false;
+        });
+      } else {
+        parents[0].hidden = true;
+      }
+    }
+  }
 
   window[classAsString] = MaterialRouter3;
 
