@@ -32,16 +32,19 @@
       window.addEventListener('hashchange', (e) => {
         let newHash = e.newURL.split('#')[1];
         let lastHash = newHash.split('/').reverse()[0];
-        let hash = new RegExp(this.element_.getAttribute('hash'));
-        let match = lastHash.match(hash);
+        let match = lastHash
+          .match(
+            new RegExp(this.element_.getAttribute('hash'))
+          );
 
         if ((match) && (match[0] === lastHash)) {
           lastMatch = route_(newHash, [this.element_], []);
-          match = newHash.match(new RegExp(lastMatch));
-          let detail = { router: this.element_ };
-          for (let i = 1; i < match.length; i++) {
-            detail[`param${i}`] = match[i];
-          }
+          let detail = {router: this.element_};
+          newHash.match(new RegExp(lastMatch))
+            .slice(1)
+            .forEach((hash, i) => {
+            detail[`param${i + 1}`] = hash;
+          });
 
           this.element_.dispatchEvent(new CustomEvent('show', {
             bubbles: true,

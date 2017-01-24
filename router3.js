@@ -47,21 +47,21 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         window.addEventListener('hashchange', function (e) {
           var newHash = e.newURL.split('#')[1];
           var lastHash = newHash.split('/').reverse()[0];
-          var hash = new RegExp(_this.element_.getAttribute('hash'));
-          var match = lastHash.match(hash);
+          var match = lastHash.match(new RegExp(_this.element_.getAttribute('hash')));
 
           if (match && match[0] === lastHash) {
-            lastMatch = route_(newHash, [_this.element_], []);
-            match = newHash.match(new RegExp(lastMatch));
-            var detail = { router: _this.element_ };
-            for (var i = 1; i < match.length; i++) {
-              detail['param' + i] = match[i];
-            }
+            (function () {
+              lastMatch = route_(newHash, [_this.element_], []);
+              var detail = { router: _this.element_ };
+              newHash.match(new RegExp(lastMatch)).slice(1).forEach(function (hash, i) {
+                detail['param' + (i + 1)] = hash;
+              });
 
-            _this.element_.dispatchEvent(new CustomEvent('show', {
-              bubbles: true,
-              detail: detail
-            }));
+              _this.element_.dispatchEvent(new CustomEvent('show', {
+                bubbles: true,
+                detail: detail
+              }));
+            })();
           } else {
             _this.element_.hidden = true;
           }
