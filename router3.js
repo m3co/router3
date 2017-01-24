@@ -44,8 +44,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         window.addEventListener('hashchange', function (e) {
           var newHash = e.newURL.split('#')[1];
-          var hash = _this.element_.getAttribute('hash');
           var lastHash = newHash.split('/').reverse()[0];
+          var hash = _this.element_.getAttribute('hash');
+
           if (hash === lastHash) {
             route_(newHash, [_this.element_], []);
           } else {
@@ -77,12 +78,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     if (parents[hashes.length]) {
       return route_(newHash, parents, hashes);
     } else {
-      if (newHash === hash) {
-        parents.slice(0, hashes.length).forEach(function (parent) {
-          return parent.hidden = false;
-        });
-        return hash;
-      }
+      parents.slice(0, hashes.length).map(function (parent) {
+        return parent.hidden = false;
+      });
+      return hash;
     }
     return null;
   }

@@ -29,8 +29,9 @@
     init() {
       window.addEventListener('hashchange', (e) => {
         let newHash = e.newURL.split('#')[1];
+        let lastHash = newHash.split('/').reverse()[0];
         let hash = this.element_.getAttribute('hash');
-        var lastHash = newHash.split('/').reverse()[0];
+
         if (hash === lastHash) {
           route_(newHash, [this.element_], []);
         } else {
@@ -58,10 +59,8 @@
     if (parents[hashes.length]) {
       return route_(newHash, parents, hashes);
     } else {
-      if (newHash === hash) {
-        parents.slice(0, hashes.length).forEach(parent => parent.hidden = false);
-        return hash;
-      }
+      parents.slice(0, hashes.length).map(parent => parent.hidden = false);
+      return hash;
     }
     return null;
   }
