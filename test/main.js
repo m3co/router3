@@ -488,4 +488,26 @@ window.addEventListener('load', () => {
     window.location.hash = "hash1/hash3/hash5/hash7";
   }); }, "Catch router's show event if go from '' to #hash1/hash3/hash5/hash7");
 
+  promise_test(function() { return new Promise((resolve, reject) => {
+    // [setup]
+    let hash1 = selectHash("hash1");
+    let hash2 = selectHash("hash2");
+
+    let handler = this.step_func((e) => {
+      // [verify]
+      assert_true(hash1.hidden);
+      assert_false(hash2.hidden);
+
+      // [teardown]
+      teardown(resolve, handler, e);
+    });
+    hash1.addEventListener('hide', handler);
+    assert_true(hash1.hidden);
+    assert_true(hash2.hidden);
+
+    // [run]
+    window.location.hash = "hash1";
+    window.location.hash = "hash2";
+  }); }, "Catch router's hide event if go from '#hash1' to '#hash2'");
+
 });
