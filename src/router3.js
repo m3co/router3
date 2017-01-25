@@ -65,23 +65,25 @@
             detail: detail
           }));
         } else {
-          this.element_.hidden = true;
+          if (!this.element_.hidden) {
+            this.element_.hidden = true;
 
-          /**
-           * Dispatch show even if URL's fragment matches with a route
-           *
-           * @event MaterialRouter3#hide
-           * @type {CustomEvent}
-           * @property {HTMLElement} router - The router that dispatches
-           *   this event
-           */
-          // THIS EVENT MAY BE DISPATCHED A LOT OF TIMES...
-          // WRITE TEST FOR NESTED ROUTERS...
-          this.element_.dispatchEvent(new CustomEvent('hide', {
-            detail: {
-              router: this.element_
-            }
-          }));
+            /**
+             * Dispatch show even if URL's fragment matches with a route
+             *
+             * @event MaterialRouter3#hide
+             * @type {CustomEvent}
+             * @property {HTMLElement} router - The router that dispatches
+             *   this event
+             */
+            this.element_.dispatchEvent(new CustomEvent('hide', {
+              detail: {
+                router: this.element_
+              }
+            }));
+          } else {
+            this.element_.hidden = true;
+          }
         }
       });
       this.element_.hidden = true;

@@ -77,23 +77,25 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
               }));
             })();
           } else {
-            _this.element_.hidden = true;
+            if (!_this.element_.hidden) {
+              _this.element_.hidden = true;
 
-            /**
-             * Dispatch show even if URL's fragment matches with a route
-             *
-             * @event MaterialRouter3#hide
-             * @type {CustomEvent}
-             * @property {HTMLElement} router - The router that dispatches
-             *   this event
-             */
-            // THIS EVENT MAY BE DISPATCHED A LOT OF TIMES...
-            // WRITE TEST FOR NESTED ROUTERS...
-            _this.element_.dispatchEvent(new CustomEvent('hide', {
-              detail: {
-                router: _this.element_
-              }
-            }));
+              /**
+               * Dispatch show even if URL's fragment matches with a route
+               *
+               * @event MaterialRouter3#hide
+               * @type {CustomEvent}
+               * @property {HTMLElement} router - The router that dispatches
+               *   this event
+               */
+              _this.element_.dispatchEvent(new CustomEvent('hide', {
+                detail: {
+                  router: _this.element_
+                }
+              }));
+            } else {
+              _this.element_.hidden = true;
+            }
           }
         });
         this.element_.hidden = true;
