@@ -31,7 +31,7 @@ window.addEventListener('load', () => {
       assert_equals(e.detail.param2, "456");
 
       // [teardown]
-      teardown(resolve, handler);
+      teardown(resolve, handler, e);
     });
     hashRE2.addEventListener('show', handler);
     assert_true(hashRE1.hidden);
@@ -109,7 +109,7 @@ window.addEventListener('load', () => {
       assert_equals(e.detail.param2, "456");
 
       // [teardown]
-      teardown(resolve, handler);
+      teardown(resolve, handler, e);
     });
     hashRE1.addEventListener('show', handler);
     assert_true(hashRE1.hidden);
@@ -136,7 +136,7 @@ window.addEventListener('load', () => {
       assert_equals(e.detail.param1, "123");
 
       // [teardown]
-      teardown(resolve, handler);
+      teardown(resolve, handler, e);
     });
     hashRE1.addEventListener('show', handler);
     assert_true(hashRE1.hidden);
@@ -327,6 +327,10 @@ window.addEventListener('load', () => {
     window.location.hash = "hash1/hash3/hash5/hash8";
   }); }, "Change route from '' to #hash1/hash3/hash5/hash8");
 
+  /**
+   * This test goes before:
+   *   "Change route from '#hash1/hash3/hash6' to absent '#hash1/hash!3' see an error and stay at oldURL"
+   */
   promise_test(function() { return new Promise((resolve, reject) => {
     // [setup]
     let hash1 = selectHash("hash1");
@@ -340,6 +344,7 @@ window.addEventListener('load', () => {
       window.removeEventListener('error', handler);
       window.location.hash = "#hash1/hash3/hash6";
       setTimeout(() => resolve(), 0);
+      // This teardown navigates to a concrete location.hash
     });
     window.addEventListener('error', handler);
     assert_true(hash1.hidden);
@@ -349,6 +354,10 @@ window.addEventListener('load', () => {
     window.location.hash = "#hash!1";
   }); }, "Change route from '' to absent '#hash!1' and see an error");
 
+  /**
+   * This test goes after:
+   *   "Change route from '' to absent '#hash!1' and see an error"
+   */
   promise_test(function() { return new Promise((resolve, reject) => {
     // [setup]
     let hash1 = selectHash("hash1");
@@ -360,9 +369,7 @@ window.addEventListener('load', () => {
       assert_equals(e.message, "Uncaught Error: Cannot navigate to hash1/hash!3");
 
       // [teardown]
-      window.removeEventListener('error', handler);
-      window.location.hash = "";
-      setTimeout(() => resolve(), 0);
+      teardown(resolve, handler, e);
     });
     window.addEventListener('error', handler);
     assert_false(hash1.hidden);
@@ -409,7 +416,7 @@ window.addEventListener('load', () => {
       assert_equals(e.detail.router, hash1);
 
       // [teardown]
-      teardown(resolve, handler);
+      teardown(resolve, handler, e);
     });
     hash1.addEventListener('show', handler);
     assert_true(hash1.hidden);
@@ -437,7 +444,7 @@ window.addEventListener('load', () => {
       assert_equals(e.detail.router, hash7);
 
       // [teardown]
-      teardown(resolve, handler);
+      teardown(resolve, handler, e);
     });
     hash7.addEventListener('show', handler);
     assert_true(hash1.hidden);
@@ -468,7 +475,7 @@ window.addEventListener('load', () => {
       assert_equals(e.detail.router, hash7);
 
       // [teardown]
-      teardown(resolve, handler);
+      teardown(resolve, handler, e);
     });
     hash1.addEventListener('show', handler);
     assert_true(hash1.hidden);

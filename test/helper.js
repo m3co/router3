@@ -10,8 +10,12 @@ function selectHash(el, hash) {
   return document.querySelector(`[hash="${el}"]`);
 }
 
-function teardown(resolve, handler) {
-  window.removeEventListener('hashchange', handler);
+function teardown(resolve, handler, e) {
+  if (e) {
+    e.target.removeEventListener(e.type, handler);
+  } else {
+    window.removeEventListener('hashchange', handler);
+  }
   window.location.hash = "";
   setTimeout(() => resolve(), 0);
 }
