@@ -22,7 +22,6 @@
     "tests"
   ],
   "dependencies": {
-    "pseudoimport-html": "latest",
     "material-design-lite": "^1.3.0"
   }
 }

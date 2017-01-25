@@ -34,6 +34,5 @@
     "gulp-jsdoc3": "^1.0.1",
     "gulp-jshint": "^2.0.4",
     "jshint-stylish": "^2.2.1"
-
   }
 }
