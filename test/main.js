@@ -553,6 +553,32 @@ window.addEventListener('load', () => {
     let hashREB = selectHash("hash-mix-([0-9]+)");
     let hashSB = selectHash("hash-mix-123");
 
+    let handler1 = this.step_func((e) => {
+      // [verify]
+      assert_false(hashSB.hidden);
+      assert_true(hashREB.hidden);
+
+      // [teardown]
+      hashREB.removeEventListener(e.type, handler2);
+      teardown(resolve, handler1);
+    });
+    let handler2 = this.step_func((e) => {
+      assert_unreach();
+    });
+    hashREB.addEventListener('show', handler2);
+    hashSB.addEventListener('show', handler1);
+    assert_true(hashREB.hidden);
+    assert_true(hashSB.hidden);
+
+    // [run]
+    window.location.hash = "hash-mix-123";
+  }); }, "String-based route goes before any RegExp-based. Catch route's show from '' to '#hash-mix-123'");
+
+  promise_test(function() { return new Promise((resolve, reject) => {
+    // [setup]
+    let hashREB = selectHash("hash-mix-([0-9]+)");
+    let hashSB = selectHash("hash-mix-123");
+
     let handler = this.step_func((e) => {
       // [verify]
       assert_false(hashSB.hidden);
