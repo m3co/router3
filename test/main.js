@@ -510,4 +510,42 @@ window.addEventListener('load', () => {
     window.location.hash = "hash2";
   }); }, "Catch router's hide event if go from '#hash1' to '#hash2'");
 
+  promise_test(function() { return new Promise((resolve, reject) => {
+    // [setup]
+    let hash1 = selectHash("hash1");
+    let hash2 = selectHash("hash2");
+    let hash3 = selectHash("hash3");
+
+    let handler1 = this.step_func((e) => {
+      // [verify]
+      assert_true(hash1.hidden);
+      assert_false(hash2.hidden);
+    });
+    let handler2 = this.step_func((e) => {
+      // [verify]
+      assert_unreach();
+    });
+    let handler3 = this.step_func((e) => {
+      // [verify]
+      assert_true(hash1.hidden);
+      assert_false(hash2.hidden);
+      assert_true(hash3.hidden);
+
+      // [teardown]
+      hash1.removeEventListener(e.type, handler1);
+      hash2.removeEventListener(e.type, handler2);
+      teardown(resolve, handler3, e);
+    });
+    hash1.addEventListener('hide', handler1);
+    hash2.addEventListener('hide', handler2);
+    hash3.addEventListener('hide', handler3);
+    assert_true(hash1.hidden);
+    assert_true(hash2.hidden);
+    assert_true(hash3.hidden);
+
+    // [run]
+    window.location.hash = "hash1/hash3";
+    window.location.hash = "hash2";
+  }); }, "Catch router's hide event if go from '#hash1/hash3' to '#hash2'");
+
 });
