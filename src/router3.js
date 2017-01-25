@@ -51,6 +51,8 @@
            *
            * @event MaterialRouter3#show
            * @type {CustomEvent}
+           * @property {HTMLElement} router - The router that dispatches
+           *   this event
            * @property {String} param1
            * @property {String} param2
            * @property {String} ...
@@ -64,6 +66,22 @@
           }));
         } else {
           this.element_.hidden = true;
+
+          /**
+           * Dispatch show even if URL's fragment matches with a route
+           *
+           * @event MaterialRouter3#hide
+           * @type {CustomEvent}
+           * @property {HTMLElement} router - The router that dispatches
+           *   this event
+           */
+          // THIS EVENT MAY BE DISPATCHED A LOT OF TIMES...
+          // WRITE TEST FOR NESTED ROUTERS...
+          this.element_.dispatchEvent(new CustomEvent('hide', {
+            detail: {
+              router: this.element_
+            }
+          }));
         }
       });
       this.element_.hidden = true;
