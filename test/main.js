@@ -548,4 +548,25 @@ window.addEventListener('load', () => {
     window.location.hash = "hash2";
   }); }, "Catch router's hide event if go from '#hash1/hash3' to '#hash2'");
 
+  promise_test(function() { return new Promise((resolve, reject) => {
+    // [setup]
+    let hashREB = selectHash("hash-mix-([0-9]+)");
+    let hashSB = selectHash("hash-mix-123");
+
+    let handler = this.step_func((e) => {
+      // [verify]
+      assert_false(hashSB.hidden);
+      assert_true(hashREB.hidden);
+
+      // [teardown]
+      teardown(resolve, handler);
+    });
+    window.addEventListener('hashchange', handler);
+    assert_true(hashREB.hidden);
+    assert_true(hashSB.hidden);
+
+    // [run]
+    window.location.hash = "hash-mix-123";
+  }); }, "String-based route goes before any RegExp-based. Change route from '' to '#hash-mix-123'");
+
 });
