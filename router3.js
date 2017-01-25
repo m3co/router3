@@ -57,6 +57,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 detail['param' + (i + 1)] = hash;
               });
 
+              /**
+               * Dispatch show even if URL's fragment matches with a route
+               *
+               * @event MaterialRouter3#show
+               * @type {CustomEvent}
+               * @property {String} param1
+               * @property {String} param2
+               * @property {String} ...
+               * @property {String} paramN - The values extracted
+               *   from the URL's fragment. These params go in order of appearance
+               *   from left to right.
+               */
               _this.element_.dispatchEvent(new CustomEvent('show', {
                 bubbles: true,
                 detail: detail
@@ -117,6 +129,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           lastMatch_ = lastMatch;
           lastMatch = null;
         } else {
+          // prevent here dispatching twice the show event
           window.location.hash = lastMatch_;
           throw new Error('Cannot navigate to ' + newHash);
         }
