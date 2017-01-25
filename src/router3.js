@@ -37,11 +37,9 @@
             new RegExp(this.element_.getAttribute('hash'))
           );
 
-        if (match && match[0] === lastHash) {
-          if (match.length > 1 &&
-            document.querySelector(`[hash="${lastHash}"]`)) {
-            return;
-          }
+        if (match && match[0] === lastHash &&
+          (match.length === 1 ||
+          !document.querySelector(`[hash="${lastHash}"]`))) {
           lastMatch = route_(newHash, [this.element_], []);
           let detail = {router: this.element_};
           newHash.match(new RegExp(lastMatch))
