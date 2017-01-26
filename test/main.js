@@ -595,4 +595,39 @@ window.addEventListener('load', () => {
     window.location.hash = "hash-mix-123";
   }); }, "String-based route goes before any RegExp-based. Change route from '' to '#hash-mix-123'");
 
+  promise_test(function() { return new Promise((resolve, reject) => {
+    // [setup]
+    let hash1 = selectHash("hash1");
+    let hash3 = selectHash("hash3");
+    let hash5 = selectHash("hash5");
+    let hash7 = selectHash("hash7");
+
+    let handler1 = this.step_func((e) => {
+      // [setup]
+      window.addEventListener('error', handler2);
+      hash7.removeEventListener('show', handler1);
+      hash1.addEventListener('show', handler3);
+
+      // [run]
+      window.location.hash = "absent-hash";
+    });
+    let handler2 = this.step_func((e) => {
+      // [verify]
+      assert_equals(e.message, "Uncaught Error: Cannot navigate to absent-hash");
+
+      // [teardown]
+      hash1.removeEventListener('show', handler3);
+      window.removeEventListener('error', handler2);
+      teardown(resolve, handler1, e);
+    });
+    let handler3 = this.step_func((e) => {
+      // [verify]
+      assert_unreached();
+    });
+    hash7.addEventListener('show', handler1);
+
+    // [run]
+    window.location.hash = "hash1/hash3/hash5/hash7";
+  }); }, "Check that router's show event does not dispatch twice if go from '#hash1/hash3/hash5/hash7' to #absent-hash");
+
 });
