@@ -643,7 +643,9 @@ window.addEventListener('load', () => {
     });
     let handler2 = this.step_func((e) => {
       // [verify]
-      assert_equals(window.location.hash, "hash-exp123/hash1-exp456");
+      assert_equals(window.location.hash[0] === "#" ?
+        window.location.hash.slice(1) : window.location.hash,
+        "hash-exp123/hash1-exp456");
 
       // [teardown]
       teardown(resolve, handler2, e);

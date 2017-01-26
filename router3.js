@@ -76,6 +76,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 bubbles: true,
                 detail: detail
               })); // jshint ignore:line
+              lastMatch = newHash;
             })();
           } else {
             if (!_this.element_.hidden) {
