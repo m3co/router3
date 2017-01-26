@@ -630,4 +630,28 @@ window.addEventListener('load', () => {
     window.location.hash = "hash1/hash3/hash5/hash7";
   }); }, "Check that router's show event does not dispatch twice if go from '#hash1/hash3/hash5/hash7' to #absent-hash");
 
+  promise_test(function() { return new Promise((resolve, reject) => {
+    // [setup]
+    let hashRE2 = selectHash("hash1-exp([0-9]+)");
+    let handler1 = this.step_func((e) => {
+      // [teardown]
+      hashRE2.removeEventListener('show', handler1);
+      window.location.hash = "absent-hash";
+
+      // [setup]
+      window.addEventListener('error', handler2);
+    });
+    let handler2 = this.step_func((e) => {
+      // [verify]
+      assert_equals(window.location.hash, "hash-exp123/hash1-exp456");
+
+      // [teardown]
+      teardown(resolve, handler2, e);
+    });
+    hashRE2.addEventListener('show', handler1);
+
+    // [run]
+    window.location.hash = "hash-exp123/hash1-exp456";
+  }); }, "Restore lastURL if go from '#hash-exp123/hash1-exp456' to an absent hash");
+
 });
