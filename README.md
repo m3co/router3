@@ -1,6 +1,7 @@
 # MDL router3
 The second try for writting a normal and simple router tag
 
+Check the [tests](/test)
 
 ## TODO
 
