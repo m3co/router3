@@ -137,7 +137,7 @@
           lastMatch = null;
         } else {
           stateRevert = true;
-          window.location.hash = lastMatch_;
+          window.location.hash = lastMatch_ ? lastMatch_ : '/';
           setTimeout(() => { throw new Error(`Cannot navigate to ${newHash}`); });
         }
       }

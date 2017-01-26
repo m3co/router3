@@ -153,7 +153,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           lastMatch = null;
         } else {
           stateRevert = true;
-          window.location.hash = lastMatch_;
+          window.location.hash = lastMatch_ ? lastMatch_ : '/';
           setTimeout(function () {
             throw new Error('Cannot navigate to ' + newHash);
           });
