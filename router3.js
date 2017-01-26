@@ -75,7 +75,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
               !stateRevert && _this.element_.dispatchEvent(new CustomEvent('show', {
                 bubbles: true,
                 detail: detail
-              }));
+              })); // jshint ignore:line
             })();
           } else {
             if (!_this.element_.hidden) {

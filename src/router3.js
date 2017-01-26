@@ -66,7 +66,7 @@
           !stateRevert && this.element_.dispatchEvent(new CustomEvent('show', {
             bubbles: true,
             detail: detail
-          }));
+          })); // jshint ignore:line
         } else {
           if (!this.element_.hidden) {
             this.element_.hidden = true;
