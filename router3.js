@@ -12,6 +12,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   var selClass = '.' + cssClass;
 
   var lastMatch = null;
+  var stateRevert = void 0;
 
   /**
    * Class MaterialRouter3
@@ -71,7 +72,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                *   from the URL's fragment. These params go in order of appearance
                *   from left to right.
                */
-              _this.element_.dispatchEvent(new CustomEvent('show', {
+              !stateRevert && _this.element_.dispatchEvent(new CustomEvent('show', {
                 bubbles: true,
                 detail: detail
               }));
@@ -146,12 +147,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       var newHash = e.newURL.split('#')[1];
       if (newHash !== '') {
         if (lastMatch) {
+          stateRevert = false;
           lastMatch_ = lastMatch;
           lastMatch = null;
         } else {
-          // prevent here dispatching twice the show event
+          stateRevert = true;
           window.location.hash = lastMatch_;
-          throw new Error('Cannot navigate to ' + newHash);
+          setTimeout(function () {
+            throw new Error('Cannot navigate to ' + newHash);
+          });
         }
       }
     });

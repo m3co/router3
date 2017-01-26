@@ -606,7 +606,7 @@ window.addEventListener('load', () => {
       // [setup]
       window.addEventListener('error', handler2);
       hash7.removeEventListener('show', handler1);
-      hash1.addEventListener('show', handler3);
+      hash7.addEventListener('show', handler3)
 
       // [run]
       window.location.hash = "absent-hash";
@@ -616,7 +616,7 @@ window.addEventListener('load', () => {
       assert_equals(e.message, "Uncaught Error: Cannot navigate to absent-hash");
 
       // [teardown]
-      hash1.removeEventListener('show', handler3);
+      hash7.removeEventListener('show', handler3);
       window.removeEventListener('error', handler2);
       teardown(resolve, handler1, e);
     });

@@ -6,6 +6,7 @@
   const selClass = `.${cssClass}`;
 
   let lastMatch = null;
+  let stateRevert;
 
   /**
    * Class MaterialRouter3
@@ -62,7 +63,7 @@
            *   from the URL's fragment. These params go in order of appearance
            *   from left to right.
            */
-          this.element_.dispatchEvent(new CustomEvent('show', {
+          !stateRevert && this.element_.dispatchEvent(new CustomEvent('show', {
             bubbles: true,
             detail: detail
           }));
@@ -130,12 +131,13 @@
       let newHash = e.newURL.split('#')[1];
       if (newHash !== '') {
         if (lastMatch) {
+          stateRevert = false;
           lastMatch_ = lastMatch;
           lastMatch = null;
         } else {
-          // prevent here dispatching twice the show event
+          stateRevert = true;
           window.location.hash = lastMatch_;
-          throw new Error(`Cannot navigate to ${newHash}`);
+          setTimeout(() => { throw new Error(`Cannot navigate to ${newHash}`); });
         }
       }
     });
