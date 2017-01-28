@@ -50,28 +50,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           if (match && match[0] === lastHash && (match.length === 1 || !document.querySelector('[hash="' + lastHash + '"]'))) {
             (function () {
               var detail = { router: _this.element_ };
-              newHash.match(new RegExp(route_(newHash, [_this.element_], []))).slice(1).forEach(function (hash, i) {
+              newHash.match(new RegExp(show_(newHash, [_this.element_], []))).slice(1).forEach(function (hash, i) {
                 detail['param' + (i + 1)] = hash;
               });
-
-              /**
-               * Dispatch show even if URL's fragment matches with a route
-               *
-               * @event MaterialRouter3#show
-               * @type {CustomEvent}
-               * @property {HTMLElement} router - The router that dispatches
-               *   this event
-               * @property {String} param1
-               * @property {String} param2
-               * @property {String} ...
-               * @property {String} paramN - The values extracted
-               *   from the URL's fragment. These params go in order of appearance
-               *   from left to right.
-               */
-              _this.element_.dispatchEvent(new CustomEvent('show', {
-                bubbles: true,
-                detail: detail
-              }));
+              dispatchShow_(_this.element_, detail);
             })();
           } else {
             hide_(_this.element_);
@@ -87,6 +69,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   /**
    * Hide element and dispatch hide event
    *
+   * @param {HTMLElement} element - The element
+   * @private
    */
 
 
@@ -111,20 +95,49 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   }
 
   /**
-   * Route/Navigate to chain-hash
+   * Dispatch show event
+   *
+   * @param {HTMLElement} element - The element
+   * @param {Object} detail - The extracted params
+   * @private
+   */
+  function dispatchShow_(element, detail) {
+
+    /**
+     * Dispatch show even if URL's fragment matches with a route
+     *
+     * @event MaterialRouter3#show
+     * @type {CustomEvent}
+     * @property {HTMLElement} router - The router that dispatches
+     *   this event
+     * @property {String} param1
+     * @property {String} param2
+     * @property {String} ...
+     * @property {String} paramN - The values extracted
+     *   from the URL's fragment. These params go in order of appearance
+     *   from left to right.
+     */
+    element.dispatchEvent(new CustomEvent('show', {
+      bubbles: true,
+      detail: detail
+    }));
+  }
+
+  /**
+   * Show/Navigate to chain-hash
    *
    * @param {String} newHash - The new hash to navigate
    * @param {Array} parents - The array of pushed parents
    * @param {Array} hashes - The array of pushed hashes
    * @private
    */
-  function route_(newHash, parents, hashes) {
+  function show_(newHash, parents, hashes) {
     parents.push(parents[hashes.length].parentElement.closest(selClass));
     hashes.push(parents[hashes.length].getAttribute('hash'));
 
     var hash = hashes.slice(0, hashes.length).reverse().join('/');
     if (parents[hashes.length]) {
-      return route_(newHash, parents, hashes);
+      return show_(newHash, parents, hashes);
     } else {
       parents.slice(0, hashes.length).map(function (parent) {
         return parent.hidden = false;
