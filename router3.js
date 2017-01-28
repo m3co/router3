@@ -11,9 +11,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   var cssClass = 'mdl-router3';
   var selClass = '.' + cssClass;
 
-  var lastMatch = null;
-  var stateRevert = void 0;
-
   /**
    * Class MaterialRouter3
    */
@@ -52,9 +49,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
           if (match && match[0] === lastHash && (match.length === 1 || !document.querySelector('[hash="' + lastHash + '"]'))) {
             (function () {
-              lastMatch = route_(newHash, [_this.element_], []);
               var detail = { router: _this.element_ };
-              newHash.match(new RegExp(lastMatch)).slice(1).forEach(function (hash, i) {
+              newHash.match(new RegExp(route_(newHash, [_this.element_], []))).slice(1).forEach(function (hash, i) {
                 detail['param' + (i + 1)] = hash;
               });
 
@@ -72,11 +68,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                *   from the URL's fragment. These params go in order of appearance
                *   from left to right.
                */
-              !stateRevert && _this.element_.dispatchEvent(new CustomEvent('show', {
+              _this.element_.dispatchEvent(new CustomEvent('show', {
                 bubbles: true,
                 detail: detail
-              })); // jshint ignore:line
-              lastMatch = newHash;
+              }));
             })();
           } else {
             if (!_this.element_.hidden) {
@@ -140,25 +135,5 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     classAsString: classAsString,
     cssClass: cssClass,
     widget: true
-  });
-
-  window.addEventListener('load', function () {
-    var lastMatch_ = void 0;
-    window.addEventListener('hashchange', function (e) {
-      var newHash = e.newURL.split('#')[1];
-      if (newHash !== '') {
-        if (lastMatch) {
-          stateRevert = false;
-          lastMatch_ = lastMatch;
-          lastMatch = null;
-        } else {
-          stateRevert = true;
-          window.location.hash = lastMatch_ ? lastMatch_ : '';
-          setTimeout(function () {
-            throw new Error('Cannot navigate to ' + newHash);
-          });
-        }
-      }
-    });
   });
 })();

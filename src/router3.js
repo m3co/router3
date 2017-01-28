@@ -5,9 +5,6 @@
   const cssClass = 'mdl-router3';
   const selClass = `.${cssClass}`;
 
-  let lastMatch = null;
-  let stateRevert;
-
   /**
    * Class MaterialRouter3
    */
@@ -41,9 +38,8 @@
         if (match && match[0] === lastHash &&
           (match.length === 1 ||
           !document.querySelector(`[hash="${lastHash}"]`))) {
-          lastMatch = route_(newHash, [this.element_], []);
           let detail = {router: this.element_};
-          newHash.match(new RegExp(lastMatch))
+          newHash.match(new RegExp(route_(newHash, [this.element_], [])))
             .slice(1)
             .forEach((hash, i) => {
             detail[`param${i + 1}`] = hash;
@@ -63,11 +59,10 @@
            *   from the URL's fragment. These params go in order of appearance
            *   from left to right.
            */
-          !stateRevert && this.element_.dispatchEvent(new CustomEvent('show', {
+          this.element_.dispatchEvent(new CustomEvent('show', {
             bubbles: true,
             detail: detail
-          })); // jshint ignore:line
-          lastMatch = newHash;
+          }));
         } else {
           if (!this.element_.hidden) {
             this.element_.hidden = true;
@@ -126,21 +121,4 @@
     widget: true
   });
 
-  window.addEventListener('load', () => {
-    let lastMatch_;
-    window.addEventListener('hashchange', (e) => {
-      let newHash = e.newURL.split('#')[1];
-      if (newHash !== '') {
-        if (lastMatch) {
-          stateRevert = false;
-          lastMatch_ = lastMatch;
-          lastMatch = null;
-        } else {
-          stateRevert = true;
-          window.location.hash = lastMatch_ ? lastMatch_ : '';
-          setTimeout(() => { throw new Error(`Cannot navigate to ${newHash}`); });
-        }
-      }
-    });
-  });
 })();
