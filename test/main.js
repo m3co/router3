@@ -327,59 +327,6 @@ window.addEventListener('load', () => {
     window.location.hash = "hash1/hash3/hash5/hash8";
   }); }, "Change route from '' to #hash1/hash3/hash5/hash8");
 
-  /**
-   * This test goes before:
-   *   "Change route from '#hash1/hash3/hash6' to absent '#hash1/hash!3' see an error and stay at oldURL"
-   */
-  promise_test(function() { return new Promise((resolve, reject) => {
-    // [setup]
-    let hash1 = selectHash("hash1");
-    let hash2 = selectHash("hash2");
-
-    let handler = this.step_func((e) => {
-      // [verify]
-      assert_equals(e.message, "Uncaught Error: Cannot navigate to hash!1");
-
-      // [teardown]
-      window.removeEventListener('error', handler);
-      window.location.hash = "#hash1/hash3/hash6";
-      setTimeout(() => resolve(), 0);
-      // This teardown navigates to a concrete location.hash
-    });
-    window.addEventListener('error', handler);
-    assert_true(hash1.hidden);
-    assert_true(hash2.hidden);
-
-    // [run]
-    window.location.hash = "#hash!1";
-  }); }, "Change route from '' to absent '#hash!1' and see an error");
-
-  /**
-   * This test goes after:
-   *   "Change route from '' to absent '#hash!1' and see an error"
-   */
-  promise_test(function() { return new Promise((resolve, reject) => {
-    // [setup]
-    let hash1 = selectHash("hash1");
-    let hash3 = selectHash("hash3");
-    let hash6 = selectHash("hash6");
-
-    let handler = this.step_func((e) => {
-      // [verify]
-      assert_equals(e.message, "Uncaught Error: Cannot navigate to hash1/hash!3");
-
-      // [teardown]
-      teardown(resolve, handler, e);
-    });
-    window.addEventListener('error', handler);
-    assert_false(hash1.hidden);
-    assert_false(hash3.hidden);
-    assert_false(hash6.hidden);
-
-    // [run]
-    window.location.hash = "#hash1/hash!3";
-  }); }, "Change route from '#hash1/hash3/hash6' to absent '#hash1/hash!3' see an error and stay at oldURL");
-
   promise_test(function() { return new Promise((resolve, reject) => {
     // [setup]
     let hash1 = selectHash("hash1");
@@ -655,5 +602,58 @@ window.addEventListener('load', () => {
     // [run]
     window.location.hash = "hash-exp123/hash1-exp456";
   }); }, "Restore lastURL if go from '#hash-exp123/hash1-exp456' to an absent hash");
+
+  /**
+   * This test goes before:
+   *   "Change route from '#hash1/hash3/hash6' to absent '#hash1/hash!3' see an error and stay at oldURL"
+   */
+  promise_test(function() { return new Promise((resolve, reject) => {
+    // [setup]
+    let hash1 = selectHash("hash1");
+    let hash2 = selectHash("hash2");
+
+    let handler = this.step_func((e) => {
+      // [verify]
+      assert_equals(e.message, "Uncaught Error: Cannot navigate to hash!1");
+
+      // [teardown]
+      window.removeEventListener('error', handler);
+      window.location.hash = "#hash1/hash3/hash6";
+      setTimeout(() => resolve(), 0);
+      // This teardown navigates to a concrete location.hash
+    });
+    window.addEventListener('error', handler);
+    assert_true(hash1.hidden);
+    assert_true(hash2.hidden);
+
+    // [run]
+    window.location.hash = "#hash!1";
+  }); }, "Change route from '' to absent '#hash!1' and see an error");
+
+  /**
+   * This test goes after:
+   *   "Change route from '' to absent '#hash!1' and see an error"
+   */
+  promise_test(function() { return new Promise((resolve, reject) => {
+    // [setup]
+    let hash1 = selectHash("hash1");
+    let hash3 = selectHash("hash3");
+    let hash6 = selectHash("hash6");
+
+    let handler = this.step_func((e) => {
+      // [verify]
+      assert_equals(e.message, "Uncaught Error: Cannot navigate to hash1/hash!3");
+
+      // [teardown]
+      teardown(resolve, handler, e);
+    });
+    window.addEventListener('error', handler);
+    assert_false(hash1.hidden);
+    assert_false(hash3.hidden);
+    assert_false(hash6.hidden);
+
+    // [run]
+    window.location.hash = "#hash1/hash!3";
+  }); }, "Change route from '#hash1/hash3/hash6' to absent '#hash1/hash!3' see an error and stay at oldURL");
 
 });
