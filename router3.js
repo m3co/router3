@@ -40,17 +40,32 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     _createClass(MaterialRouter3, [{
       key: 'init',
       value: function init() {
-        var _this = this;
-
-        window.addEventListener('hashchange', function (e) {
-          route_(_this.element_, e.newURL);
-        });
         this.element_.hidden = true;
       }
     }]);
 
     return MaterialRouter3;
   }();
+
+  var stateRevert = false;
+  window.addEventListener('hashchange', function (e) {
+    if (Array.prototype.slice.call(document.querySelectorAll(selClass)).map(function (element) {
+      return route_(element, e.newURL);
+    }).find(function (result) {
+      return result;
+    })) {
+      stateRevert = false;
+    } else {
+      var newHash = e.newURL.split('#')[1];
+      if (newHash !== '') {
+        stateRevert = true;
+        window.location.hash = e.oldURL.split('#')[1];
+        setTimeout(function () {
+          throw new Error('Cannot navigate to ' + newHash);
+        });
+      }
+    }
+  });
 
   /**
    * Route/Match process
@@ -59,9 +74,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
    * @param {String} newURL - The URL to match against the element
    * @private
    */
-
-
   function route_(element, newURL) {
+    var lastMatch = null;
     var newHash = newURL.split('#')[1];
     var lastHash = newHash.split('/').reverse()[0];
     var match = lastHash.match(new RegExp(element.getAttribute('hash')));
@@ -69,14 +83,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     if (match && match[0] === lastHash && (match.length === 1 || !document.querySelector('[hash="' + lastHash + '"]'))) {
       (function () {
         var detail = { router: element };
-        newHash.match(new RegExp(show_(newHash, [element], []))).slice(1).forEach(function (hash, i) {
+        lastMatch = show_(newHash, [element], []);
+        newHash.match(new RegExp(lastMatch)).slice(1).forEach(function (hash, i) {
           detail['param' + (i + 1)] = hash;
         });
-        dispatchShow_(element, detail);
+        !stateRevert && dispatchShow_(element, detail); // jshint ignore:line
       })();
     } else {
       hide_(element);
     }
+    return lastMatch;
   }
 
   /**

@@ -27,13 +27,30 @@
      *
      */
     init() {
-      window.addEventListener('hashchange', (e) => {
-        route_(this.element_, e.newURL);
-      });
       this.element_.hidden = true;
     }
 
   }
+
+  var stateRevert = false;
+  window.addEventListener('hashchange', e => {
+    if (Array.prototype
+      .slice
+      .call(document.querySelectorAll(selClass))
+      .map(element => route_(element, e.newURL))
+      .find(result => {
+        return result;
+      })) {
+      stateRevert = false;
+    } else {
+      var newHash = e.newURL.split('#')[1];
+      if (newHash !== '') {
+        stateRevert = true;
+        window.location.hash = e.oldURL.split('#')[1];
+        setTimeout(() => { throw new Error(`Cannot navigate to ${newHash}`); });
+      }
+    }
+  });
 
   /**
    * Route/Match process
@@ -43,6 +60,7 @@
    * @private
    */
   function route_(element, newURL) {
+    let lastMatch = null;
     let newHash = newURL.split('#')[1];
     let lastHash = newHash.split('/').reverse()[0];
     let match = lastHash
@@ -54,17 +72,19 @@
       (match.length === 1 ||
       !document.querySelector(`[hash="${lastHash}"]`))) {
       let detail = {router: element};
+      lastMatch = show_(newHash, [element], []);
       newHash.match(
-          new RegExp(show_(newHash, [element], []))
+          new RegExp(lastMatch)
         )
         .slice(1)
         .forEach((hash, i) => {
         detail[`param${i + 1}`] = hash;
       });
-      dispatchShow_(element, detail);
+      !stateRevert && dispatchShow_(element, detail); // jshint ignore:line
     } else {
       hide_(element);
     }
+    return lastMatch;
   }
 
   /**
