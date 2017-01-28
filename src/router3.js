@@ -28,32 +28,43 @@
      */
     init() {
       window.addEventListener('hashchange', (e) => {
-        let newHash = e.newURL.split('#')[1];
-        let lastHash = newHash.split('/').reverse()[0];
-        let match = lastHash
-          .match(
-            new RegExp(this.element_.getAttribute('hash'))
-          );
-
-        if (match && match[0] === lastHash &&
-          (match.length === 1 ||
-          !document.querySelector(`[hash="${lastHash}"]`))) {
-          let detail = {router: this.element_};
-          newHash.match(
-              new RegExp(show_(newHash, [this.element_], []))
-            )
-            .slice(1)
-            .forEach((hash, i) => {
-            detail[`param${i + 1}`] = hash;
-          });
-          dispatchShow_(this.element_, detail);
-        } else {
-          hide_(this.element_);
-        }
+        route_(this.element_, e.newURL);
       });
       this.element_.hidden = true;
     }
 
+  }
+
+  /**
+   * Route/Match process
+   *
+   * @param {HTMLElement} element - The element to match
+   * @param {String} newURL - The URL to match against the element
+   * @private
+   */
+  function route_(element, newURL) {
+    let newHash = newURL.split('#')[1];
+    let lastHash = newHash.split('/').reverse()[0];
+    let match = lastHash
+      .match(
+        new RegExp(element.getAttribute('hash'))
+      );
+
+    if (match && match[0] === lastHash &&
+      (match.length === 1 ||
+      !document.querySelector(`[hash="${lastHash}"]`))) {
+      let detail = {router: element};
+      newHash.match(
+          new RegExp(show_(newHash, [element], []))
+        )
+        .slice(1)
+        .forEach((hash, i) => {
+        detail[`param${i + 1}`] = hash;
+      });
+      dispatchShow_(element, detail);
+    } else {
+      hide_(element);
+    }
   }
 
   /**
