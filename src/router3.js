@@ -64,30 +64,36 @@
             detail: detail
           }));
         } else {
-          if (!this.element_.hidden) {
-            this.element_.hidden = true;
-
-            /**
-             * Dispatch show even if URL's fragment matches with a route
-             *
-             * @event MaterialRouter3#hide
-             * @type {CustomEvent}
-             * @property {HTMLElement} router - The router that dispatches
-             *   this event
-             */
-            this.element_.dispatchEvent(new CustomEvent('hide', {
-              detail: {
-                router: this.element_
-              }
-            }));
-          } else {
-            this.element_.hidden = true;
-          }
+          hide_(this.element_);
         }
       });
       this.element_.hidden = true;
     }
 
+  }
+
+  /**
+   * Hide element and dispatch hide event
+   *
+   */
+  function hide_(element) {
+    if (!element.hidden) {
+      element.hidden = true;
+
+      /**
+       * Dispatch show even if URL's fragment matches with a route
+       *
+       * @event MaterialRouter3#hide
+       * @type {CustomEvent}
+       * @property {HTMLElement} router - The router that dispatches
+       *   this event
+       */
+      element.dispatchEvent(new CustomEvent('hide', {
+        detail: {
+          router: element
+        }
+      }));
+    }
   }
 
   /**

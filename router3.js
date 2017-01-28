@@ -74,25 +74,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
               }));
             })();
           } else {
-            if (!_this.element_.hidden) {
-              _this.element_.hidden = true;
-
-              /**
-               * Dispatch show even if URL's fragment matches with a route
-               *
-               * @event MaterialRouter3#hide
-               * @type {CustomEvent}
-               * @property {HTMLElement} router - The router that dispatches
-               *   this event
-               */
-              _this.element_.dispatchEvent(new CustomEvent('hide', {
-                detail: {
-                  router: _this.element_
-                }
-              }));
-            } else {
-              _this.element_.hidden = true;
-            }
+            hide_(_this.element_);
           }
         });
         this.element_.hidden = true;
@@ -103,6 +85,32 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   }();
 
   /**
+   * Hide element and dispatch hide event
+   *
+   */
+
+
+  function hide_(element) {
+    if (!element.hidden) {
+      element.hidden = true;
+
+      /**
+       * Dispatch show even if URL's fragment matches with a route
+       *
+       * @event MaterialRouter3#hide
+       * @type {CustomEvent}
+       * @property {HTMLElement} router - The router that dispatches
+       *   this event
+       */
+      element.dispatchEvent(new CustomEvent('hide', {
+        detail: {
+          router: element
+        }
+      }));
+    }
+  }
+
+  /**
    * Route/Navigate to chain-hash
    *
    * @param {String} newHash - The new hash to navigate
@@ -110,8 +118,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
    * @param {Array} hashes - The array of pushed hashes
    * @private
    */
-
-
   function route_(newHash, parents, hashes) {
     parents.push(parents[hashes.length].parentElement.closest(selClass));
     hashes.push(parents[hashes.length].getAttribute('hash'));
