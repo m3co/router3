@@ -167,14 +167,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     parents.push(parents[hashes.length].parentElement.closest(selClass));
     hashes.push(parents[hashes.length].getAttribute('hash'));
 
-    var hash = hashes.slice(0, hashes.length).reverse().join('/');
     if (parents[hashes.length]) {
       return show_(newHash, parents, hashes);
     } else {
       parents.slice(0, hashes.length).map(function (parent) {
         return parent.hidden = false;
       });
-      return hash;
+      return hashes.slice(0, hashes.length).reverse().join('/');
     }
     return null;
   }

@@ -161,12 +161,11 @@
     parents.push(parents[hashes.length].parentElement.closest(selClass));
     hashes.push(parents[hashes.length].getAttribute('hash'));
 
-    let hash = hashes.slice(0, hashes.length).reverse().join('/');
     if (parents[hashes.length]) {
       return show_(newHash, parents, hashes);
     } else {
       parents.slice(0, hashes.length).map(parent => parent.hidden = false);
-      return hash;
+      return hashes.slice(0, hashes.length).reverse().join('/');
     }
     return null;
   }
