@@ -4,6 +4,7 @@
   const classAsString = 'MaterialRouter3';
   const cssClass = 'mdl-router3';
   const selClass = `.${cssClass}`;
+  const slice = Array.prototype.slice;
 
   /**
    * Class MaterialRouter3
@@ -34,15 +35,13 @@
 
   var stateRevert = false;
   window.addEventListener('hashchange', e => {
-    Promise.all(Array.prototype
-      .slice
+    Promise.all(slice
       .call(document.querySelectorAll('.mdl-fragment'))
       .map(element => {
         return element.MaterialFragment.loaded;
       })
     ).then(() => {
-      if (Array.prototype
-        .slice
+      if (slice
         .call(document.querySelectorAll(selClass))
         .map(element => route_(element, e.newURL))
         .find(result => {

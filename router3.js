@@ -10,6 +10,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   var classAsString = 'MaterialRouter3';
   var cssClass = 'mdl-router3';
   var selClass = '.' + cssClass;
+  var slice = Array.prototype.slice;
 
   /**
    * Class MaterialRouter3
@@ -49,10 +50,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
   var stateRevert = false;
   window.addEventListener('hashchange', function (e) {
-    Promise.all(Array.prototype.slice.call(document.querySelectorAll('.mdl-fragment')).map(function (element) {
+    Promise.all(slice.call(document.querySelectorAll('.mdl-fragment')).map(function (element) {
       return element.MaterialFragment.loaded;
     })).then(function () {
-      if (Array.prototype.slice.call(document.querySelectorAll(selClass)).map(function (element) {
+      if (slice.call(document.querySelectorAll(selClass)).map(function (element) {
         return route_(element, e.newURL);
       }).find(function (result) {
         return result;
