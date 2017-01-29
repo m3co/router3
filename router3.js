@@ -49,22 +49,26 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
   var stateRevert = false;
   window.addEventListener('hashchange', function (e) {
-    if (Array.prototype.slice.call(document.querySelectorAll(selClass)).map(function (element) {
-      return route_(element, e.newURL);
-    }).find(function (result) {
-      return result;
-    })) {
-      stateRevert = false;
-    } else {
-      var newHash = e.newURL.split('#')[1];
-      if (newHash !== '') {
-        stateRevert = true;
-        window.location.hash = e.oldURL.split('#')[1];
-        setTimeout(function () {
-          throw new Error('Cannot navigate to ' + newHash);
-        });
+    Promise.all(Array.prototype.slice.call(document.querySelectorAll('.mdl-fragment')).map(function (element) {
+      return element.MaterialFragment.loaded;
+    })).then(function () {
+      if (Array.prototype.slice.call(document.querySelectorAll(selClass)).map(function (element) {
+        return route_(element, e.newURL);
+      }).find(function (result) {
+        return result;
+      })) {
+        stateRevert = false;
+      } else {
+        var newHash = e.newURL.split('#')[1];
+        if (newHash !== '') {
+          stateRevert = true;
+          window.location.hash = e.oldURL.split('#')[1];
+          setTimeout(function () {
+            throw new Error('Cannot navigate to ' + newHash);
+          });
+        }
       }
-    }
+    });
   });
 
   /**

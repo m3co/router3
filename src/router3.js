@@ -34,22 +34,30 @@
 
   var stateRevert = false;
   window.addEventListener('hashchange', e => {
-    if (Array.prototype
+    Promise.all(Array.prototype
       .slice
-      .call(document.querySelectorAll(selClass))
-      .map(element => route_(element, e.newURL))
-      .find(result => {
-        return result;
-      })) {
-      stateRevert = false;
-    } else {
-      var newHash = e.newURL.split('#')[1];
-      if (newHash !== '') {
-        stateRevert = true;
-        window.location.hash = e.oldURL.split('#')[1];
-        setTimeout(() => { throw new Error(`Cannot navigate to ${newHash}`); });
+      .call(document.querySelectorAll('.mdl-fragment'))
+      .map(element => {
+        return element.MaterialFragment.loaded;
+      })
+    ).then(() => {
+      if (Array.prototype
+        .slice
+        .call(document.querySelectorAll(selClass))
+        .map(element => route_(element, e.newURL))
+        .find(result => {
+          return result;
+        })) {
+        stateRevert = false;
+      } else {
+        var newHash = e.newURL.split('#')[1];
+        if (newHash !== '') {
+          stateRevert = true;
+          window.location.hash = e.oldURL.split('#')[1];
+          setTimeout(() => { throw new Error(`Cannot navigate to ${newHash}`); });
+        }
       }
-    }
+    });
   });
 
   /**
