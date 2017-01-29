@@ -561,6 +561,7 @@ window.addEventListener('load', () => {
     let handler2 = this.step_func((e) => {
       // [verify]
       assert_equals(e.message, "Uncaught Error: Cannot navigate to absent-hash");
+      assert_equals(window.location.hash.slice(1), "hash1/hash3/hash5/hash7");
 
       // [teardown]
       hash7.removeEventListener('show', handler3);
