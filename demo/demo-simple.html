@@ -1,6 +1,82 @@
 <!doctype html>
 <html>
+  <head>
+    <script src="/bower_components/material-design-lite/material.js"></script>
+    <script src="/router3.js"></script>
+  </head>
   <body>
-    Here will be a simple demo...
+    <h2>Demo</h2>
+    <a href="#hash1">Hash 1</a>
+    <a href="#hash1/hash3">Hash 3</a>
+    <a href="#hash1/hash3/hash5">Hash 5</a>
+    <a href="#hash1/hash3/hash5/hash7">Hash 7</a>
+    <br>
+    <a href="#hash1">Hash 1</a>
+    <a href="#hash1/hash3">Hash 3</a>
+    <a href="#hash1/hash3/hash5">Hash 5</a>
+    <a href="#hash1/hash3/hash5/hash8">Hash 8</a>
+    <br>
+    <a href="#hash1">Hash 1</a>
+    <a href="#hash1/hash3">Hash 3</a>
+    <a href="#hash1/hash3/hash6">Hash 6</a>
+    <br>
+    <a href="#hash1">Hash 1</a>
+    <a href="#hash1/hash4">Hash 4</a>
+    <br>
+    <a href="#hash2">Hash 2</a><br>
+    <a href="#hash-exp123">Hash exp 123</a><br>
+    <a href="#hash-exp123">Hash exp 123</a>
+    <a href="#hash-exp123/hash1-exp456">Hash 1 exp 456</a><br>
+    <a href="#absent-hash">Absent hash</a>
+
+    <div class="mdl-router3" hash="hash2">
+      Hash 2
+    </div>
+    <div class="mdl-router3" hash="hash-exp([0-9]+)-([0-9]+)">
+      Hash "hash-exp([0-9]+) ([0-9]+)"
+    </div>
+    <div class="mdl-router3" hash="hash-exp([0-9]+)">
+      Hash "hash-exp([0-9]+)"
+      <div class="mdl-router3" hash="hash1-exp([0-9]+)">
+        Hash "hash1-exp([0-9]+)"
+      </div>
+    </div>
+    <div class="mdl-router3" hash="hash1">
+      Hash 1
+      <div class="mdl-router3" hash="hash4">
+        Hash 4
+      </div>
+      <div class="mdl-router3" hash="hash3">
+        Hash 3
+        <div class="mdl-router3" hash="hash6">
+          Hash 6
+        </div>
+        <div class="mdl-router3" hash="hash5">
+          Hash 5
+          <div class="mdl-router3" hash="hash8">
+            Hash 8
+          </div>
+          <div class="mdl-router3" hash="hash7">
+            Hash 7
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mdl-router3" hash="hash-mix-([0-9]+)">
+      Hash mix ([0-9]+)
+    </div>
+    <div class="mdl-router3" hash="hash-mix-123">
+      Hash mix 123 that could be resolved by Hash mix ([0-9]+)
+    </div>
+    <script>
+      'use strict';
+      document.querySelector('[hash="hash8"]').addEventListener('show', function(e) {
+        console.log('show hash8');
+      });
+      document.querySelector('[hash="hash1"]').addEventListener('show', function(e) {
+        console.log('show hash1');
+      });
+    </script>
+
   </body>
 </html>
