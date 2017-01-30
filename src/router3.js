@@ -34,7 +34,16 @@
   }
 
   var stateRevert = false;
-  window.addEventListener('hashchange', e => {
+  window.addEventListener('hashchange', hashchange_);
+  window.addEventListener('load', hashchange_);
+
+  /**
+   * Hash Change handler that also is executed when
+   * load event has been dispatched
+   *
+   * @private
+   */
+  function hashchange_(e) {
     Promise.all(slice
       .call(document.querySelectorAll('.mdl-fragment'))
       .map(element => {
@@ -43,21 +52,22 @@
     ).then(() => {
       if (slice
         .call(document.querySelectorAll(selClass))
-        .map(element => route_(element, e.newURL))
+        .map(element => route_(element, e && e.newURL ? e.newURL : window.location.href))
         .find(result => {
           return result;
         })) {
         stateRevert = false;
       } else {
-        var newHash = e.newURL.split('#')[1];
+        let newHash = window.location.hash;
+        let oldHash = e && e.oldURL ? e.oldURL.split('#')[1] : '';
         if (newHash !== '') {
           stateRevert = true;
-          window.location.hash = e.oldURL.split('#')[1];
-          setTimeout(() => { throw new Error(`Cannot navigate to ${newHash}`); });
+          window.location.hash = oldHash;
+          setTimeout(() => { throw new Error(`Cannot navigate to ${newHash.slice(1)}`); });
         }
       }
     });
-  });
+  }
 
   /**
    * Route/Match process

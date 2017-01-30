@@ -49,28 +49,40 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   }();
 
   var stateRevert = false;
-  window.addEventListener('hashchange', function (e) {
+  window.addEventListener('hashchange', hashchange_);
+  window.addEventListener('load', hashchange_);
+
+  /**
+   * Hash Change handler that also is executed when
+   * load event has been dispatched
+   *
+   * @private
+   */
+  function hashchange_(e) {
     Promise.all(slice.call(document.querySelectorAll('.mdl-fragment')).map(function (element) {
       return element.MaterialFragment.loaded;
     })).then(function () {
       if (slice.call(document.querySelectorAll(selClass)).map(function (element) {
-        return route_(element, e.newURL);
+        return route_(element, e && e.newURL ? e.newURL : window.location.href);
       }).find(function (result) {
         return result;
       })) {
         stateRevert = false;
       } else {
-        var newHash = e.newURL.split('#')[1];
-        if (newHash !== '') {
-          stateRevert = true;
-          window.location.hash = e.oldURL.split('#')[1];
-          setTimeout(function () {
-            throw new Error('Cannot navigate to ' + newHash);
-          });
-        }
+        (function () {
+          var newHash = window.location.hash;
+          var oldHash = e && e.oldURL ? e.oldURL.split('#')[1] : '';
+          if (newHash !== '') {
+            stateRevert = true;
+            window.location.hash = oldHash;
+            setTimeout(function () {
+              throw new Error('Cannot navigate to ' + newHash.slice(1));
+            });
+          }
+        })();
       }
     });
-  });
+  }
 
   /**
    * Route/Match process
