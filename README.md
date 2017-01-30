@@ -3,25 +3,14 @@ The second try for writting a normal and simple router tag
 
 Check the [tests](/test)
 
-## TODO
-
-Still I've to develop some things...
-
-2. Set a name for params
-3. Don't let the routers to rely on the order of appearance
-
 ## Setup
 
 ```
 <script src="bower_components/customevent-polyfill/customevent-polyfill.min.js"></script>
 <script src="bower_components/promise-polyfill/promise.min.js"></script>
 <script src="bower_components/fetch/fetch.js"></script>
-<script src="bower_components/pseudoimport-html/pseudoimport-html.js" defer></script>
 <script src="bower_components/router3/router3.js"></script>
 ```
-
-In fact, if you're using a recent browser then you may omit ```customevent-polyfill```, ```promise-polyfill``` and ```fetch``` scripts.
-
 
 ## Usage
 
@@ -42,11 +31,10 @@ If click over the anchor then the router becomes visible. Otherwise it's hidden.
 The full set of attributes that are present in the router3 tag are:
 
 - hash [string] or "regexp"
-- src [string] points to an absolute URL *still under consideration*
 
-A second example that allows to fetch HTML code from outside
+A second example that allows to fetch HTML code from outside by mixing it with [mdl-fragment](/m3co/pseudoimport-html)
 ```html
-<div class="mdl-router3" hash="page1" src="/page1.hml">
+<div class="mdl-router3 mdl-fragment" hash="page1" src="/page1.hml">
   Some default html code
   More html code
 </div>
@@ -54,20 +42,6 @@ A second example that allows to fetch HTML code from outside
 ```
 
 ### Events
-
-If src is defined for a router them it can accept the __load__ event, e.g.
-
-```html
-<div class="mdl-router3" hash="page1" src="/page1.html"></div>
-<script>
-  document
-    .querySelector('[hash="page1"]')
-    .addEventListener('load', e => {
-    // this event will be executed after
-    // the browser loads the url /page1.html
-  });
-</script>
-```
 
 When a router matches a ```window.location.hash``` then the __show / hide__ events are dispatched, e.g.
 
