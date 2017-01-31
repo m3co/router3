@@ -657,4 +657,22 @@ window.addEventListener('load', () => {
     window.location.hash = "#hash1/hash!3";
   }); }, "Change route from '#hash1/hash3/hash6' to absent '#hash1/hash!3' see an error and stay at oldURL");
 
+  promise_test(function() { return new Promise((resolve, reject) => {
+    // [setup]
+    let hash7 = selectHash("hash7");
+
+    let handler = this.step_func((e) => {
+      // [verify]
+      assert_equals(e.message, "Uncaught Error: Cannot navigate to hash7");
+
+      // [teardown]
+      teardown(resolve, handler);
+    });
+    window.addEventListener('error', handler);
+    assert_true(hash7.hidden);
+
+    // [run]
+    window.location.hash = "hash7";
+  }); }, "Change route from '' to #hash7");
+
 });
