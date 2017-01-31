@@ -86,10 +86,11 @@
       !document.querySelector(`[hash="${lastHash}"]`))) {
       let detail = {router: element};
       lastMatch = show_(newHash, [element], []);
-      newHash.match(
-          new RegExp(lastMatch)
-        )
-        .slice(1)
+      match = newHash.match(new RegExp(lastMatch));
+      if (match === null) {
+        return;
+      }
+      match.slice(1)
         .forEach((hash, i) => {
         detail[`param${i + 1}`] = hash;
       });
