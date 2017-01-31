@@ -71,10 +71,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       } else {
         (function () {
           var newHash = window.location.hash;
-          var oldHash = e && e.oldURL ? e.oldURL.split('#')[1] : '';
           if (newHash !== '') {
             stateRevert = true;
-            window.location.hash = oldHash;
+            window.location.hash = e && e.oldURL ? e.oldURL.split('#')[1] : '';
             setTimeout(function () {
               throw new Error('Cannot navigate to ' + newHash.slice(1));
             });

@@ -46,23 +46,19 @@
   function hashchange_(e) {
     Promise.all(slice
       .call(document.querySelectorAll('.mdl-fragment'))
-      .map(element => {
-        return element.MaterialFragment.loaded;
-      })
+      .map(element => element.MaterialFragment.loaded)
     ).then(() => {
       if (slice
         .call(document.querySelectorAll(selClass))
-        .map(element => route_(element, e && e.newURL ? e.newURL : window.location.href))
-        .find(result => {
-          return result;
-        })) {
+        .map(element => route_(element,
+            e && e.newURL ? e.newURL : window.location.href))
+        .find(result => result)) {
         stateRevert = false;
       } else {
         let newHash = window.location.hash;
-        let oldHash = e && e.oldURL ? e.oldURL.split('#')[1] : '';
         if (newHash !== '') {
           stateRevert = true;
-          window.location.hash = oldHash;
+          window.location.hash = e && e.oldURL ? e.oldURL.split('#')[1] : '';
           setTimeout(() => { throw new Error(`Cannot navigate to ${newHash.slice(1)}`); });
         }
       }
