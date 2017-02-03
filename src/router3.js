@@ -19,7 +19,18 @@
      */
     constructor(element) {
       this.element_ = element;
+      let resolve_;
+      this.loaded_ = new Promise(resolve => {
+        resolve_ = resolve;
+      });
 
+      if (this.element_.classList.contains('mdl-fragment')) {
+        this.element_.addEventListener('load', () => {
+          resolve_();
+        });
+      } else {
+        resolve_();
+      }
       this.init();
     }
 
@@ -45,8 +56,11 @@
    */
   function hashchange_(e) {
     Promise.all(slice
-      .call(document.querySelectorAll('.mdl-fragment'))
-      .map(element => element.MaterialFragment.loaded)
+      .call(document.querySelectorAll(selClass))
+      .reduce((elements, element) => {
+        element.MaterialRouter3 &&  elements.push(element.MaterialRouter3.loaded_);
+        return elements;
+      }, [])
     ).then(() => {
       if (slice
         .call(document.querySelectorAll(selClass))

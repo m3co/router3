@@ -30,7 +30,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _classCallCheck(this, MaterialRouter3);
 
       this.element_ = element;
+      var resolve_ = void 0;
+      this.loaded_ = new Promise(function (resolve) {
+        resolve_ = resolve;
+      });
 
+      if (this.element_.classList.contains('mdl-fragment')) {
+        this.element_.addEventListener('load', function () {
+          resolve_();
+        });
+      } else {
+        resolve_();
+      }
       this.init();
     }
 
@@ -61,9 +72,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
    * @private
    */
   function hashchange_(e) {
-    Promise.all(slice.call(document.querySelectorAll('.mdl-fragment')).map(function (element) {
-      return element.MaterialFragment.loaded;
-    })).then(function () {
+    Promise.all(slice.call(document.querySelectorAll(selClass)).reduce(function (elements, element) {
+      element.MaterialRouter3 && elements.push(element.MaterialRouter3.loaded_);
+      return elements;
+    }, [])).then(function () {
       if (slice.call(document.querySelectorAll(selClass)).map(function (element) {
         return route_(element, e && e.newURL ? e.newURL : window.location.href);
       }).find(function (result) {
