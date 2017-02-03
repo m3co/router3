@@ -30,18 +30,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _classCallCheck(this, MaterialRouter3);
 
       this.element_ = element;
-      var resolve_ = void 0;
-      this.loaded_ = new Promise(function (resolve) {
-        resolve_ = resolve;
-      });
 
-      if (this.element_.classList.contains('mdl-fragment')) {
-        this.element_.addEventListener('load', function () {
-          resolve_();
-        });
-      } else {
-        resolve_();
-      }
       this.init();
     }
 
@@ -65,6 +54,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   window.addEventListener('hashchange', hashchange_);
   window.addEventListener('load', hashchange_);
 
+  function load_(resolve, e) {
+    slice.call(e.target.querySelectorAll(selClass)).forEach(function (element) {
+      return componentHandler.upgradeElement(element);
+    });
+    e.target.removeEventListener('load', load_);
+    resolve();
+  }
+
   /**
    * Hash Change handler that also is executed when
    * load event has been dispatched
@@ -72,10 +69,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
    * @private
    */
   function hashchange_(e) {
-    Promise.all(slice.call(document.querySelectorAll(selClass)).reduce(function (elements, element) {
-      element.MaterialRouter3 && elements.push(element.MaterialRouter3.loaded_);
-      return elements;
-    }, [])).then(function () {
+    Promise.all(slice.call(document.querySelectorAll(selClass)).map(function (element) {
+      new Promise(function (resolve, reject) {
+        element.addEventListener('load', load_.bind(null, resolve));
+      });
+    })).then(function () {
       if (slice.call(document.querySelectorAll(selClass)).map(function (element) {
         return route_(element, e && e.newURL ? e.newURL : window.location.href);
       }).find(function (result) {

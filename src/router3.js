@@ -19,18 +19,7 @@
      */
     constructor(element) {
       this.element_ = element;
-      let resolve_;
-      this.loaded_ = new Promise(resolve => {
-        resolve_ = resolve;
-      });
 
-      if (this.element_.classList.contains('mdl-fragment')) {
-        this.element_.addEventListener('load', () => {
-          resolve_();
-        });
-      } else {
-        resolve_();
-      }
       this.init();
     }
 
@@ -48,6 +37,13 @@
   window.addEventListener('hashchange', hashchange_);
   window.addEventListener('load', hashchange_);
 
+  function load_(resolve, e) {
+    slice.call(e.target.querySelectorAll(selClass))
+      .forEach(element => componentHandler.upgradeElement(element));
+    e.target.removeEventListener('load', load_);
+    resolve();
+  }
+
   /**
    * Hash Change handler that also is executed when
    * load event has been dispatched
@@ -57,10 +53,11 @@
   function hashchange_(e) {
     Promise.all(slice
       .call(document.querySelectorAll(selClass))
-      .reduce((elements, element) => {
-        element.MaterialRouter3 &&  elements.push(element.MaterialRouter3.loaded_);
-        return elements;
-      }, [])
+      .map(element => {
+        new Promise((resolve, reject) => {
+          element.addEventListener('load', load_.bind(null, resolve));
+        });
+      })
     ).then(() => {
       if (slice
         .call(document.querySelectorAll(selClass))
@@ -100,7 +97,7 @@
     if (match && match[0] === lastHash &&
       (match.length === 1 ||
       !document.querySelector(`[hash="${lastHash}"]`))) {
-      let detail = {router: element};
+      let detail = { router: element };
       lastMatch = show_(newHash, [element], []);
       match = newHash.match(new RegExp(lastMatch));
       if (match === null) {
