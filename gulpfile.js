@@ -6,6 +6,7 @@ const eslint = require('gulp-eslint');
 const babel = require('gulp-babel');
 const connect = require('gulp-connect');
 const jsdoc = require('gulp-jsdoc3');
+const gulpIf = require('gulp-if');
 
 const paths = {
   src: 'src', dst: './',
@@ -20,6 +21,11 @@ const paths = {
   csssrc:['src/*.css',   'src/**/*.css'],
   jssrc: ['./src/*.js',    './src/**/*.js']
 };
+
+function isFixed(file) {
+  // Has ESLint fixed the file contents?
+  return file.eslint != null && file.eslint.fixed;
+}
 
 gulp.task('reload', function () {
   return gulp.src(paths.js, { read: false })
@@ -48,7 +54,7 @@ gulp.task('js-lint', _ => {
   return gulp.src(paths.jssrc, {base: './'})
     .pipe(eslint({fix: true}))
     .pipe(eslint.format())
-    .pipe(gulp.dest('./'));
+    .pipe(gulpIf(isFixed, gulp.dest('./')));
 });
 
 gulp.task('js-copy', _ => {

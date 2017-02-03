@@ -3,8 +3,7 @@
   "version": "0.1.1",
   "description": "The second try for writting a normal and simple router tag",
   "main": "router3.js",
-  "directories": {
-  },
+  "directories": {},
   "scripts": {
     "prestart": "npm install",
     "postinstall": "bower install",
@@ -29,8 +28,9 @@
     "gulp-babel": "^6.1.2",
     "gulp-connect": "^5.0.0",
     "gulp-csslint": "^1.0.0",
+    "gulp-eslint": "^3.0.1",
     "gulp-htmlhint": "^0.3.1",
-    "gulp-jsdoc3": "^1.0.1",
-    "gulp-eslint": "^3.0.1"
+    "gulp-if": "^2.0.2",
+    "gulp-jsdoc3": "^1.0.1"
   }
 }
