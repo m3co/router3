@@ -10,12 +10,12 @@ const jsdoc    = require('gulp-jsdoc3');
 const gulpIf   = require('gulp-if');
 
 const paths = {
-  src:    'src',
+  src:    './src',
   dst:    './',
-  css:    ['demo/**/*.css', 'test/**/*.css', 'src/**/*.css'],
-  html:   ['demo/**/*.html', 'test/**/*.html'],
-  js:     ['demo/**/*.js', 'test/**/*.js', 'src/**/*.js'],
-  csssrc: ['src/**/*.css'],
+  css:    ['./demo/**/*.css', './test/**/*.css', './src/**/*.css'],
+  html:   ['./demo/**/*.html', './test/**/*.html'],
+  js:     ['./demo/**/*.js', './test/**/*.js', './src/**/*.js'],
+  csssrc: ['./src/**/*.css'],
   jssrc:  ['./src/**/*.js']
 };
 

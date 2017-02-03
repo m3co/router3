@@ -7,7 +7,6 @@
  
   "globals": {
     "componentHandler": true,
-    "MaterialMenu": true,
     "Promise": true
   },
 
