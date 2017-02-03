@@ -2,8 +2,7 @@
 const gulp = require('gulp');
 const csslint = require('gulp-csslint');
 const htmlhint = require("gulp-htmlhint");
-const jscs = require('gulp-jscs');
-const jshint = require('gulp-jshint');
+const eslint = require('gulp-eslint');
 const babel = require('gulp-babel');
 const connect = require('gulp-connect');
 const jsdoc = require('gulp-jsdoc3');
@@ -19,7 +18,7 @@ const paths = {
           'test/*.js',   'test/**/*.js',
           'src/*.js',    'src/**/*.js'],
   csssrc:['src/*.css',   'src/**/*.css'],
-  jssrc: ['src/*.js',    'src/**/*.js']
+  jssrc: ['./src/*.js',    './src/**/*.js']
 };
 
 gulp.task('reload', function () {
@@ -46,11 +45,10 @@ gulp.task('html-hint', _ => {
 });
 
 gulp.task('js-lint', _ => {
-  return gulp.src(paths.jssrc)
-    .pipe(jshint())
-    .pipe(jscs())
-    .pipe(jshint.reporter('jshint-stylish'))
-    .pipe(jscs.reporter());
+  return gulp.src(paths.jssrc, {base: './'})
+    .pipe(eslint({fix: true}))
+    .pipe(eslint.format())
+    .pipe(gulp.dest('./'));
 });
 
 gulp.task('js-copy', _ => {

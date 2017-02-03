@@ -111,7 +111,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         match.slice(1).forEach(function (hash, i) {
           detail['param' + (i + 1)] = hash;
         });
-        !stateRevert && dispatchShow_(element, detail); // jshint ignore:line
+        !stateRevert && dispatchShow_(element, detail);
       }();
 
       if ((typeof _ret2 === 'undefined' ? 'undefined' : _typeof(_ret2)) === "object") return _ret2.v;
@@ -196,7 +196,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       });
       return hashes.slice(0, hashes.length).reverse().join('/');
     }
-    return null;
   }
 
   window[classAsString] = MaterialRouter3;

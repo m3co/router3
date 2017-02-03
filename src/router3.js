@@ -59,7 +59,9 @@
         if (newHash !== '') {
           stateRevert = true;
           window.location.hash = e && e.oldURL ? e.oldURL.split('#')[1] : '';
-          setTimeout(() => { throw new Error(`Cannot navigate to ${newHash.slice(1)}`); });
+          setTimeout(() => {
+            throw new Error(`Cannot navigate to ${newHash.slice(1)}`);
+          });
         }
       }
     });
@@ -92,9 +94,9 @@
       }
       match.slice(1)
         .forEach((hash, i) => {
-        detail[`param${i + 1}`] = hash;
-      });
-      !stateRevert && dispatchShow_(element, detail); // jshint ignore:line
+          detail[`param${i + 1}`] = hash;
+        });
+      !stateRevert && dispatchShow_(element, detail);
     } else {
       hide_(element);
     }
@@ -174,7 +176,6 @@
       parents.slice(0, hashes.length).map(parent => parent.hidden = false);
       return hashes.slice(0, hashes.length).reverse().join('/');
     }
-    return null;
   }
 
   window[classAsString] = MaterialRouter3;
