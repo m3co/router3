@@ -38,6 +38,20 @@
   window.addEventListener('load', hashchange_);
 
   /**
+   * Resolve and upgrade any router element present in e.target
+   *
+   * @param {Function} resolve - The function to resolve the Promise.
+   * @param {Event} e - The load event.
+   * @private
+   */
+  function resolve_(resolve, e) {
+    slice.call(e.target.querySelectorAll(selClass))
+      .forEach(element => componentHandler.upgradeElement(element));
+    e.target.removeEventListener('load', resolve_);
+    resolve();
+  }
+
+  /**
    * Hash Change handler that also is executed when
    * load event has been dispatched
    *
@@ -45,8 +59,17 @@
    */
   function hashchange_(e) {
     Promise.all(slice
-      .call(document.querySelectorAll('.mdl-fragment'))
-      .map(element => element.MaterialFragment.loaded)
+      .call(document.querySelectorAll(selClass))
+      .map(element => {
+        new Promise((resolve, reject) => {
+          if (element.querySelector('.mdl-fragment') ||
+            element.classList.contains('mdl-fragment')) {
+            element.addEventListener('load', resolve_.bind(null, resolve));
+          } else {
+            resolve();
+          }
+        });
+      })
     ).then(() => {
       if (slice
         .call(document.querySelectorAll(selClass))
@@ -86,12 +109,13 @@
     if (match && match[0] === lastHash &&
       (match.length === 1 ||
       !document.querySelector(`[hash="${lastHash}"]`))) {
-      let detail = {router: element};
-      lastMatch = show_(newHash, [element], []);
+      let parents = [element];
+      lastMatch = show_(newHash, parents, []);
       match = newHash.match(new RegExp(lastMatch));
       if (match === null) {
-        return;
+        return parents.forEach(element => element && hide_(element));
       }
+      let detail = { router: element };
       match.slice(1)
         .forEach((hash, i) => {
           detail[`param${i + 1}`] = hash;
