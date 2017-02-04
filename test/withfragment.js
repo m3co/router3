@@ -20,6 +20,9 @@ window.addEventListener('load', () => {
     }, 100); });
     hash3.addEventListener('show', handler1);
 
+    assert_true(!!hash1.MaterialRouter3);
+    assert_true(!!hash3.MaterialRouter3);
+
     // [run]
     window.location.hash = "detached";
   }); }, "Go to detached");
@@ -39,6 +42,9 @@ window.addEventListener('load', () => {
       teardown(resolve, handler1, e)
     }, 100); });
     hash1.addEventListener('show', handler1);
+
+    assert_true(!!hash1.MaterialRouter3);
+    assert_true(!!hash3.MaterialRouter3);
 
     // [run]
     window.location.hash = "main";
@@ -63,6 +69,11 @@ window.addEventListener('load', () => {
     }, 100); });
     hash4.addEventListener('show', handler2);
 
+    assert_true(!!hash1.MaterialRouter3);
+    assert_true(!!hash2.MaterialRouter3);
+    assert_true(!!hash3.MaterialRouter3);
+    assert_true(!!hash4.MaterialRouter3);
+
     // [run]
     window.location.hash = "detached/fragment";
   }); }, "Go to detached/fragment");
@@ -85,6 +96,11 @@ window.addEventListener('load', () => {
       teardown(resolve, handler2, e);
     }, 100); });
     hash2.addEventListener('show', handler2);
+
+    assert_true(!!hash1.MaterialRouter3);
+    assert_true(!!hash2.MaterialRouter3);
+    assert_true(!!hash3.MaterialRouter3);
+    assert_true(!!hash4.MaterialRouter3);
 
     // [run]
     window.location.hash = "main/fragment";
