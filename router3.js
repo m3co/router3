@@ -77,7 +77,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
    */
   function hashchange_(e) {
     Promise.all(slice.call(document.querySelectorAll(selClass)).map(function (element) {
-      new Promise(function (resolve, reject) {
+      new Promise(function (resolve) {
         if (element.querySelector('.mdl-fragment') || element.classList.contains('mdl-fragment')) {
           element.addEventListener('load', resolve_.bind(null, resolve));
         } else {

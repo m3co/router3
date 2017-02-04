@@ -61,7 +61,7 @@
     Promise.all(slice
       .call(document.querySelectorAll(selClass))
       .map(element => {
-        new Promise((resolve, reject) => {
+        new Promise(resolve => {
           if (element.querySelector('.mdl-fragment') ||
             element.classList.contains('mdl-fragment')) {
             element.addEventListener('load', resolve_.bind(null, resolve));
