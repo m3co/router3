@@ -14,6 +14,14 @@ window.addEventListener('load', () => {
   }); }, "Check API");
 
   promise_test(function() { return new Promise((resolve, reject) => {
+    var hash1 = selectHash('');
+
+    assert_false(hash1.hidden);
+
+    resolve();
+  }); }, "Default hash at body hash=''");
+
+  promise_test(function() { return new Promise((resolve, reject) => {
     // [setup]
     let hash1 = selectHash("hash1");
     let hash2 = selectHash("hash2");

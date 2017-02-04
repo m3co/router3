@@ -52,7 +52,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
   var stateRevert = false;
   window.addEventListener('hashchange', hashchange_);
-  window.addEventListener('load', hashchange_);
+  window.addEventListener('load', function () {
+    console.log(window.location.hash);
+    if (window.location.hash === '') {
+      window.location.hash = '#';
+    } else {
+      hashchange_();
+    }
+  });
 
   /**
    * Resolve and upgrade any router element present in e.target

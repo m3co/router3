@@ -8,12 +8,13 @@
     <script src="helper.js"></script>
     <script>
       'use strict';
-      window.location.hash = "";
+      //window.location.hash = "";
     </script>
 
     <script src="main.js"></script>
   </head>
   <body>
+    <a href="#">Default</a><br>
     <a href="#hash1">Hash 1</a>
     <a href="#hash1/hash3">Hash 3</a>
     <a href="#hash1/hash3/hash5">Hash 5</a>
@@ -37,6 +38,9 @@
     <a href="#hash-exp123/hash1-exp456">Hash 1 exp 456</a><br>
     <a href="#absent-hash">Absent hash</a>
 
+    <div class="mdl-router3" hash="">
+      Default
+    </div>
     <div class="mdl-router3" hash="hash2">
       Hash 2
     </div>
