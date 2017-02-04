@@ -35,14 +35,7 @@
 
   var stateRevert = false;
   window.addEventListener('hashchange', hashchange_);
-  window.addEventListener('load', () => {
-    console.log(window.location.hash);
-    if (window.location.hash === '') {
-      window.location.hash = '#';
-    } else {
-      hashchange_();
-    }
-  });
+  window.addEventListener('load', hashchange_);
 
   /**
    * Resolve and upgrade any router element present in e.target
@@ -106,7 +99,7 @@
    */
   function route_(element, newURL) {
     let lastMatch = null;
-    let newHash = newURL.split('#')[1];
+    let newHash = newURL.split('#')[1] || '';
     let lastHash = newHash.split('/').reverse()[0];
     let match = lastHash
       .match(

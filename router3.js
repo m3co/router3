@@ -52,14 +52,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
   var stateRevert = false;
   window.addEventListener('hashchange', hashchange_);
-  window.addEventListener('load', function () {
-    console.log(window.location.hash);
-    if (window.location.hash === '') {
-      window.location.hash = '#';
-    } else {
-      hashchange_();
-    }
-  });
+  window.addEventListener('load', hashchange_);
 
   /**
    * Resolve and upgrade any router element present in e.target
@@ -122,7 +115,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
    */
   function route_(element, newURL) {
     var lastMatch = null;
-    var newHash = newURL.split('#')[1];
+    var newHash = newURL.split('#')[1] || '';
     var lastHash = newHash.split('/').reverse()[0];
     var match = lastHash.match(new RegExp(element.getAttribute('hash')));
 
