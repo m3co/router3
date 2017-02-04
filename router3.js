@@ -1,7 +1,5 @@
 'use strict';
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -120,25 +118,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     var match = lastHash.match(new RegExp(element.getAttribute('hash')));
 
     if (match && match[0] === lastHash && (match.length === 1 || !document.querySelector('[hash="' + lastHash + '"]'))) {
-      var _ret2 = function () {
-        var parents = [element];
-        lastMatch = show_(newHash, parents, []);
-        match = newHash.match(new RegExp(lastMatch));
-        if (match === null) {
-          return {
-            v: parents.forEach(function (element) {
-              return element && hide_(element);
-            })
-          };
-        }
-        var detail = { router: element };
-        match.slice(1).forEach(function (hash, i) {
-          detail['param' + (i + 1)] = hash;
+      var parents = [element];
+      lastMatch = show_(newHash, parents, []);
+      match = newHash.match(new RegExp(lastMatch));
+      if (match === null) {
+        return parents.forEach(function (element) {
+          return element && hide_(element);
         });
-        !stateRevert && dispatchShow_(element, detail);
-      }();
-
-      if ((typeof _ret2 === 'undefined' ? 'undefined' : _typeof(_ret2)) === "object") return _ret2.v;
+      }
+      !stateRevert && dispatchShow_(element, match.slice(1).reduce(function (detail, hash, i) {
+        detail['param' + (i + 1)] = hash;
+        return detail;
+      }, { router: element }));
     } else {
       hide_(element);
     }

@@ -101,10 +101,8 @@
     let lastMatch = null;
     let newHash = newURL.split('#')[1] || '';
     let lastHash = newHash.split('/').reverse()[0];
-    let match = lastHash
-      .match(
-        new RegExp(element.getAttribute('hash'))
-      );
+    let match = lastHash.match(
+      new RegExp(element.getAttribute('hash')));
 
     if (match && match[0] === lastHash &&
       (match.length === 1 ||
@@ -115,12 +113,11 @@
       if (match === null) {
         return parents.forEach(element => element && hide_(element));
       }
-      let detail = { router: element };
-      match.slice(1)
-        .forEach((hash, i) => {
+      !stateRevert && dispatchShow_(element, match.slice(1)
+        .reduce((detail, hash, i) => {
           detail[`param${i + 1}`] = hash;
-        });
-      !stateRevert && dispatchShow_(element, detail);
+          return detail;
+        }, { router: element }));
     } else {
       hide_(element);
     }
