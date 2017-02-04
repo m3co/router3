@@ -109,12 +109,11 @@
     if (match && match[0] === lastHash &&
       (match.length === 1 ||
       !document.querySelector(`[hash="${lastHash}"]`))) {
-      lastMatch = show_(newHash, [element], []);
+      let parents = [element];
+      lastMatch = show_(newHash, parents, []);
       match = newHash.match(new RegExp(lastMatch));
       if (match === null) {
-        hide_(element.parentElement.closest(selClass));
-        hide_(element);
-        return;
+        return parents.forEach(element => element && hide_(element));
       }
       let detail = { router: element };
       match.slice(1)

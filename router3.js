@@ -121,13 +121,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     if (match && match[0] === lastHash && (match.length === 1 || !document.querySelector('[hash="' + lastHash + '"]'))) {
       var _ret2 = function () {
-        lastMatch = show_(newHash, [element], []);
+        var parents = [element];
+        lastMatch = show_(newHash, parents, []);
         match = newHash.match(new RegExp(lastMatch));
         if (match === null) {
-          hide_(element.parentElement.closest(selClass));
-          hide_(element);
           return {
-            v: void 0
+            v: parents.forEach(function (element) {
+              return element && hide_(element);
+            })
           };
         }
         var detail = { router: element };
