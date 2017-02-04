@@ -54,11 +54,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   window.addEventListener('hashchange', hashchange_);
   window.addEventListener('load', hashchange_);
 
-  function load_(resolve, e) {
+  /**
+   * Resolve and upgrade any router element present in e.target
+   *
+   * @param {Function} resolve - The function to resolve the Promise.
+   * @param {Event} e - The load event.
+   * @private
+   */
+  function resolve_(resolve, e) {
     slice.call(e.target.querySelectorAll(selClass)).forEach(function (element) {
       return componentHandler.upgradeElement(element);
     });
-    e.target.removeEventListener('load', load_);
+    e.target.removeEventListener('load', resolve_);
     resolve();
   }
 
@@ -71,7 +78,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   function hashchange_(e) {
     Promise.all(slice.call(document.querySelectorAll(selClass)).map(function (element) {
       new Promise(function (resolve, reject) {
-        element.addEventListener('load', load_.bind(null, resolve));
+        if (element.querySelector('.mdl-fragment') || element.classList.contains('mdl-fragment')) {
+          element.addEventListener('load', resolve_.bind(null, resolve));
+        } else {
+          resolve();
+        }
       });
     })).then(function () {
       if (slice.call(document.querySelectorAll(selClass)).map(function (element) {
@@ -110,14 +121,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     if (match && match[0] === lastHash && (match.length === 1 || !document.querySelector('[hash="' + lastHash + '"]'))) {
       var _ret2 = function () {
-        var detail = { router: element };
         lastMatch = show_(newHash, [element], []);
         match = newHash.match(new RegExp(lastMatch));
         if (match === null) {
+          hide_(element.parentElement.closest(selClass));
+          hide_(element);
           return {
             v: void 0
           };
         }
+        var detail = { router: element };
         match.slice(1).forEach(function (hash, i) {
           detail['param' + (i + 1)] = hash;
         });
