@@ -9,7 +9,11 @@
     <script src="main.js"></script>
   </head>
   <body>
-    <a href="#">Default</a><br>
+    <a href="#">Default</a>
+    <a href="#/default-hash1">Default hash1</a>
+    <a href="#/default-hash1/default-hash2">Default hash2</a><br>
+    <a href="#/default-hash3">Default hash3</a>
+    <a href="#/default-hash3/default-hash4">Default hash4</a><br>
     <a href="#hash1">Hash 1</a>
     <a href="#hash1/hash3">Hash 3</a>
     <a href="#hash1/hash3/hash5">Hash 5</a>
@@ -35,6 +39,24 @@
 
     <div class="mdl-router3" hash="">
       Default
+      <div class="mdl-router3" hash="default-hash1">
+        Default-hash1
+        <div class="mdl-router3" hash="">
+          Default
+        </div>
+        <div class="mdl-router3" hash="default-hash2">
+          Default-hash2
+        </div>
+      </div>
+    </div>
+    <div class="mdl-router3" hash="default-hash3">
+      Default-hash3
+      <div class="mdl-router3" hash="">
+        Default
+      </div>
+      <div class="mdl-router3" hash="default-hash4">
+        Default-hash4
+      </div>
     </div>
     <div class="mdl-router3" hash="hash2">
       Hash 2
