@@ -110,10 +110,9 @@
       let parents = [element];
       lastMatch = show_(newHash, parents, []);
       match = newHash.match(new RegExp(lastMatch));
-      if (match === null) {
-        return parents.forEach(element => element && hide_(element));
-      }
-      !stateRevert && dispatchShow_(element, match.slice(1)
+      !match && (lastMatch = parents.forEach(
+        element => element && hide_(element)));
+      match && !stateRevert && dispatchShow_(element, match.slice(1)
         .reduce((detail, hash, i) => {
           detail[`param${i + 1}`] = hash;
           return detail;

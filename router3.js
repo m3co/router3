@@ -121,12 +121,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       var parents = [element];
       lastMatch = show_(newHash, parents, []);
       match = newHash.match(new RegExp(lastMatch));
-      if (match === null) {
-        return parents.forEach(function (element) {
-          return element && hide_(element);
-        });
-      }
-      !stateRevert && dispatchShow_(element, match.slice(1).reduce(function (detail, hash, i) {
+      !match && (lastMatch = parents.forEach(function (element) {
+        return element && hide_(element);
+      }));
+      match && !stateRevert && dispatchShow_(element, match.slice(1).reduce(function (detail, hash, i) {
         detail['param' + (i + 1)] = hash;
         return detail;
       }, { router: element }));
