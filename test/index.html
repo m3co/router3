@@ -98,14 +98,34 @@
       Hash mix 123 that could be resolved by Hash mix ([0-9]+)
     </div>
 
-    <!-- demo-repeate -->
-    <a href="#hash-repeated">#hash-repeated</a><br>
+    <!-- hash-repeated -->
+    <a href="#hash-repeated">#hash-repeated</a>
+    <br>
     <div class="mdl-router3" hash="hash-repeated" id="hash-repeated-1">
       hash-repeated
     </div>
     default content
     <div class="mdl-router3" hash="hash-repeated" id="hash-repeated-2">
       hash-repeated continue
+    </div>
+
+    <!-- hash-repeated-nested -->
+    <a href="#hash-repeated-nested-1/hash-repeated-nested-2">
+      #hash-repeated-nested-1/hash-repeated-nested-2
+    </a>
+    <br>
+    <div class="mdl-router3" hash="hash-repeated-nested-1" id="hash-repeated-nested-1">
+      hash-repeated-nested-1
+      <div class="mdl-router3" hash="hash-repeated-nested-2" id="hash-repeated-nested-1-1">
+        hash-repeated-nested-2
+      </div>
+    </div>
+    Something in the middle of routers...
+    <div class="mdl-router3" hash="hash-repeated-nested-1" id="hash-repeated-nested-2">
+      hash-repeated-nested-1 continue
+      <div class="mdl-router3" hash="hash-repeated-nested-2" id="hash-repeated-nested-2-1">
+        hash-repeated-nested-2 continue
+      </div>
     </div>
 
     <script>

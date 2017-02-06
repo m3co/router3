@@ -713,7 +713,7 @@ window.addEventListener('load', () => {
     let counter = 0;
     let exit = () => {
       counter++;
-      if (counter == 2) {
+      if (counter === 2) {
         resolve();
       }
     }
@@ -742,5 +742,33 @@ window.addEventListener('load', () => {
     // [run]
     window.location.hash = "hash-repeated";
   }); }, "Catch both router's show events if go from '' to '#hash-repeated'");
+
+  promise_test(function() { return new Promise((resolve, reject) => {
+    // [setup]
+    let hash1 = document.querySelector('#hash-repeated-nested-1');
+    let hash1_1 = document.querySelector('#hash-repeated-nested-1-1');
+    let hash2 = document.querySelector('#hash-repeated-nested-2');
+    let hash2_1 = document.querySelector('#hash-repeated-nested-2-1');
+
+    let handler = this.step_func((e) => {
+      // [verify]
+      assert_false(hash1.hidden);
+      assert_false(hash1_1.hidden);
+      assert_false(hash2.hidden);
+      assert_false(hash2_1.hidden);
+
+      // [teardown]
+      teardown(resolve, handler);
+    });
+
+    window.addEventListener('hashchange', handler);
+    assert_true(hash1.hidden);
+    assert_true(hash1_1.hidden);
+    assert_true(hash2.hidden);
+    assert_true(hash2_1.hidden);
+
+    // [run]
+    window.location.hash = "hash-repeated-nested-1/hash-repeated-nested-2";
+  }); }, "Change route from '' to '#hash-repeated-nested-1/hash-repeated-nested-2' show both (and nested) routes");
 
 });
