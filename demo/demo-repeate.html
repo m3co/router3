@@ -19,5 +19,30 @@
     <div class="mdl-router3" hash="page2">
       page2
     </div>
+
+    <div><h2>Demo: repeate nested</h2></div>
+    <div>
+      Click here:
+      <a href="#hash-repeated-nested-1/hash-repeated-nested-2">
+        #hash-repeated-nested-1/hash-repeated-nested-2
+      </a>
+    </div>
+    <div>Result:</div>
+    <div>
+      <div class="mdl-router3" hash="hash-repeated-nested-1">
+        hash-repeated-nested-1
+        <div class="mdl-router3" hash="hash-repeated-nested-2">
+          hash-repeated-nested-2
+        </div>
+      </div>
+      Something in the middle of routers...
+      <div class="mdl-router3" hash="hash-repeated-nested-1">
+        hash-repeated-nested-1 continue
+        <div class="mdl-router3" hash="hash-repeated-nested-2">
+          hash-repeated-nested-2 continue
+        </div>
+      </div>
+    </div>
+
   </body>
 </html>
