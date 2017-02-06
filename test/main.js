@@ -714,8 +714,9 @@ window.addEventListener('load', () => {
     let exit = () => {
       counter++;
       if (counter === 2) {
-        resolve();
+        setTimeout(() => resolve(), 0);
       }
+      window.location.hash = '';
     }
     let handler1 = this.step_func((e) => {
       // [verify]
@@ -780,8 +781,9 @@ window.addEventListener('load', () => {
     let exit = () => {
       counter++;
       if (counter === 2) {
-        resolve();
+        setTimeout(() => resolve(), 0);
       }
+      window.location.hash = '';
     }
     let handler1_1 = this.step_func((e) => {
       // [verify]
