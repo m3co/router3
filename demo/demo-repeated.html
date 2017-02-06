@@ -1,26 +1,30 @@
 <!doctype html>
 <html>
   <head>
-    <title>Demo-repeate</title>
+    <title>Demo-repeated</title>
     <script src="/bower_components/material-design-lite/material.js"></script>
     <script src="/router3.js"></script>
   </head>
   <body>
-    <a href="#page1">#page1</a><br>
-    <div class="mdl-router3" hash="page1">
-      page1
+    <div><h2>Demo: repeated</h2></div>
+    <div>Click here: <a href="#page1">#page1</a></div>
+    <div>Result:</div>
+    <div>
+      <div class="mdl-router3" hash="page1">
+        page1
+      </div>
+      content
+      <div class="mdl-router3" hash="page1">
+        page1 continue
+      </div>
     </div>
-    content
-    <div class="mdl-router3" hash="page1">
-      page1 continue
-    </div>
-
-    <a href="#page2">#page2</a><br>
+    <div>Click here: <a href="#page2">#page2</a></div>
+    <div>Result:</div>
     <div class="mdl-router3" hash="page2">
       page2
     </div>
 
-    <div><h2>Demo: repeate nested</h2></div>
+    <div><h2>Demo: repeated nested</h2></div>
     <div>
       Click here:
       <a href="#hash-repeated-nested-1/hash-repeated-nested-2">
@@ -43,6 +47,5 @@
         </div>
       </div>
     </div>
-
   </body>
 </html>
