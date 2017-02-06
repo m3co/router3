@@ -127,14 +127,47 @@
         hash-repeated-nested-2 continue
       </div>
     </div>
+    <br>
 
+    <!-- hash-prevent-repeated-show -->
+    <a href="#hash-prs-1">Hash PRS 1</a>
+    <a href="#hash-prs-1/hash-prs-2">Hash PRS 2</a>
+    <a href="#hash-prs-1/hash-prs-2/hash-prs-3">Hash PRS 3</a><br>
+    <a href="#hash-prs-1">Hash PRS 1</a>
+    <a href="#hash-prs-1/hash-prs-2">Hash PRS 2</a>
+    <a href="#hash-prs-1/hash-prs-2/hash-prs-4">Hash PRS 4</a><br>
+    <div class="mdl-router3" hash="hash-prs-1">
+      Hash prs 1
+      <div class="mdl-router3" hash="hash-prs-2">
+        Hash prs 2
+        <div class="mdl-router3" hash="hash-prs-3">
+          Hash prs 3
+        </div>
+        <div class="mdl-router3" hash="hash-prs-4">
+          Hash prs 4
+        </div>
+      </div>
+    </div>
     <script>
       'use strict';
-      document.querySelector('[hash="hash8"]').addEventListener('show', function(e) {
+      selectHash("hash8").addEventListener('show', e => {
         console.log('show hash8');
       });
-      document.querySelector('[hash="hash1"]').addEventListener('show', function(e) {
+      selectHash("hash1").addEventListener('show', e => {
         console.log('show hash1');
+      });
+
+      selectHash("hash-prs-1").addEventListener('show', e => {
+        console.log('hash-prs-1');
+      });
+      selectHash("hash-prs-2").addEventListener('show', e => {
+        console.log('hash-prs-2');
+      });
+      selectHash("hash-prs-3").addEventListener('show', e => {
+        console.log('hash-prs-3');
+      });
+      selectHash("hash-prs-4").addEventListener('show', e => {
+        console.log('hash-prs-4');
       });
     </script>
   </body>
