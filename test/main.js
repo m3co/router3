@@ -771,4 +771,42 @@ window.addEventListener('load', () => {
     window.location.hash = "hash-repeated-nested-1/hash-repeated-nested-2";
   }); }, "Change route from '' to '#hash-repeated-nested-1/hash-repeated-nested-2' show both (and nested) routes");
 
+  promise_test(function() { return new Promise((resolve, reject) => {
+    // [setup]
+    let hash1_1 = document.querySelector('#hash-repeated-nested-1-1');
+    let hash2_1 = document.querySelector('#hash-repeated-nested-2-1');
+
+    let counter = 0;
+    let exit = () => {
+      counter++;
+      if (counter === 2) {
+        resolve();
+      }
+    }
+    let handler1_1 = this.step_func((e) => {
+      // [verify]
+      assert_equals(e.detail.router, hash1_1);
+
+      // [teardown]
+      hash1_1.removeEventListener('show', handler1_1);
+      exit();
+    });
+    let handler2_1 = this.step_func((e) => {
+      // [verify]
+      assert_equals(e.detail.router, hash2_1);
+
+      // [teardown]
+      hash2_1.removeEventListener('show', handler2_1);
+      exit();
+    });
+    hash1_1.addEventListener('show', handler1_1);
+    hash2_1.addEventListener('show', handler2_1);
+
+    assert_true(hash1_1.hidden);
+    assert_true(hash2_1.hidden);
+
+    // [run]
+    window.location.hash = "hash-repeated-nested-1/hash-repeated-nested-2";
+  }); }, "Catch both (nested) router's show events if go from '' to '#hash-repeated-nested-1/hash-repeated-nested-2'");
+
 });
