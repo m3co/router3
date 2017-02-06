@@ -705,4 +705,42 @@ window.addEventListener('load', () => {
     window.location.hash = "hash-repeated";
   }); }, "Change route from '' to '#hash-repeated' show both routes");
 
+  promise_test(function() { return new Promise((resolve, reject) => {
+    // [setup]
+    let hash1 = document.querySelector('#hash-repeated-1');
+    let hash2 = document.querySelector('#hash-repeated-2');
+
+    let counter = 0;
+    let exit = () => {
+      counter++;
+      if (counter == 2) {
+        resolve();
+      }
+    }
+    let handler1 = this.step_func((e) => {
+      // [verify]
+      assert_equals(e.detail.router, hash1);
+
+      // [teardown]
+      hash1.removeEventListener('show', handler1);
+      exit();
+    });
+    let handler2 = this.step_func((e) => {
+      // [verify]
+      assert_equals(e.detail.router, hash2);
+
+      // [teardown]
+      hash2.removeEventListener('show', handler2);
+      exit();
+    });
+    hash1.addEventListener('show', handler1);
+    hash2.addEventListener('show', handler2);
+
+    assert_true(hash1.hidden);
+    assert_true(hash2.hidden);
+
+    // [run]
+    window.location.hash = "hash-repeated";
+  }); }, "Catch both router's show events if go from '' to '#hash-repeated'");
+
 });
