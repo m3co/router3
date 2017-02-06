@@ -684,4 +684,25 @@ window.addEventListener('load', () => {
     window.location.hash = "hash7";
   }); }, "Change route from '' to #hash7");
 
+  promise_test(function() { return new Promise((resolve, reject) => {
+    // [setup]
+    let hash1 = document.querySelector('#hash-repeated-1');
+    let hash2 = document.querySelector('#hash-repeated-2');
+
+    let handler = this.step_func((e) => {
+      // [verify]
+      assert_false(hash1.hidden);
+      assert_false(hash2.hidden);
+
+      // [teardown]
+      teardown(resolve, handler);
+    });
+    window.addEventListener('hashchange', handler);
+    assert_true(hash1.hidden);
+    assert_true(hash2.hidden);
+
+    // [run]
+    window.location.hash = "hash-repeated";
+  }); }, "Change route from '' to '#hash-repeated' show both routes");
+
 });
