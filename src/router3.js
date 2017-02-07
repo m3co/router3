@@ -193,7 +193,22 @@
     if (parents[hashes.length]) {
       return show_(newHash, parents, hashes);
     } else {
-      parents.slice(0, hashes.length).map(parent => parent.hidden = false);
+      parents.slice(0, hashes.length).map(parent => {
+        if (parent.hidden) {
+          parent.hidden = false;
+
+          /**
+           * Dispatch unhide event: FOR TEST PURPOSES
+           *
+           * @private
+           */
+          parent.dispatchEvent(new CustomEvent('unhide', {
+            detail: {
+              router: parent
+            }
+          }));
+        }
+      });
       return hashes.slice(0, hashes.length).reverse().join('/');
     }
   }

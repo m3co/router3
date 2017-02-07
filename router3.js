@@ -205,7 +205,20 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       return show_(newHash, parents, hashes);
     } else {
       parents.slice(0, hashes.length).map(function (parent) {
-        return parent.hidden = false;
+        if (parent.hidden) {
+          parent.hidden = false;
+
+          /**
+           * Dispatch unhide event: FOR TEST PURPOSES
+           *
+           * @private
+           */
+          parent.dispatchEvent(new CustomEvent('unhide', {
+            detail: {
+              router: parent
+            }
+          }));
+        }
       });
       return hashes.slice(0, hashes.length).reverse().join('/');
     }

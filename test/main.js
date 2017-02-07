@@ -811,4 +811,31 @@ window.addEventListener('load', () => {
     window.location.hash = "hash-repeated-nested-1/hash-repeated-nested-2";
   }); }, "Catch both (nested) router's show events if go from '' to '#hash-repeated-nested-1/hash-repeated-nested-2'");
 
+  promise_test(function() { return new Promise((resolve, reject) => {
+    // [setup]
+    let hash1 = selectHash("hash-prs-3");
+
+    let handler1 = this.step_func((e) => {
+      // [verify]
+      assert_equals(e.detail.router, hash1);
+
+      // [run]
+      hash1.removeEventListener('unhide', handler1);
+      window.location.hash = '';
+    });
+    let handler2 = this.step_func((e) => {
+      // [verify]
+      assert_equals(e.detail.router, hash1);
+
+      // [teardown]
+      teardown(resolve, handler2, e);
+    });
+    hash1.addEventListener('unhide', handler1);
+    hash1.addEventListener('hide', handler2);
+    assert_true(hash1.hidden);
+
+    // [run]
+    window.location.hash = "hash-prs-1/hash-prs-2/hash-prs-3";
+  }); }, "Catch router's unhide/hide events if go from '' to '#hash-prs-1/hash-prs-2/hash-prs-3' and back to ''");
+
 });
