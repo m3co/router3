@@ -9,8 +9,7 @@
     "postinstall": "bower install",
     "start": "gulp",
     "doc": "gulp doc",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "config": "./configs/setup.sh"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
