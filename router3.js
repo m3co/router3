@@ -12,6 +12,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   var selClass = '.' + cssClass;
   var slice = Array.prototype.slice;
 
+  var lastMatch = [];
+
   /**
    * Class MaterialRouter3
    */
@@ -83,12 +85,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }
       });
     })).then(function () {
-      if (slice.call(document.querySelectorAll(selClass)).map(function (element) {
-        return route_(element, e && e.newURL ? e.newURL : window.location.href);
+      var match = slice.call(document.querySelectorAll(selClass)).map(function (element) {
+        return route_(element, e && e.newURL ? e.newURL : window.location.href, lastMatch);
       }).find(function (result) {
         return result;
-      })) {
+      });
+      if (match) {
         stateRevert = false;
+        lastMatch = match;
       } else {
         (function () {
           var newHash = window.location.hash;
@@ -111,25 +115,37 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
    * @param {String} newURL - The URL to match against the element
    * @private
    */
-  function route_(element, newURL) {
+  function route_(element, newURL, alreadyShown) {
     var lastMatch = null;
     var newHash = newURL.split('#')[1] || '';
     var lastHash = newHash.split('/').reverse()[0];
     var match = lastHash.match(new RegExp(element.getAttribute('hash')));
 
     if (match && match[0] === lastHash && (match.length === 1 || !document.querySelector('[hash="' + lastHash + '"]'))) {
-      var parents = [element];
-      lastMatch = show_(newHash, parents, []);
-      match = newHash.match(new RegExp(lastMatch));
-      !match && (lastMatch = parents.forEach(function (element) {
-        return element && hide_(element);
-      }));
-      match && !stateRevert && dispatchShow_(element, match.slice(1).reduce(function (detail, hash, i) {
-        detail['param' + (i + 1)] = hash;
-        return detail;
-      }, { router: element }));
+      (function () {
+        var parents = [element];
+        lastMatch = show_(newHash, parents, []);
+        alreadyShown instanceof Array && alreadyShown.reduce(function (acc, curr) {
+          curr && !parents.includes(curr) && acc.push(curr);
+          return acc;
+        }, []).reverse().forEach(function (item) {
+          return hide_(item);
+        });
+        match = newHash.match(new RegExp(lastMatch));
+        !match && (lastMatch = parents.forEach(function (element) {
+          return element && hide_(element);
+        }));
+        match && !stateRevert && (lastMatch = parents) && dispatchShow_(element, match.slice(1).reduce(function (detail, hash, i) {
+          detail['param' + (i + 1)] = hash;
+          return detail;
+        }, { router: element }));
+      })();
     } else {
-      hide_(element);
+      if (!(alreadyShown.find && alreadyShown.find(function (show) {
+        return show === element;
+      }))) {
+        hide_(element);
+      }
     }
     return lastMatch;
   }
@@ -145,7 +161,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       element.hidden = true;
 
       /**
-       * Dispatch show even if URL's fragment matches with a route
+       * Dispatch hide even if URL's fragment matches with a route
+       * and router.hidden = true
        *
        * @event MaterialRouter3#hide
        * @type {CustomEvent}
@@ -205,7 +222,24 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       return show_(newHash, parents, hashes);
     } else {
       parents.slice(0, hashes.length).map(function (parent) {
-        return parent.hidden = false;
+        if (parent.hidden) {
+          parent.hidden = false;
+
+          /**
+           * Dispatch unhide even if URL's fragment matches with a route
+           * and router.hidden = false
+           *
+           * @event MaterialRouter3#hide
+           * @type {CustomEvent}
+           * @property {HTMLElement} router - The router that dispatches
+           *   this event
+           */
+          parent.dispatchEvent(new CustomEvent('unhide', {
+            detail: {
+              router: parent
+            }
+          }));
+        }
       });
       return hashes.slice(0, hashes.length).reverse().join('/');
     }

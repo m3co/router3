@@ -714,8 +714,9 @@ window.addEventListener('load', () => {
     let exit = () => {
       counter++;
       if (counter === 2) {
-        resolve();
+        setTimeout(() => resolve(), 0);
       }
+      window.location.hash = '';
     }
     let handler1 = this.step_func((e) => {
       // [verify]
@@ -780,8 +781,9 @@ window.addEventListener('load', () => {
     let exit = () => {
       counter++;
       if (counter === 2) {
-        resolve();
+        setTimeout(() => resolve(), 0);
       }
+      window.location.hash = '';
     }
     let handler1_1 = this.step_func((e) => {
       // [verify]
@@ -808,5 +810,78 @@ window.addEventListener('load', () => {
     // [run]
     window.location.hash = "hash-repeated-nested-1/hash-repeated-nested-2";
   }); }, "Catch both (nested) router's show events if go from '' to '#hash-repeated-nested-1/hash-repeated-nested-2'");
+
+  promise_test(function() { return new Promise((resolve, reject) => {
+    // [setup]
+    let hash1 = selectHash("hash-prs-3");
+
+    let handler1 = this.step_func((e) => {
+      // [verify]
+      assert_equals(e.detail.router, hash1);
+
+      // [run]
+      hash1.removeEventListener('unhide', handler1);
+      window.location.hash = '';
+    });
+    let handler2 = this.step_func((e) => {
+      // [verify]
+      assert_equals(e.detail.router, hash1);
+
+      // [teardown]
+      teardown(resolve, handler2, e);
+    });
+    hash1.addEventListener('unhide', handler1);
+    hash1.addEventListener('hide', handler2);
+    assert_true(hash1.hidden);
+
+    // [run]
+    window.location.hash = "hash-prs-1/hash-prs-2/hash-prs-3";
+  }); }, "Catch router's unhide/hide events if go from '' to '#hash-prs-1/hash-prs-2/hash-prs-3' and back to ''");
+
+  promise_test(function() { return new Promise((resolve, reject) => {
+    // [setup]
+    let hash1 = selectHash("hash-prs-1");
+    let hash2 = selectHash("hash-prs-2");
+    let hash3 = selectHash("hash-prs-3");
+    let hash4 = selectHash("hash-prs-4");
+
+    let logUnhideHide = [];
+    let expectedLogUnhideHide = ['hash-prs-2 unhide', 'hash-prs-1 unhide'];
+    let handlerUnnecessaryUnhide = this.step_func((e) => {
+      logUnhideHide.push(e.detail.router.getAttribute('hash') + ' ' + e.type);
+    });
+    let handler3 = this.step_func((e) => {
+      // [verify]
+      assert_equals(e.detail.router, hash3);
+
+      // [run]
+      hash3.removeEventListener('unhide', handler3);
+      window.location.hash = 'hash-prs-1/hash-prs-2/hash-prs-4';
+    });
+    let handler4 = this.step_func((e) => {
+      // [verify]
+      assert_equals(e.detail.router, hash4);
+      assert_true((logUnhideHide.join() === expectedLogUnhideHide.join()) ||
+       (logUnhideHide.join() === expectedLogUnhideHide.reverse().join()));
+
+      // [teardown]
+      teardown(resolve, handler4, e);
+    });
+    hash1.addEventListener('unhide', handlerUnnecessaryUnhide);
+    hash1.addEventListener('hide', handlerUnnecessaryUnhide);
+    hash2.addEventListener('unhide', handlerUnnecessaryUnhide);
+    hash2.addEventListener('hide', handlerUnnecessaryUnhide);
+
+    hash3.addEventListener('unhide', handler3);
+    hash4.addEventListener('unhide', handler4);
+
+    // [verify]
+    assert_true(hash1.hidden);
+    assert_true(hash1.hidden);
+    assert_true(hash1.hidden);
+    assert_true(hash1.hidden);
+    // [run]
+    window.location.hash = "hash-prs-1/hash-prs-2/hash-prs-3";
+  }); }, "Check that #hash-prs-1 and #hash-prs-2 don't fire unhide more than once if go from '#hash-prs-1/hash-prs-2/hash-prs-3' to '#hash-prs-1/hash-prs-2/hash-prs-4'");
 
 });
