@@ -146,7 +146,8 @@
       element.hidden = true;
 
       /**
-       * Dispatch show even if URL's fragment matches with a route
+       * Dispatch hide even if URL's fragment matches with a route
+       * and router.hidden = true
        *
        * @event MaterialRouter3#hide
        * @type {CustomEvent}
@@ -210,9 +211,13 @@
           parent.hidden = false;
 
           /**
-           * Dispatch unhide event: FOR TEST PURPOSES
+           * Dispatch unhide even if URL's fragment matches with a route
+           * and router.hidden = false
            *
-           * @private
+           * @event MaterialRouter3#hide
+           * @type {CustomEvent}
+           * @property {HTMLElement} router - The router that dispatches
+           *   this event
            */
           parent.dispatchEvent(new CustomEvent('unhide', {
             detail: {
