@@ -79,3 +79,14 @@ So, if ```window.location.hash === 'page1'``` then ```[hash="page1"]``` is visib
 
 But, if ```window.location.hash === ''``` then ```[hash=""]``` is visible and the other is hidden.
 
+## Contribute
+
+### Install
+
+`$ npm i`
+
+`$ git submodule init`
+
+`$ git submodule update`
+
+`$ gulp`
