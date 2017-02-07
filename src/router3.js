@@ -6,6 +6,8 @@
   const selClass = `.${cssClass}`;
   const slice = Array.prototype.slice;
 
+  var lastMatch = [];
+
   /**
    * Class MaterialRouter3
    */
@@ -71,12 +73,14 @@
         });
       })
     ).then(() => {
-      if (slice
+      let match = slice
         .call(document.querySelectorAll(selClass))
         .map(element => route_(element,
-            e && e.newURL ? e.newURL : window.location.href))
-        .find(result => result)) {
+            e && e.newURL ? e.newURL : window.location.href, lastMatch))
+        .find(result => result);
+      if (match) {
         stateRevert = false;
+        lastMatch = match;
       } else {
         let newHash = window.location.hash;
         if (newHash !== '') {
@@ -97,7 +101,7 @@
    * @param {String} newURL - The URL to match against the element
    * @private
    */
-  function route_(element, newURL) {
+  function route_(element, newURL, alreadyShown) {
     let lastMatch = null;
     let newHash = newURL.split('#')[1] || '';
     let lastHash = newHash.split('/').reverse()[0];
@@ -109,16 +113,24 @@
       !document.querySelector(`[hash="${lastHash}"]`))) {
       let parents = [element];
       lastMatch = show_(newHash, parents, []);
+      (alreadyShown instanceof Array) && alreadyShown.reduce((acc, curr) => {
+        curr && !parents.includes(curr) && acc.push(curr);
+        return acc;
+      }, []).reverse().forEach(item => hide_(item));
       match = newHash.match(new RegExp(lastMatch));
       !match && (lastMatch = parents.forEach(
         element => element && hide_(element)));
-      match && !stateRevert && dispatchShow_(element, match.slice(1)
+      match && !stateRevert && (lastMatch = parents) &&
+        dispatchShow_(element, match.slice(1)
         .reduce((detail, hash, i) => {
           detail[`param${i + 1}`] = hash;
           return detail;
         }, { router: element }));
     } else {
-      hide_(element);
+      if (!(alreadyShown.find &&
+          alreadyShown.find(show => show === element))) {
+        hide_(element);
+      }
     }
     return lastMatch;
   }
