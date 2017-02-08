@@ -7,7 +7,7 @@
   "scripts": {
     "prestart": "npm install",
     "postinstall": "bower install",
-    "start": "gulp",
+    "start": "gulp --port 9003",
     "doc": "gulp doc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -31,6 +31,7 @@
     "gulp-eslint": "^3.0.1",
     "gulp-htmlhint": "^0.3.1",
     "gulp-if": "^2.0.2",
-    "gulp-jsdoc3": "^1.0.1"
+    "gulp-jsdoc3": "^1.0.1",
+    "yargs": "^6.6.0"
   }
 }
