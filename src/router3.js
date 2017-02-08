@@ -112,20 +112,25 @@
       (match.length === 1 ||
       !document.querySelector(`[hash="${lastHash}"]`))) {
       let parents = [element];
-      lastMatch = show_(newHash, parents, []);
-      (alreadyShown instanceof Array) && alreadyShown.reduce((acc, curr) => {
-        curr && !parents.includes(curr) && acc.push(curr);
-        return acc;
-      }, []).reverse().forEach(item => hide_(item));
-      match = newHash.match(new RegExp(lastMatch));
-      !match && (lastMatch = parents.forEach(
+      lastMatch = match_(newHash, parents, []);
+      if ((lastMatch !== newHash) && (element.getAttribute('hash') === '')) {
+        lastMatch = null;
+      } else {
+        parents.forEach(element => element && unhide_(element));
+        (alreadyShown instanceof Array) && alreadyShown.reduce((acc, curr) => {
+          curr && !parents.includes(curr) && acc.push(curr);
+          return acc;
+        }, []).reverse().forEach(item => hide_(item));
+        match = newHash.match(new RegExp(lastMatch));
+        !match && (lastMatch = parents.forEach(
         element => element && hide_(element)));
-      match && !stateRevert && (lastMatch = parents) &&
+        match && !stateRevert && (lastMatch = parents) &&
         dispatchShow_(element, match.slice(1)
         .reduce((detail, hash, i) => {
           detail[`param${i + 1}`] = hash;
           return detail;
         }, { router: element }));
+      }
     } else {
       if (!(alreadyShown.find &&
           alreadyShown.find(show => show === element))) {
@@ -160,6 +165,7 @@
         }
       }));
     }
+    return true;
   }
 
   /**
@@ -216,24 +222,24 @@
         }
       }));
     }
+    return true;
   }
 
   /**
-   * Show/Navigate to chain-hash
+   * Match to chain-hash
    *
    * @param {String} newHash - The new hash to navigate
    * @param {Array} parents - The array of pushed parents
    * @param {Array} hashes - The array of pushed hashes
    * @private
    */
-  function show_(newHash, parents, hashes) {
+  function match_(newHash, parents, hashes) {
     parents.push(parents[hashes.length].parentElement.closest(selClass));
     hashes.push(parents[hashes.length].getAttribute('hash'));
 
     if (parents[hashes.length]) {
-      return show_(newHash, parents, hashes);
+      return match_(newHash, parents, hashes);
     } else {
-      parents.slice(0, hashes.length).forEach(unhide_);
       return hashes.slice(0, hashes.length).reverse().join('/');
     }
   }

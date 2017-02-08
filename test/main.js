@@ -896,15 +896,16 @@ window.addEventListener('load', () => {
       assert_false(hash3.hidden);
 
       // [teardown]
-      teardown(resolve, handler);
+      teardown(resolve, handler, e);
     });
-    window.addEventListener('hashchange', handler);
+    hash2.addEventListener('show', handler);
     assert_false(hash1.hidden);
     assert_true(hash2.hidden);
     assert_true(hash3.hidden);
 
     // [run]
-    window.location.hash = "default-hash1";
+    window.location.hash = "hash1/hash3";
+    window.location.hash = "default-hash1/";
   }); }, "Change route from '' to '#default-hash1' and see default-hash1's default visible");
 
 });

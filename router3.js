@@ -124,21 +124,28 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     if (match && match[0] === lastHash && (match.length === 1 || !document.querySelector('[hash="' + lastHash + '"]'))) {
       (function () {
         var parents = [element];
-        lastMatch = show_(newHash, parents, []);
-        alreadyShown instanceof Array && alreadyShown.reduce(function (acc, curr) {
-          curr && !parents.includes(curr) && acc.push(curr);
-          return acc;
-        }, []).reverse().forEach(function (item) {
-          return hide_(item);
-        });
-        match = newHash.match(new RegExp(lastMatch));
-        !match && (lastMatch = parents.forEach(function (element) {
-          return element && hide_(element);
-        }));
-        match && !stateRevert && (lastMatch = parents) && dispatchShow_(element, match.slice(1).reduce(function (detail, hash, i) {
-          detail['param' + (i + 1)] = hash;
-          return detail;
-        }, { router: element }));
+        lastMatch = match_(newHash, parents, []);
+        if (lastMatch !== newHash && element.getAttribute('hash') === '') {
+          lastMatch = null;
+        } else {
+          parents.forEach(function (element) {
+            return element && unhide_(element);
+          });
+          alreadyShown instanceof Array && alreadyShown.reduce(function (acc, curr) {
+            curr && !parents.includes(curr) && acc.push(curr);
+            return acc;
+          }, []).reverse().forEach(function (item) {
+            return hide_(item);
+          });
+          match = newHash.match(new RegExp(lastMatch));
+          !match && (lastMatch = parents.forEach(function (element) {
+            return element && hide_(element);
+          }));
+          match && !stateRevert && (lastMatch = parents) && dispatchShow_(element, match.slice(1).reduce(function (detail, hash, i) {
+            detail['param' + (i + 1)] = hash;
+            return detail;
+          }, { router: element }));
+        }
       })();
     } else {
       if (!(alreadyShown.find && alreadyShown.find(function (show) {
@@ -175,6 +182,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }
       }));
     }
+    return true;
   }
 
   /**
@@ -231,24 +239,24 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }
       }));
     }
+    return true;
   }
 
   /**
-   * Show/Navigate to chain-hash
+   * Match to chain-hash
    *
    * @param {String} newHash - The new hash to navigate
    * @param {Array} parents - The array of pushed parents
    * @param {Array} hashes - The array of pushed hashes
    * @private
    */
-  function show_(newHash, parents, hashes) {
+  function match_(newHash, parents, hashes) {
     parents.push(parents[hashes.length].parentElement.closest(selClass));
     hashes.push(parents[hashes.length].getAttribute('hash'));
 
     if (parents[hashes.length]) {
-      return show_(newHash, parents, hashes);
+      return match_(newHash, parents, hashes);
     } else {
-      parents.slice(0, hashes.length).forEach(unhide_);
       return hashes.slice(0, hashes.length).reverse().join('/');
     }
   }
