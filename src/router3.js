@@ -123,13 +123,13 @@
         }, []).reverse().forEach(item => hide_(item));
         match = newHash.match(new RegExp(lastMatch));
         !match && (lastMatch = parents.forEach(
-        element => element && hide_(element)));
+          element => element && hide_(element)));
         match && !stateRevert && (lastMatch = parents) &&
-        dispatchShow_(element, match.slice(1)
-        .reduce((detail, hash, i) => {
-          detail[`param${i + 1}`] = hash;
-          return detail;
-        }, { router: element }));
+          dispatchShow_(element, match.slice(1)
+          .reduce((detail, hash, i) => {
+            detail[`param${i + 1}`] = hash;
+            return detail;
+          }, { router: element }));
       }
     } else {
       if (!(alreadyShown.find &&
