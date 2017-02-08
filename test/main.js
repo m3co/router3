@@ -18,7 +18,6 @@ window.addEventListener('load', () => {
 
     assert_false(hash1.hidden);
 
-    window.location.hash = '';
     resolve();
   }); }, "Default hash at body hash=''");
 
