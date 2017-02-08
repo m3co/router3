@@ -59,8 +59,8 @@ window.addEventListener('load', () => {
 
     let handler2 = this.step_func((e) => { this.step_timeout(() => {
       // [verify]
-      assert_true(hash2.hidden);
       assert_true(hash1.hidden);
+      assert_true(hash2.hidden);
       assert_false(hash3.hidden);
       assert_false(hash4.hidden);
 

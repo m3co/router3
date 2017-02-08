@@ -18,7 +18,6 @@ window.addEventListener('load', () => {
 
     assert_false(hash1.hidden);
 
-    window.location.hash = '';
     resolve();
   }); }, "Default hash at body hash=''");
 
@@ -883,5 +882,67 @@ window.addEventListener('load', () => {
     // [run]
     window.location.hash = "hash-prs-1/hash-prs-2/hash-prs-3";
   }); }, "Check that #hash-prs-1 and #hash-prs-2 don't fire unhide more than once if go from '#hash-prs-1/hash-prs-2/hash-prs-3' to '#hash-prs-1/hash-prs-2/hash-prs-4'");
+
+  promise_test(function() { return new Promise((resolve, reject) => {
+    // [setup]
+    let hash1 = selectHash("");
+    let hash2 = selectHash("default-hash1");
+    let hash3 = selectHash(hash2, "");
+
+    let handler = this.step_func((e) => {
+      // [verify]
+      assert_true(hash1.hidden);
+      assert_false(hash2.hidden);
+      assert_false(hash3.hidden);
+
+      // [teardown]
+      teardown(resolve, handler, e);
+    });
+    hash2.addEventListener('show', handler);
+    assert_false(hash1.hidden);
+    assert_true(hash2.hidden);
+    assert_true(hash3.hidden);
+
+    // [run]
+    window.location.hash = "hash1/hash3";
+    window.location.hash = "default-hash1/";
+  }); }, "Change route from 'hash1/hash3' to '#default-hash1/' and see default-hash1's default visible");
+
+  promise_test(function() { return new Promise((resolve, reject) => {
+    // [setup]
+    let hash1 = selectHash("");
+    let hash2 = selectHash("default-hash1");
+    let hash3 = selectHash(hash2, "");
+    let hash4 = selectHash("default-hash2");
+    let hash5 = selectHash(hash4, "");
+    let hash6 = selectHash("default-hash3");
+    let hash7 = selectHash(hash6, "");
+
+    let handler = this.step_func((e) => {
+      // [verify]
+      assert_true(hash1.hidden);
+      assert_false(hash2.hidden);
+      assert_true(hash3.hidden);
+      assert_false(hash4.hidden);
+      assert_true(hash5.hidden);
+      assert_false(hash6.hidden);
+      assert_false(hash7.hidden);
+
+      // [teardown]
+      teardown(resolve, handler, e);
+    });
+    hash6.addEventListener('show', handler);
+    assert_false(hash1.hidden);
+    assert_true(hash2.hidden);
+    assert_true(hash3.hidden);
+    assert_true(hash4.hidden);
+    assert_true(hash5.hidden);
+    assert_true(hash6.hidden);
+    assert_true(hash7.hidden);
+
+    // [run]
+    window.location.hash = "hash1/hash3";
+    window.location.hash = "default-hash1/default-hash2/default-hash3/";
+  }); }, "Change route from 'hash1/hash3' to '#default-hash1/default-hash2/default-hash3/' and see default-hash3's default visible");
 
 });

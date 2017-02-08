@@ -112,20 +112,25 @@
       (match.length === 1 ||
       !document.querySelector(`[hash="${lastHash}"]`))) {
       let parents = [element];
-      lastMatch = show_(newHash, parents, []);
-      (alreadyShown instanceof Array) && alreadyShown.reduce((acc, curr) => {
-        curr && !parents.includes(curr) && acc.push(curr);
-        return acc;
-      }, []).reverse().forEach(item => hide_(item));
-      match = newHash.match(new RegExp(lastMatch));
-      !match && (lastMatch = parents.forEach(
-        element => element && hide_(element)));
-      match && !stateRevert && (lastMatch = parents) &&
-        dispatchShow_(element, match.slice(1)
-        .reduce((detail, hash, i) => {
-          detail[`param${i + 1}`] = hash;
-          return detail;
-        }, { router: element }));
+      lastMatch = match_(newHash, parents, []);
+      if ((lastMatch !== newHash) && (element.getAttribute('hash') === '')) {
+        lastMatch = null;
+      } else {
+        parents.forEach(element => element && unhide_(element));
+        (alreadyShown instanceof Array) && alreadyShown.reduce((acc, curr) => {
+          curr && !parents.includes(curr) && acc.push(curr);
+          return acc;
+        }, []).reverse().forEach(item => hide_(item));
+        match = newHash.match(new RegExp(lastMatch));
+        !match && (lastMatch = parents.forEach(
+          element => element && hide_(element)));
+        match && !stateRevert && (lastMatch = parents) &&
+          dispatchShow_(element, match.slice(1)
+          .reduce((detail, hash, i) => {
+            detail[`param${i + 1}`] = hash;
+            return detail;
+          }, { router: element }));
+      }
     } else {
       if (!(alreadyShown.find &&
           alreadyShown.find(show => show === element))) {
@@ -160,6 +165,7 @@
         }
       }));
     }
+    return true;
   }
 
   /**
@@ -192,40 +198,48 @@
   }
 
   /**
-   * Show/Navigate to chain-hash
+   * Unhide element and dispatch unhide event
+   *
+   * @param {HTMLElement} element - The element
+   * @private
+   */
+  function unhide_(element) {
+    if (element.hidden) {
+      element.hidden = false;
+
+      /**
+       * Dispatch unhide even if URL's fragment matches with a route
+       * and router.hidden = false
+       *
+       * @event MaterialRouter3#hide
+       * @type {CustomEvent}
+       * @property {HTMLElement} router - The router that dispatches
+       *   this event
+       */
+      element.dispatchEvent(new CustomEvent('unhide', {
+        detail: {
+          router: element
+        }
+      }));
+    }
+    return true;
+  }
+
+  /**
+   * Match to chain-hash
    *
    * @param {String} newHash - The new hash to navigate
    * @param {Array} parents - The array of pushed parents
    * @param {Array} hashes - The array of pushed hashes
    * @private
    */
-  function show_(newHash, parents, hashes) {
+  function match_(newHash, parents, hashes) {
     parents.push(parents[hashes.length].parentElement.closest(selClass));
     hashes.push(parents[hashes.length].getAttribute('hash'));
 
     if (parents[hashes.length]) {
-      return show_(newHash, parents, hashes);
+      return match_(newHash, parents, hashes);
     } else {
-      parents.slice(0, hashes.length).map(parent => {
-        if (parent.hidden) {
-          parent.hidden = false;
-
-          /**
-           * Dispatch unhide event if URL's fragment matches with a route
-           * and router.hidden = false
-           *
-           * @event MaterialRouter3#unhide
-           * @type {CustomEvent}
-           * @property {HTMLElement} router - The router that dispatches
-           *   this event
-           */
-          parent.dispatchEvent(new CustomEvent('unhide', {
-            detail: {
-              router: parent
-            }
-          }));
-        }
-      });
       return hashes.slice(0, hashes.length).reverse().join('/');
     }
   }
