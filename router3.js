@@ -207,6 +207,33 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   }
 
   /**
+   * Unhide element and dispatch unhide event
+   *
+   * @param {HTMLElement} element - The element
+   * @private
+   */
+  function unhide_(element) {
+    if (element.hidden) {
+      element.hidden = false;
+
+      /**
+       * Dispatch unhide even if URL's fragment matches with a route
+       * and router.hidden = false
+       *
+       * @event MaterialRouter3#hide
+       * @type {CustomEvent}
+       * @property {HTMLElement} router - The router that dispatches
+       *   this event
+       */
+      element.dispatchEvent(new CustomEvent('unhide', {
+        detail: {
+          router: element
+        }
+      }));
+    }
+  }
+
+  /**
    * Show/Navigate to chain-hash
    *
    * @param {String} newHash - The new hash to navigate
@@ -221,26 +248,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     if (parents[hashes.length]) {
       return show_(newHash, parents, hashes);
     } else {
-      parents.slice(0, hashes.length).map(function (parent) {
-        if (parent.hidden) {
-          parent.hidden = false;
-
-          /**
-           * Dispatch unhide even if URL's fragment matches with a route
-           * and router.hidden = false
-           *
-           * @event MaterialRouter3#hide
-           * @type {CustomEvent}
-           * @property {HTMLElement} router - The router that dispatches
-           *   this event
-           */
-          parent.dispatchEvent(new CustomEvent('unhide', {
-            detail: {
-              router: parent
-            }
-          }));
-        }
-      });
+      parents.slice(0, hashes.length).forEach(unhide_);
       return hashes.slice(0, hashes.length).reverse().join('/');
     }
   }
