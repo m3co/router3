@@ -161,7 +161,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       element.hidden = true;
 
       /**
-       * Dispatch hide even if URL's fragment matches with a route
+       * Dispatch hide event if URL's fragment matches with a route
        * and router.hidden = true
        *
        * @event MaterialRouter3#hide
@@ -187,7 +187,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   function dispatchShow_(element, detail) {
 
     /**
-     * Dispatch show even if URL's fragment matches with a route
+     * Dispatch show event if URL's fragment matches with a route
      *
      * @event MaterialRouter3#show
      * @type {CustomEvent}
@@ -226,7 +226,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           parent.hidden = false;
 
           /**
-           * Dispatch unhide even if URL's fragment matches with a route
+           * Dispatch unhide event if URL's fragment matches with a route
            * and router.hidden = false
            *
            * @event MaterialRouter3#unhide
