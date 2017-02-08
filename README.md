@@ -83,10 +83,8 @@ But, if ```window.location.hash === ''``` then ```[hash=""]``` is visible and th
 
 ### Install
 
-`$ npm i`
-
 `$ git submodule init`
 
 `$ git submodule update`
 
-`$ gulp`
+`$ npm start`
