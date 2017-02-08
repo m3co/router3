@@ -883,4 +883,28 @@ window.addEventListener('load', () => {
     window.location.hash = "hash-prs-1/hash-prs-2/hash-prs-3";
   }); }, "Check that #hash-prs-1 and #hash-prs-2 don't fire unhide more than once if go from '#hash-prs-1/hash-prs-2/hash-prs-3' to '#hash-prs-1/hash-prs-2/hash-prs-4'");
 
+  promise_test(function() { return new Promise((resolve, reject) => {
+    // [setup]
+    let hash1 = selectHash("");
+    let hash2 = selectHash("default-hash1");
+    let hash3 = selectHash(hash2, "");
+
+    let handler = this.step_func((e) => {
+      // [verify]
+      assert_true(hash1.hidden);
+      assert_false(hash2.hidden);
+      assert_false(hash3.hidden);
+
+      // [teardown]
+      teardown(resolve, handler);
+    });
+    window.addEventListener('hashchange', handler);
+    assert_false(hash1.hidden);
+    assert_true(hash2.hidden);
+    assert_true(hash3.hidden);
+
+    // [run]
+    window.location.hash = "default-hash1";
+  }); }, "Change route from '' to '#default-hash1' and see default-hash1's default visible");
+
 });
