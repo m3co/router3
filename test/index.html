@@ -11,7 +11,8 @@
   <body>
     <a href="#">Default</a><br>
     <a href="#default-hash1/">Default hash1</a>
-    <a href="#default-hash1/default-hash2">Default hash2</a><br>
+    <a href="#default-hash1/default-hash2/">Default hash2</a>
+    <a href="#default-hash1/default-hash2/default-hash3/">Default hash3</a><br>
     <a href="#hash1">Hash 1</a>
     <a href="#hash1/hash3">Hash 3</a>
     <a href="#hash1/hash3/hash5">Hash 5</a>
@@ -36,15 +37,24 @@
     <a href="#absent-hash">Absent hash</a>
 
     <div class="mdl-router3" hash="">
-      Default
+      Default 0
     </div>
     <div class="mdl-router3" hash="default-hash1">
       Default-hash1
       <div class="mdl-router3" hash="">
-        Default
+        Default 1
       </div>
       <div class="mdl-router3" hash="default-hash2">
         Default-hash2
+        <div class="mdl-router3" hash="">
+          Default 2
+        </div>
+        <div class="mdl-router3" hash="default-hash3">
+          Default-hash3
+          <div class="mdl-router3" hash="">
+            Default 3
+          </div>
+        </div>
       </div>
     </div>
     <div class="mdl-router3" hash="hash2">
