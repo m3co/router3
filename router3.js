@@ -132,9 +132,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           return hide_(item);
         });
         match = newHash.match(new RegExp(lastMatch));
-        !match && (lastMatch = parents.forEach(function (element) {
-          return element && hide_(element);
-        }));
+        !match && (lastMatch = null);
         match && !stateRevert && (lastMatch = parents) && dispatchShow_(element, match.slice(1).reduce(function (detail, hash, i) {
           detail['param' + (i + 1)] = hash;
           return detail;
