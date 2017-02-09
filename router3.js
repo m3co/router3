@@ -31,6 +31,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
       this.element_ = element;
 
+      if (!this.element_.hasAttribute('hash')) {
+        throw new Error('Hash attribute is not present');
+      }
+
       this.init();
     }
 
