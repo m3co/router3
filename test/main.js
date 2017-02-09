@@ -945,4 +945,23 @@ window.addEventListener('load', () => {
     window.location.hash = "default-hash1/default-hash2/default-hash3/";
   }); }, "Change route from 'hash1/hash3' to '#default-hash1/default-hash2/default-hash3/' and see default-hash3's default visible");
 
+  promise_test(function() { return new Promise((resolve, reject) => {
+
+    // [setup]
+    var routerWithoutHash = document.createElement('div');
+    routerWithoutHash.classList.add(cssRouter);
+    try {
+      // [run]
+      componentHandler.upgradeElement(routerWithoutHash);
+    } catch(e) {
+      // [verify]
+      assert_equals(e.message, "Hash attribute is not present");
+      // [teardown]
+      resolve();
+      return;
+    }
+    // [teardown]
+    reject('Can\'t test presence of hash attribute');
+  }); }, "Throw error if hash attribute is not present");
+
 });
