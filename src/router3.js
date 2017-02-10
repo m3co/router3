@@ -7,6 +7,7 @@
   const slice = Array.prototype.slice;
 
   var lastMatch = [];
+  var counterLastMatch = 0;
 
   /**
    * Class MaterialRouter3
@@ -64,6 +65,9 @@
    * @private
    */
   function hashchange_(e) {
+    if (counterLastMatch > 1) {
+      throw new Error(`Cannot go back to last matched hash ${e.oldURL}`);
+    }
     Promise.all(slice
       .call(document.querySelectorAll(selClass))
       .map(element => {
@@ -85,10 +89,12 @@
       if (match) {
         stateRevert = false;
         lastMatch = match;
+        counterLastMatch = 0;
       } else {
-        let newHash = window.location.hash;
+        let newHash = window.location.hash || '';
         if (newHash !== '') {
           stateRevert = true;
+          counterLastMatch++;
           window.location.hash = e && e.oldURL ? e.oldURL.split('#')[1] : '';
           setTimeout(() => {
             throw new Error(`Cannot navigate to ${newHash.slice(1)}`);

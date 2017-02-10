@@ -13,6 +13,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   var slice = Array.prototype.slice;
 
   var lastMatch = [];
+  var counterLastMatch = 0;
 
   /**
    * Class MaterialRouter3
@@ -80,6 +81,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
    * @private
    */
   function hashchange_(e) {
+    if (counterLastMatch > 1) {
+      throw new Error('Cannot go back to last matched hash ' + e.oldURL);
+    }
     Promise.all(slice.call(document.querySelectorAll(selClass)).map(function (element) {
       new Promise(function (resolve) {
         if (element.querySelector('.mdl-fragment') || element.classList.contains('mdl-fragment')) {
@@ -97,11 +101,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       if (match) {
         stateRevert = false;
         lastMatch = match;
+        counterLastMatch = 0;
       } else {
         (function () {
-          var newHash = window.location.hash;
+          var newHash = window.location.hash || '';
           if (newHash !== '') {
             stateRevert = true;
+            counterLastMatch++;
             window.location.hash = e && e.oldURL ? e.oldURL.split('#')[1] : '';
             setTimeout(function () {
               throw new Error('Cannot navigate to ' + newHash.slice(1));
