@@ -964,4 +964,42 @@ window.addEventListener('load', () => {
     reject('Can\'t test presence of hash attribute');
   }); }, "Throw error if hash attribute is not present");
 
+  promise_test(function() { return new Promise((resolve, reject) => {
+    // [setup]
+    var i = 0;
+    let handlerHashChange = this.step_func((e) => {
+      i++;
+      if (i > 4) {
+        window.removeEventListener('hashchange', handlerHashChange);
+        window.removeEventListener('error', handlerError);
+        window.location.hash = '';
+        reject("ouroboros-hash-jumping is present");
+      }
+    });
+    let handlerError = this.step_func((e) => {
+      assert_equals(e.message, "Uncaught Error: Cannot go back to last matched hash http://localhost:9003/test/#ouroboros-hash2");
+
+      window.removeEventListener('hashchange', handlerHashChange);
+      window.removeEventListener('error', handlerError);
+      window.location.hash = '';
+      resolve();
+    });
+
+    let hash1 = selectHash("ouroboros-hash1");
+    let hash2 = selectHash("ouroboros-hash2");
+    hash2.addEventListener('show', this.step_func((e) => {
+      // [run]
+      hash1.remove();
+      hash2.remove();
+      window.location.hash = "ouroboros-hash1";
+    }));
+
+    window.addEventListener('hashchange', handlerHashChange);
+    window.addEventListener('error', handlerError);
+
+    // [run]
+    window.location.hash = "ouroboros-hash1";
+    window.location.hash = "ouroboros-hash2";
+  }); }, "Stop ouroboros-hash-jumping from nowhere to nowhere");
+
 });
