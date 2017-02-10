@@ -118,22 +118,38 @@
     let match = lastHash.match(
       new RegExp(element.getAttribute('hash')));
 
+    // if match...
     if (match && match[0] === lastHash &&
       (match.length === 1 ||
       !document.querySelector(`[hash="${lastHash}"]`))) {
       let parents = [element];
+
+      // match_ newHash pushing all matched elements to parents
       lastMatch = match_(newHash, parents, []);
+
+      // if default route do not match
       if ((lastMatch !== newHash) && (element.getAttribute('hash') === '')) {
         lastMatch = null;
       } else {
+        // unhide all matched elements
         parents.forEach(element => element && unhide_(element));
+
+        // hide_ last elements. I mean, if go
+        // from /page1/page2/page3
+        // to   /page1/page2/page5
+        // then hide only page3
         (alreadyShown instanceof Array) && alreadyShown.reduce((acc, curr) => {
           curr && !parents.includes(curr) && acc.push(curr);
           return acc;
         }, []).reverse().forEach(item => hide_(item));
+
+        // update match
         match = newHash.match(new RegExp(lastMatch));
+
+        // if no match, then lastMatch = undefined and hide current element
         !match && (lastMatch = parents.forEach(
           element => element && hide_(element)));
+        // if match, and no stateRevert then update lastMatch and dispatch show
         match && !stateRevert && (lastMatch = parents) &&
           dispatchShow_(element, match.slice(1)
           .reduce((detail, hash, i) => {
@@ -142,6 +158,7 @@
           }, { router: element }));
       }
     } else {
+      // do not hide elements unnecessarily
       if (!(alreadyShown.find &&
           alreadyShown.find(show => show === element))) {
         hide_(element);
