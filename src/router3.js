@@ -8,6 +8,7 @@
 
   var lastMatch = [];
   var counterLastMatch = 0;
+  var stateRevert = false;
 
   /**
    * Class MaterialRouter3
@@ -40,7 +41,6 @@
 
   }
 
-  var stateRevert = false;
   window.addEventListener('hashchange', hashchange_);
   window.addEventListener('load', hashchange_);
 

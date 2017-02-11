@@ -14,6 +14,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
   var lastMatch = [];
   var counterLastMatch = 0;
+  var stateRevert = false;
 
   /**
    * Class MaterialRouter3
@@ -55,7 +56,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     return MaterialRouter3;
   }();
 
-  var stateRevert = false;
   window.addEventListener('hashchange', hashchange_);
   window.addEventListener('load', hashchange_);
 
@@ -131,26 +131,42 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     var lastHash = newHash.split('/').reverse()[0];
     var match = lastHash.match(new RegExp(element.getAttribute('hash')));
 
+    // if match...
     if (match && match[0] === lastHash && (match.length === 1 || !document.querySelector('[hash="' + lastHash + '"]'))) {
       (function () {
         var parents = [element];
+
+        // match_ newHash pushing all matched elements to parents
         lastMatch = match_(newHash, parents, []);
+
+        // if default route do not match
         if (lastMatch !== newHash && element.getAttribute('hash') === '') {
           lastMatch = null;
         } else {
+          // unhide all matched elements
           parents.forEach(function (element) {
             return element && unhide_(element);
           });
+
+          // hide_ last elements. I mean, if go
+          // from /page1/page2/page3
+          // to   /page1/page2/page5
+          // then hide only page3
           alreadyShown instanceof Array && alreadyShown.reduce(function (acc, curr) {
             curr && !parents.includes(curr) && acc.push(curr);
             return acc;
           }, []).reverse().forEach(function (item) {
             return hide_(item);
           });
+
+          // update match
           match = newHash.match(new RegExp(lastMatch));
+
+          // if no match, then lastMatch = undefined and hide current element
           !match && (lastMatch = parents.forEach(function (element) {
             return element && hide_(element);
           }));
+          // if match, and no stateRevert then update lastMatch and dispatch show
           match && !stateRevert && (lastMatch = parents) && dispatchShow_(element, match.slice(1).reduce(function (detail, hash, i) {
             detail['param' + (i + 1)] = hash;
             return detail;
@@ -158,6 +174,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }
       })();
     } else {
+      // do not hide elements unnecessarily
       if (!(alreadyShown.find && alreadyShown.find(function (show) {
         return show === element;
       }))) {
