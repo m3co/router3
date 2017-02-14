@@ -977,7 +977,7 @@ window.addEventListener('load', () => {
       }
     });
     let handlerError = this.step_func((e) => {
-      assert_equals(e.message, "Uncaught Error: Cannot go back to last matched hash http://localhost:9003/test/#ouroboros-hash2");
+      assert_equals(e.message, "Uncaught Error: Cannot go back to last matched hash " + window.location.href.split('#')[0] + "#ouroboros-hash2");
 
       window.removeEventListener('hashchange', handlerHashChange);
       window.removeEventListener('error', handlerError);
