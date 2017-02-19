@@ -81,6 +81,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
    */
   function hashchange_(e) {
     if (counterLastMatch > 1) {
+      counterLastMatch = 0;
       throw new Error('Cannot go back to last matched hash ' + e.oldURL);
     }
     Promise.all(slice.call(document.querySelectorAll(selClass)).map(function (element) {
