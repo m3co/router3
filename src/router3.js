@@ -69,10 +69,24 @@
     Promise.all(slice
       .call(document.querySelectorAll(selClass))
       .map(element => {
-        new Promise(resolve => {
-          if (element.querySelector('.mdl-fragment') ||
-            element.classList.contains('mdl-fragment')) {
-            element.addEventListener('load', resolve_.bind(null, resolve));
+        return new Promise(resolve => {
+          let fragment = element.querySelector('.mdl-fragment');
+          if (element.classList.contains('mdl-fragment')) {
+            if (element.MaterialFragment) {
+              element.MaterialFragment.loaded.then(() => {
+                resolve();
+              });
+            } else {
+              element.addEventListener('load', resolve_.bind(null, resolve));
+            }
+          } else if (fragment) {
+            if (fragment.MaterialFragment) {
+              fragment.MaterialFragment.loaded.then(() => {
+                resolve();
+              });
+            } else {
+              fragment.addEventListener('load', resolve_.bind(null, resolve));
+            }
           } else {
             resolve();
           }

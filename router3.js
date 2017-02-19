@@ -85,9 +85,24 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       throw new Error('Cannot go back to last matched hash ' + e.oldURL);
     }
     Promise.all(slice.call(document.querySelectorAll(selClass)).map(function (element) {
-      new Promise(function (resolve) {
-        if (element.querySelector('.mdl-fragment') || element.classList.contains('mdl-fragment')) {
-          element.addEventListener('load', resolve_.bind(null, resolve));
+      return new Promise(function (resolve) {
+        var fragment = element.querySelector('.mdl-fragment');
+        if (element.classList.contains('mdl-fragment')) {
+          if (element.MaterialFragment) {
+            element.MaterialFragment.loaded.then(function () {
+              resolve();
+            });
+          } else {
+            element.addEventListener('load', resolve_.bind(null, resolve));
+          }
+        } else if (fragment) {
+          if (fragment.MaterialFragment) {
+            fragment.MaterialFragment.loaded.then(function () {
+              resolve();
+            });
+          } else {
+            fragment.addEventListener('load', resolve_.bind(null, resolve));
+          }
         } else {
           resolve();
         }
