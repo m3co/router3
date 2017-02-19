@@ -66,12 +66,19 @@
       counterLastMatch = 0;
       throw new Error(`Cannot go back to last matched hash ${e.oldURL}`);
     }
+    // Look for all router3 elements in order
     Promise.all(slice
       .call(document.querySelectorAll(selClass))
       .map(element => {
+        /**
+         * link router3 with fragment
+         * (This process should be decoupled...)
+         */
         return new Promise(resolve => {
           let fragment = element.querySelector('.mdl-fragment');
           if (element.classList.contains('mdl-fragment')) {
+            // if element is a fragment, it will load everything
+            // up to child element
             if (element.MaterialFragment) {
               element.MaterialFragment.loaded.then(() => {
                 resolve();
@@ -80,6 +87,8 @@
               element.addEventListener('load', resolve_.bind(null, resolve));
             }
           } else if (fragment) {
+            // if there's at least one child fragment, then load it
+            // and resolve the promise
             if (fragment.MaterialFragment) {
               fragment.MaterialFragment.loaded.then(() => {
                 resolve();
@@ -88,11 +97,14 @@
               fragment.addEventListener('load', resolve_.bind(null, resolve));
             }
           } else {
+            // if element is not a fragment, neither contains any fragment
+            // then just resolve it
             resolve();
           }
         });
       })
     ).then(() => {
+      // when everything was loaded...
       let match = slice
         .call(document.querySelectorAll(selClass))
         .map(element => route_(element,
