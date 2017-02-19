@@ -97,6 +97,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           // up to child element
           if (element.MaterialFragment) {
             element.MaterialFragment.loaded.then(function () {
+              slice.call(element.querySelectorAll(selClass)).forEach(function (element) {
+                return componentHandler.upgradeElement(element);
+              });
               resolve();
             });
           } else {
@@ -107,6 +110,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           // and resolve the promise
           if (fragment.MaterialFragment) {
             fragment.MaterialFragment.loaded.then(function () {
+              slice.call(fragment.querySelectorAll(selClass)).forEach(function (element) {
+                return componentHandler.upgradeElement(element);
+              });
               resolve();
             });
           } else {

@@ -81,6 +81,8 @@
             // up to child element
             if (element.MaterialFragment) {
               element.MaterialFragment.loaded.then(() => {
+                slice.call(element.querySelectorAll(selClass))
+                  .forEach(element => componentHandler.upgradeElement(element));
                 resolve();
               });
             } else {
@@ -91,6 +93,8 @@
             // and resolve the promise
             if (fragment.MaterialFragment) {
               fragment.MaterialFragment.loaded.then(() => {
+                slice.call(fragment.querySelectorAll(selClass))
+                  .forEach(element => componentHandler.upgradeElement(element));
                 resolve();
               });
             } else {
