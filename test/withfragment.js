@@ -53,7 +53,7 @@ window.addEventListener('load', () => {
   promise_test(function() { return new Promise((resolve, reject) => {
     // [setup]
     let hash1 = selectHash("main");
-    let hash2 = selectHash(hash1, "fragment");
+    let hash2 = selectHash(hash1, "fragment1");
     let hash3 = selectHash("detached");
     let hash4 = selectHash(hash3, "fragment");
 
@@ -81,7 +81,7 @@ window.addEventListener('load', () => {
   promise_test(function() { return new Promise((resolve, reject) => {
     // [setup]
     let hash1 = selectHash("main");
-    let hash2 = selectHash(hash1, "fragment");
+    let hash2 = selectHash(hash1, "fragment1");
     let hash3 = selectHash("detached");
     let hash4 = selectHash(hash3, "fragment");
 
@@ -103,7 +103,7 @@ window.addEventListener('load', () => {
     assert_true(!!hash4.MaterialRouter3);
 
     // [run]
-    window.location.hash = "main/fragment";
-  }); }, "Go to main/fragment");
+    window.location.hash = "main/fragment1";
+  }); }, "Go to main/fragment1");
 
 });
