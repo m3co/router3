@@ -91,7 +91,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
        * (This process should be decoupled...)
        */
       return new Promise(function (resolve) {
-        var fragment = element.querySelector('.mdl-fragment');
+        var fragments = slice.call(element.querySelectorAll('.mdl-fragment'));
         if (element.classList.contains('mdl-fragment')) {
           // if element is a fragment, it will load everything
           // up to child element
@@ -105,19 +105,25 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           } else {
             element.addEventListener('load', resolve_.bind(null, resolve));
           }
-        } else if (fragment) {
-          // if there's at least one child fragment, then load it
-          // and resolve the promise
-          if (fragment.MaterialFragment) {
-            fragment.MaterialFragment.loaded.then(function () {
-              slice.call(fragment.querySelectorAll(selClass)).forEach(function (element) {
-                return componentHandler.upgradeElement(element);
-              });
-              resolve();
+        } else if (fragments.length) {
+          // if there's at least one child fragment, then load all fragments
+          // and resolve their promises
+          Promise.all(fragments.map(function (fragment) {
+            return new Promise(function (resolve) {
+              if (fragment.MaterialFragment) {
+                fragment.MaterialFragment.loaded.then(function () {
+                  slice.call(fragment.querySelectorAll(selClass)).forEach(function (element) {
+                    return componentHandler.upgradeElement(element);
+                  });
+                  resolve();
+                });
+              } else {
+                fragment.addEventListener('load', resolve_.bind(null, resolve));
+              }
             });
-          } else {
-            fragment.addEventListener('load', resolve_.bind(null, resolve));
-          }
+          })).then(function () {
+            resolve();
+          });
         } else {
           // if element is not a fragment, neither contains any fragment
           // then just resolve it

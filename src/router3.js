@@ -75,7 +75,7 @@
          * (This process should be decoupled...)
          */
         return new Promise(resolve => {
-          let fragment = element.querySelector('.mdl-fragment');
+          let fragments = slice.call(element.querySelectorAll('.mdl-fragment'));
           if (element.classList.contains('mdl-fragment')) {
             // if element is a fragment, it will load everything
             // up to child element
@@ -88,18 +88,24 @@
             } else {
               element.addEventListener('load', resolve_.bind(null, resolve));
             }
-          } else if (fragment) {
-            // if there's at least one child fragment, then load it
-            // and resolve the promise
-            if (fragment.MaterialFragment) {
-              fragment.MaterialFragment.loaded.then(() => {
-                slice.call(fragment.querySelectorAll(selClass))
-                  .forEach(element => componentHandler.upgradeElement(element));
-                resolve();
+          } else if (fragments.length) {
+            // if there's at least one child fragment, then load all fragments
+            // and resolve their promises
+            Promise.all(fragments.map(fragment => {
+              return new Promise(resolve => {
+                if (fragment.MaterialFragment) {
+                  fragment.MaterialFragment.loaded.then(() => {
+                    slice.call(fragment.querySelectorAll(selClass))
+                      .forEach(element => componentHandler.upgradeElement(element));
+                    resolve();
+                  });
+                } else {
+                  fragment.addEventListener('load', resolve_.bind(null, resolve));
+                }
               });
-            } else {
-              fragment.addEventListener('load', resolve_.bind(null, resolve));
-            }
+            })).then(() => {
+              resolve();
+            });
           } else {
             // if element is not a fragment, neither contains any fragment
             // then just resolve it
