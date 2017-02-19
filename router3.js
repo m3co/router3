@@ -56,9 +56,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     return MaterialRouter3;
   }();
 
-  window.addEventListener('hashchange', hashchange_);
-  window.addEventListener('load', hashchange_);
-
   /**
    * Resolve and upgrade any router element present in e.target
    *
@@ -66,6 +63,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
    * @param {Event} e - The load event.
    * @private
    */
+
+
   function resolve_(resolve, e) {
     slice.call(e.target.querySelectorAll(selClass)).forEach(function (element) {
       return componentHandler.upgradeElement(element);
@@ -288,12 +287,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }
   }
 
-  window[classAsString] = MaterialRouter3;
+  if (!window[classAsString]) {
+    window[classAsString] = MaterialRouter3;
+    window.addEventListener('hashchange', hashchange_);
+    window.addEventListener('load', hashchange_);
 
-  componentHandler.register({
-    constructor: MaterialRouter3,
-    classAsString: classAsString,
-    cssClass: cssClass,
-    widget: true
-  });
+    componentHandler.register({
+      constructor: MaterialRouter3,
+      classAsString: classAsString,
+      cssClass: cssClass,
+      widget: true
+    });
+  }
 })();

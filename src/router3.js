@@ -41,9 +41,6 @@
 
   }
 
-  window.addEventListener('hashchange', hashchange_);
-  window.addEventListener('load', hashchange_);
-
   /**
    * Resolve and upgrade any router element present in e.target
    *
@@ -271,13 +268,17 @@
     }
   }
 
-  window[classAsString] = MaterialRouter3;
+  if (!window[classAsString]) {
+    window[classAsString] = MaterialRouter3;
+    window.addEventListener('hashchange', hashchange_);
+    window.addEventListener('load', hashchange_);
 
-  componentHandler.register({
-    constructor: MaterialRouter3,
-    classAsString: classAsString,
-    cssClass: cssClass,
-    widget: true
-  });
+    componentHandler.register({
+      constructor: MaterialRouter3,
+      classAsString: classAsString,
+      cssClass: cssClass,
+      widget: true
+    });
+  }
 
 })();
