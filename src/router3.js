@@ -165,6 +165,15 @@
       if ((lastMatch !== newHash) && (element.getAttribute('hash') === '')) {
         lastMatch = null;
       } else {
+        let hash = newHash.match(new RegExp(parents.reduce((acc, curr) => {
+          if (curr) {
+            acc = curr.getAttribute('hash') + (acc ? '/' : '') + acc;
+          }
+          return acc;
+        }, '')));
+        if (!hash) {
+          return null;
+        }
         // unhide all matched elements
         parents.forEach(element => element && unhide_(element));
 

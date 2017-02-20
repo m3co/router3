@@ -1,5 +1,7 @@
 'use strict';
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -172,7 +174,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     // if match...
     if (match && match[0] === lastHash && (match.length === 1 || !document.querySelector('[hash="' + lastHash + '"]'))) {
-      (function () {
+      var _ret2 = function () {
         var parents = [element];
 
         // match_ newHash pushing all matched elements to parents
@@ -182,6 +184,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         if (lastMatch !== newHash && element.getAttribute('hash') === '') {
           lastMatch = null;
         } else {
+          var hash = newHash.match(new RegExp(parents.reduce(function (acc, curr) {
+            if (curr) {
+              acc = curr.getAttribute('hash') + (acc ? '/' : '') + acc;
+            }
+            return acc;
+          }, '')));
+          if (!hash) {
+            return {
+              v: null
+            };
+          }
           // unhide all matched elements
           parents.forEach(function (element) {
             return element && unhide_(element);
@@ -211,7 +224,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             return detail;
           }, { router: element }));
         }
-      })();
+      }();
+
+      if ((typeof _ret2 === 'undefined' ? 'undefined' : _typeof(_ret2)) === "object") return _ret2.v;
     } else {
       // do not hide elements unnecessarily
       if (!(alreadyShown.find && alreadyShown.find(function (show) {

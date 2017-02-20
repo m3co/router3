@@ -3,6 +3,7 @@ window.addEventListener('load', () => {
   const classAsString = "MaterialRouter3";
   const cssRouter = "mdl-router3";
   const selRouter = `.${cssRouter}`;
+  window.location.hash = "";
 
   promise_test(function() { return new Promise((resolve, reject) => {
     // [setup]
