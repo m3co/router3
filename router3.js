@@ -184,13 +184,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         if (lastMatch !== newHash && element.getAttribute('hash') === '') {
           lastMatch = null;
         } else {
-          var hash = newHash.match(new RegExp(parents.reduce(function (acc, curr) {
-            if (curr) {
-              acc = curr.getAttribute('hash') + (acc ? '/' : '') + acc;
-            }
+          if (!newHash.match(new RegExp(parents.reduce(function (acc, curr) {
+            curr && (acc = curr.getAttribute('hash') + (acc ? '/' : '') + acc);
             return acc;
-          }, '')));
-          if (!hash) {
+          }, '')))) {
             return {
               v: null
             };
