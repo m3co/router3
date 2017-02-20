@@ -165,10 +165,11 @@
       if ((lastMatch !== newHash) && (element.getAttribute('hash') === '')) {
         lastMatch = null;
       } else {
-        if (!newHash.match(new RegExp(parents.reduce((acc, curr) => {
+        match = newHash.match(new RegExp(parents.reduce((acc, curr) => {
           curr && (acc = curr.getAttribute('hash') + (acc ? '/' : '') + acc);
           return acc;
-        }, '')))) {
+        }, '')));
+        if (!match) {
           return null;
         }
         // unhide all matched elements
@@ -183,14 +184,8 @@
           return acc;
         }, []).reverse().forEach(item => hide_(item));
 
-        // update match
-        match = newHash.match(new RegExp(lastMatch));
-
-        // if no match, then lastMatch = undefined and hide current element
-        !match && (lastMatch = parents.forEach(
-          element => element && hide_(element)));
         // if match, and no stateRevert then update lastMatch and dispatch show
-        match && !stateRevert && (lastMatch = parents) &&
+        !stateRevert && (lastMatch = parents) &&
           dispatchShow_(element, match.slice(1)
           .reduce((detail, hash, i) => {
             detail[`param${i + 1}`] = hash;
