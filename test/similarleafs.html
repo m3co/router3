@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Router3 test page</title>
+    <script src="/resources/testharness.js/testharness.js"></script>
+    <script src="/bower_components/material-design-lite/material.js"></script>
+    <script src="/router3.js"></script>
+    <script src="/bower_components/pseudoimport-html/fragment-mdl.js"></script>
+    <script src="helper.js"></script>
+    <script>
+      'use strict';
+      window.location.hash = "";
+    </script>
+  </head>
+  <body>
+    <a href="#main">main</a><br>
+    <a href="#main/fragment">main/fragment</a><br>
+    <a href="#detached">detached</a><br>
+    <a href="#detached/fragment">detached/fragment</a><br>
+    <div class="mdl-router3 mdl-fragment" src="fragment.html" hash="main">
+    </div>
+    <div class="mdl-router3" hash="detached">
+      Detached
+      <div class="mdl-fragment" src="fragment.html"></div>
+    </div>
+  </body>
+  <script src="similarleafs.js"></script>
+</html>
