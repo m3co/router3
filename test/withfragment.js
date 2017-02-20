@@ -9,7 +9,7 @@ window.addEventListener('load', () => {
     let hash1 = selectHash("main");
     let hash3 = selectHash("detached");
 
-    let handler1 = this.step_func((e) => { this.step_timeout(() => {
+    let handler1 = this.step_func((e) => {
       // [verify]
       assert_true(hash1.hidden);
       assert_false(hash3.hidden);
@@ -17,14 +17,16 @@ window.addEventListener('load', () => {
       // [teardown]
       hash3.removeEventListener('show', handler1);
       teardown(resolve, handler1, e)
-    }, 100); });
+    });
     hash3.addEventListener('show', handler1);
 
     assert_true(!!hash1.MaterialRouter3);
     assert_true(!!hash3.MaterialRouter3);
 
     // [run]
-    window.location.hash = "detached";
+    hash3.querySelector('.mdl-fragment').MaterialFragment.loaded.then(() => {
+      window.location.hash = "detached";
+    });
   }); }, "Go to detached");
 
   promise_test(function() { return new Promise((resolve, reject) => {
@@ -32,7 +34,7 @@ window.addEventListener('load', () => {
     let hash1 = selectHash("main");
     let hash3 = selectHash("detached");
 
-    let handler1 = this.step_func((e) => { this.step_timeout(() => {
+    let handler1 = this.step_func((e) => {
       // [verify]
       assert_false(hash1.hidden);
       assert_true(hash3.hidden);
@@ -40,14 +42,16 @@ window.addEventListener('load', () => {
       // [teardown]
       hash1.removeEventListener('show', handler1);
       teardown(resolve, handler1, e)
-    }, 100); });
+    });
     hash1.addEventListener('show', handler1);
 
     assert_true(!!hash1.MaterialRouter3);
     assert_true(!!hash3.MaterialRouter3);
 
     // [run]
-    window.location.hash = "main";
+    hash1.MaterialFragment.loaded.then(() => {
+      window.location.hash = "main";
+    });
   }); }, "Go to main");
 
   promise_test(function() { return new Promise((resolve, reject) => {
@@ -57,7 +61,7 @@ window.addEventListener('load', () => {
     let hash3 = selectHash("detached");
     let hash4 = selectHash(hash3, "fragment");
 
-    let handler2 = this.step_func((e) => { this.step_timeout(() => {
+    let handler2 = this.step_func((e) => {
       // [verify]
       assert_true(hash1.hidden);
       assert_true(hash2.hidden);
@@ -66,7 +70,7 @@ window.addEventListener('load', () => {
 
       // [teardown]
       teardown(resolve, handler2, e);
-    }, 100); });
+    });
     hash4.addEventListener('show', handler2);
 
     assert_true(!!hash1.MaterialRouter3);
@@ -75,7 +79,9 @@ window.addEventListener('load', () => {
     assert_true(!!hash4.MaterialRouter3);
 
     // [run]
-    window.location.hash = "detached/fragment";
+    hash3.querySelector('.mdl-fragment').MaterialFragment.loaded.then(() => {
+      window.location.hash = "detached/fragment";
+    });
   }); }, "Go to detached/fragment");
 
   promise_test(function() { return new Promise((resolve, reject) => {
@@ -85,7 +91,7 @@ window.addEventListener('load', () => {
     let hash3 = selectHash("detached");
     let hash4 = selectHash(hash3, "fragment");
 
-    let handler2 = this.step_func((e) => { this.step_timeout(() => {
+    let handler2 = this.step_func((e) => {
       // [verify]
       assert_false(hash2.hidden);
       assert_false(hash1.hidden);
@@ -94,7 +100,7 @@ window.addEventListener('load', () => {
 
       // [teardown]
       teardown(resolve, handler2, e);
-    }, 100); });
+    });
     hash2.addEventListener('show', handler2);
 
     assert_true(!!hash1.MaterialRouter3);
@@ -103,7 +109,9 @@ window.addEventListener('load', () => {
     assert_true(!!hash4.MaterialRouter3);
 
     // [run]
-    window.location.hash = "main/fragment1";
+    hash1.MaterialFragment.loaded.then(() => {
+      window.location.hash = "main/fragment1";
+    });
   }); }, "Go to main/fragment1");
 
 });
