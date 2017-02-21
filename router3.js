@@ -59,20 +59,27 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   }();
 
   /**
-   * Resolve and upgrade any router element present in e.target
+   * Resolve and upgrade any router element present in element
    *
+   * @param {HTMLElement} element - The element to upgrade/resolve.
    * @param {Function} resolve - The function to resolve the Promise.
-   * @param {Event} e - The load event.
    * @private
    */
 
 
-  function resolve_(resolve, e) {
-    slice.call(e.target.querySelectorAll(selClass)).forEach(function (element) {
-      return componentHandler.upgradeElement(element);
-    });
-    e.target.removeEventListener('load', resolve_);
-    resolve();
+  function resolve_(element, resolve) {
+    // if element is a fragment, it will load everything
+    // up to child element
+    if (element.MaterialFragment) {
+      element.MaterialFragment.loaded.then(function () {
+        slice.call(element.querySelectorAll(selClass)).forEach(function (element) {
+          return componentHandler.upgradeElement(element);
+        });
+        resolve();
+      });
+    } else {
+      element.addEventListener('load', resolve, { once: true });
+    }
   }
 
   /**
@@ -95,41 +102,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       return new Promise(function (resolve) {
         var fragments = slice.call(element.querySelectorAll('.mdl-fragment'));
         if (element.classList.contains('mdl-fragment')) {
-          // if element is a fragment, it will load everything
-          // up to child element
-          if (element.MaterialFragment) {
-            element.MaterialFragment.loaded.then(function () {
-              slice.call(element.querySelectorAll(selClass)).forEach(function (element) {
-                return componentHandler.upgradeElement(element);
-              });
-              resolve();
-            });
-          } else {
-            element.addEventListener('load', resolve_.bind(null, resolve));
-          }
-        } else if (fragments.length) {
+          resolve_(element, resolve);
+        } else {
           // if there's at least one child fragment, then load all fragments
           // and resolve their promises
           Promise.all(fragments.map(function (fragment) {
             return new Promise(function (resolve) {
-              if (fragment.MaterialFragment) {
-                fragment.MaterialFragment.loaded.then(function () {
-                  slice.call(fragment.querySelectorAll(selClass)).forEach(function (element) {
-                    return componentHandler.upgradeElement(element);
-                  });
-                  resolve();
-                });
-              } else {
-                fragment.addEventListener('load', resolve_.bind(null, resolve));
-              }
+              return resolve_(fragment, resolve);
             });
           })).then(function () {
             resolve();
           });
-        } else {
-          // if element is not a fragment, neither contains any fragment
-          // then just resolve it
-          resolve();
         }
       });
     })).then(function () {
