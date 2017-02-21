@@ -90,9 +90,7 @@
             // and resolve their promises
             Promise.all(fragments.map(fragment => {
               return new Promise(resolve => resolve_(fragment, resolve));
-            })).then(() => {
-              resolve();
-            });
+            })).then(resolve);
           }
         });
       })

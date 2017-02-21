@@ -110,9 +110,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             return new Promise(function (resolve) {
               return resolve_(fragment, resolve);
             });
-          })).then(function () {
-            resolve();
-          });
+          })).then(resolve);
         }
       });
     })).then(function () {
