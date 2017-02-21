@@ -1,7 +1,5 @@
 'use strict';
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -152,53 +150,46 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     var newHash = newURL.split('#')[1] || '';
     var lastHash = newHash.split('/').reverse()[0];
     var match = lastHash.match(new RegExp(element.getAttribute('hash')));
+    var parents = [element];
 
     // if match...
     if (match && match[0] === lastHash && (match.length === 1 || !document.querySelector('[hash="' + lastHash + '"]'))) {
-      var _ret2 = function () {
-        var parents = [element];
 
-        // match_ newHash pushing all matched elements to parents
-        lastMatch = match_(newHash, parents, []);
+      // match_ newHash pushing all matched elements to parents
+      lastMatch = match_(newHash, parents, []);
 
-        // if default route do not match
-        if (lastMatch !== newHash && element.getAttribute('hash') === '') {
-          lastMatch = null;
-        } else {
-          match = newHash.match(new RegExp(parents.reduce(function (acc, curr) {
-            curr && (acc = curr.getAttribute('hash') + (acc ? '/' : '') + acc);
-            return acc;
-          }, '')));
-          if (!match) {
-            return {
-              v: null
-            };
-          }
-          // unhide all matched elements
-          parents.forEach(function (element) {
-            return element && unhide_(element);
-          });
+      // if default route do not match
+      if (lastMatch !== newHash && element.getAttribute('hash') === '') {
+        lastMatch = null;
+      } else {
+        match = newHash.match(new RegExp(parents.reduce(function (acc, curr) {
+          curr && (acc = curr.getAttribute('hash') + (acc ? '/' : '') + acc);
+          return acc;
+        }, '')));
+        !match && (lastMatch = null);
 
-          // hide_ last elements. I mean, if go
-          // from /page1/page2/page3
-          // to   /page1/page2/page5
-          // then hide only page3
-          alreadyShown instanceof Array && alreadyShown.reduce(function (acc, curr) {
-            curr && !parents.includes(curr) && acc.push(curr);
-            return acc;
-          }, []).reverse().forEach(function (item) {
-            return hide_(item);
-          });
+        // unhide all matched elements
+        match && parents.forEach(function (element) {
+          return element && unhide_(element);
+        });
 
-          // if match, and no stateRevert then update lastMatch and dispatch show
-          !stateRevert && (lastMatch = parents) && dispatchShow_(element, match.slice(1).reduce(function (detail, hash, i) {
-            detail['param' + (i + 1)] = hash;
-            return detail;
-          }, { router: element }));
-        }
-      }();
+        // hide_ last elements. I mean, if go
+        // from /page1/page2/page3
+        // to   /page1/page2/page5
+        // then hide only page3
+        match && alreadyShown instanceof Array && alreadyShown.reduce(function (acc, curr) {
+          curr && !parents.includes(curr) && acc.push(curr);
+          return acc;
+        }, []).reverse().forEach(function (item) {
+          return hide_(item);
+        });
 
-      if ((typeof _ret2 === 'undefined' ? 'undefined' : _typeof(_ret2)) === "object") return _ret2.v;
+        // if match, and no stateRevert then update lastMatch and dispatch show
+        match && !stateRevert && (lastMatch = parents) && dispatchShow_(element, match.slice(1).reduce(function (detail, hash, i) {
+          detail['param' + (i + 1)] = hash;
+          return detail;
+        }, { router: element }));
+      }
     } else {
       // do not hide elements unnecessarily
       if (!(alreadyShown.find && alreadyShown.find(function (show) {

@@ -132,12 +132,12 @@
     let lastHash = newHash.split('/').reverse()[0];
     let match = lastHash.match(
       new RegExp(element.getAttribute('hash')));
+    let parents = [element];
 
     // if match...
     if (match && match[0] === lastHash &&
       (match.length === 1 ||
       !document.querySelector(`[hash="${lastHash}"]`))) {
-      let parents = [element];
 
       // match_ newHash pushing all matched elements to parents
       lastMatch = match_(newHash, parents, []);
@@ -150,23 +150,24 @@
           curr && (acc = curr.getAttribute('hash') + (acc ? '/' : '') + acc);
           return acc;
         }, '')));
-        if (!match) {
-          return null;
-        }
+        (!match) && (lastMatch = null);
+
         // unhide all matched elements
-        parents.forEach(element => element && unhide_(element));
+        match && parents.forEach(element => element && unhide_(element));
 
         // hide_ last elements. I mean, if go
         // from /page1/page2/page3
         // to   /page1/page2/page5
         // then hide only page3
-        (alreadyShown instanceof Array) && alreadyShown.reduce((acc, curr) => {
-          curr && !parents.includes(curr) && acc.push(curr);
-          return acc;
-        }, []).reverse().forEach(item => hide_(item));
+        match &&
+          (alreadyShown instanceof Array) &&
+          alreadyShown.reduce((acc, curr) => {
+            curr && !parents.includes(curr) && acc.push(curr);
+            return acc;
+          }, []).reverse().forEach(item => hide_(item));
 
         // if match, and no stateRevert then update lastMatch and dispatch show
-        !stateRevert && (lastMatch = parents) &&
+        match && !stateRevert && (lastMatch = parents) &&
           dispatchShow_(element, match.slice(1)
           .reduce((detail, hash, i) => {
             detail[`param${i + 1}`] = hash;
