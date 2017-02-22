@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Demo-crush</title>
+    <script src="/bower_components/js-polyfills/polyfill.min.js"></script>
+    <script src="/bower_components/element-matches/closest.js"></script>
+    <script src="/bower_components/material-design-lite/material.js"></script>
+    <script src="/router3.js"></script>
+  </head>
+  <body>
+    <a href="#hash1/hash2">Hash 1/Hash 2</a><br>
+    <a href="#hash1/hash2/hash3/hash4">Hash 1/Hash 2/Hash 3/Hash 4</a><br>
+    <div class="mdl-router3" hash="hash1/hash2">
+      Hash 1/Hash 2
+      <div class="mdl-router3" hash="hash3/hash4">
+        Hash 3/Hash 4
+      </div>
+    </div>
+  </body>
+</html>
