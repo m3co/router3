@@ -2,6 +2,11 @@
 <html>
   <head>
     <title>Demo-crush</title>
+    <script src="https://cdn.ravenjs.com/3.11.0/raven.min.js"></script>
+    <script>
+      'use strict';
+      Raven.config('https://f4445b207a7441f1921c61ce991df095@sentry.io/89786', {ignoreUrls: 'localhost'}).install();
+    </script>
     <script src="/bower_components/js-polyfills/polyfill.min.js"></script>
     <script src="/bower_components/element-matches/closest.js"></script>
     <script src="/bower_components/material-design-lite/material.js"></script>
