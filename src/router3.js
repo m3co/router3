@@ -193,6 +193,7 @@
   function hide_(element) {
     if (!element.hidden) {
       element.hidden = true;
+      element.style.visibility = 'hidden';
 
       /**
        * Dispatch hide event if URL's fragment matches with a route
@@ -250,6 +251,7 @@
   function unhide_(element) {
     if (element.hidden) {
       element.hidden = false;
+      element.style.visibility = 'visible';
 
       /**
        * Dispatch unhide even if URL's fragment matches with a route

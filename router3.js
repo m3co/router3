@@ -210,6 +210,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   function hide_(element) {
     if (!element.hidden) {
       element.hidden = true;
+      element.style.visibility = 'hidden';
 
       /**
        * Dispatch hide event if URL's fragment matches with a route
@@ -267,12 +268,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   function unhide_(element) {
     if (element.hidden) {
       element.hidden = false;
+      element.style.visibility = 'visible';
 
       /**
        * Dispatch unhide even if URL's fragment matches with a route
        * and router.hidden = false
        *
-       * @event MaterialRouter3#hide
+       * @event MaterialRouter3#unhide
        * @type {CustomEvent}
        * @property {HTMLElement} router - The router that dispatches
        *   this event
