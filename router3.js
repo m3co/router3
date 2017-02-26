@@ -50,6 +50,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       key: 'init',
       value: function init() {
         this.element_.hidden = true;
+        this.element_.style.visibility = 'hidden';
       }
     }]);
 

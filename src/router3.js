@@ -37,6 +37,7 @@
      */
     init() {
       this.element_.hidden = true;
+      this.element_.style.visibility = 'hidden';
     }
 
   }
