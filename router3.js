@@ -51,6 +51,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       value: function init() {
         this.element_.hidden = true;
         this.element_.style.visibility = 'hidden';
+        this.element_.style.height = '0px';
+        this.element_.style.width = '0px';
       }
     }]);
 
@@ -212,6 +214,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     if (!element.hidden) {
       element.hidden = true;
       element.style.visibility = 'hidden';
+      element.style.height = '0px';
+      element.style.width = '0px';
 
       /**
        * Dispatch hide event if URL's fragment matches with a route
@@ -270,6 +274,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     if (element.hidden) {
       element.hidden = false;
       element.style.visibility = 'visible';
+      element.style.height = null;
+      element.style.width = null;
 
       /**
        * Dispatch unhide even if URL's fragment matches with a route
