@@ -255,7 +255,7 @@
        * Dispatch unhide even if URL's fragment matches with a route
        * and router.hidden = false
        *
-       * @event MaterialRouter3#hide
+       * @event MaterialRouter3#unhide
        * @type {CustomEvent}
        * @property {HTMLElement} router - The router that dispatches
        *   this event
